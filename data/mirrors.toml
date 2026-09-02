@@ -2,6 +2,10 @@
 # in order. Fields: name (display), url (mirror root), cadence (refresh schedule),
 # repo (sync pipeline), healthcheck (public healthchecks.io badge for the sync),
 # upstream {name, url}.
+#
+# healthcheck must be the single-check two-state badge URL (/b/2/<uuid>.svg).
+# The page maps any status other than "down" to a green check, so a three-state
+# or project-wide badge here would render a stalled sync as healthy.
 
 [[mirrors]]
 name = "CTAN"

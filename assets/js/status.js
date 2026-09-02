@@ -13,7 +13,7 @@ export function relTime(iso, now = Date.now()) {
 }
 
 export function stateFor(badge) {
-  return badge.down > 0 || badge.status === "down" ? "down" : "up";
+  return badge.status === "down" ? "down" : "up";
 }
 
 const json = (url) =>
@@ -24,9 +24,10 @@ if (typeof document !== "undefined") {
     json(a.dataset.badge.replace(/\.svg$/, ".json"))
       .then((badge) => {
         const state = stateFor(badge);
+        const name = a.closest("tr")?.querySelector(".mirror-name")?.textContent.trim();
         a.dataset.state = state;
         a.title = state;
-        a.setAttribute("aria-label", state);
+        a.setAttribute("aria-label", name ? `${name} sync: ${state}` : state);
       })
       .catch(() => {});
   }

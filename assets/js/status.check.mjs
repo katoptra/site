@@ -1,10 +1,11 @@
-// Self-check for relTime; run with: node assets/js/status.check.mjs
+// Self-check for status.js; run with: node assets/js/status.check.mjs
 import { strict as assert } from "node:assert";
 import { relTime, stateFor } from "./status.js";
 
-assert.equal(stateFor({ status: "up", total: 1, grace: 0, down: 0 }), "up");
-assert.equal(stateFor({ status: "up", total: 1, grace: 1, down: 0 }), "up");
-assert.equal(stateFor({ status: "down", total: 1, grace: 0, down: 1 }), "down");
+assert.equal(stateFor({ status: "up" }), "up");
+assert.equal(stateFor({ status: "up", grace: 1 }), "up"); // in-grace (late) deliberately reads as up
+assert.equal(stateFor({ status: "late" }), "up"); // non-"down" statuses fail toward up, never a blank state
+assert.equal(stateFor({ status: "down" }), "down");
 
 const now = Date.parse("2026-09-01T12:00:00Z");
 assert.equal(relTime("2026-09-01T11:59:40Z", now), "just now");
