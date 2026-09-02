@@ -26,7 +26,6 @@ if (typeof document !== "undefined") {
     json(a.dataset.statusJson)
       .then((badge) => {
         const state = stateFor(badge);
-        a.textContent = "";
         a.dataset.state = state;
         a.title = state;
         a.setAttribute("aria-label", state);

@@ -59,9 +59,10 @@ in light and dark, desktop and ~390px mobile. The page is designed to fit a
 ## Gotchas
 
 - No third-party artwork (theme invariant). The Status cell fetches the
-  healthchecks.io **JSON** badge and renders a traffic-light glyph (green
-  check / yellow ! / red x, the `--status-*` colors in `mirrors.css`) rather
-  than embedding the badge SVG; the cell's `href` still points at the badge
+  healthchecks.io **JSON** badge and shows a traffic-light Font Awesome icon
+  (green check / yellow ! / red x — this repo's `assets/icons/`, colored by
+  the `--status-*` tokens in `mirrors.css`) rather than embedding the badge
+  SVG; the cell's `href` still points at the badge
   SVG, which `task check` greps for. Late is derived from the JSON's `grace`
   count, so the two-state badge URLs still yield all three states.
 - The Cloudflare beacon fires only if `params.cloudflareBeaconToken` is set in
