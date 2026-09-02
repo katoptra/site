@@ -102,22 +102,50 @@
   border-bottom: none;
 }
 
-/* ===== Live status (filled by status.js; theme tokens only, no badge art) ===== */
-.mirror-status[data-state]::before {
-  content: "";
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  margin-right: 7px;
-  background-color: var(--text-muted);
+/* ===== Live status (filled by status.js; a glyph per state, no badge art) =====
+   The only semantic colors on the page — deliberately outside the theme tokens,
+   AA against both grounds. */
+:root {
+  --status-up: #1a7f37;
+  --status-late: #9a6700;
+  --status-down: #cf222e;
 }
-.mirror-status[data-state="down"] {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --status-up: #3fb950;
+    --status-late: #d29922;
+    --status-down: #f85149;
+  }
+}
+
+.mirror-status[data-state] {
+  border-bottom: none;
+  font-weight: 700;
+  font-size: 15px;
+}
+.mirror-status[data-state="up"],
+.mirror-status[data-state="up"]:hover {
+  color: var(--status-up);
+}
+.mirror-status[data-state="up"]::before {
+  content: "\2713"; /* check mark */
+}
+.mirror-status[data-state="late"],
+.mirror-status[data-state="late"]:hover {
+  color: var(--status-late);
+}
+.mirror-status[data-state="late"]::before {
+  content: "!";
+}
+.mirror-status[data-state="down"],
+.mirror-status[data-state="down"]:hover {
+  color: var(--status-down);
 }
 .mirror-status[data-state="down"]::before {
-  background-color: var(--accent);
+  content: "\2715"; /* multiplication x */
+}
+.mirror-status[data-state]:hover {
+  border-bottom: none;
 }
 
 .mirror-synced {

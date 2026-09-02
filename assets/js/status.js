@@ -12,6 +12,12 @@ export function relTime(iso, now = Date.now()) {
   return d + (d === 1 ? " day ago" : " days ago");
 }
 
+export function stateFor(badge) {
+  if (badge.down > 0 || badge.status === "down") return "down";
+  if (badge.grace > 0 || badge.status === "late") return "late";
+  return "up";
+}
+
 const json = (url) =>
   fetch(url).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))));
 
@@ -19,8 +25,11 @@ if (typeof document !== "undefined") {
   for (const a of document.querySelectorAll("[data-status-json]")) {
     json(a.dataset.statusJson)
       .then((badge) => {
-        a.textContent = badge.status;
-        a.dataset.state = badge.status;
+        const state = stateFor(badge);
+        a.textContent = "";
+        a.dataset.state = state;
+        a.title = state;
+        a.setAttribute("aria-label", state);
       })
       .catch(() => {});
   }
