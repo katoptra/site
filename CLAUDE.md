@@ -11,10 +11,12 @@ Its `layouts/`, `assets/`, and `static/` are **vendored** into `themes/ijosh/`
 (a plain committed directory — not a submodule, not a Hugo Module) and consumed
 as a Hugo theme. All tokens (`--bg`, `--text`, `--accent`, ...), fonts, icons,
 the CSS reset/theme (`fonts.css`, `split.css`, `style.css`), and favicons come
-from the theme. The one deliberate fork: `static/_headers` here shadows the
-theme's copy, because the live status cells need extra CSP `connect-src`
-entries (healthchecks.io, api.github.com) — a theme `_headers` change must be
-re-applied to the local copy.
+from the theme. Deliberate forks: `static/_headers`, `static/robots.txt`, and
+`static/llms.txt` here shadow the theme's copies — `_headers` because the live
+status cells need extra CSP `connect-src` entries (healthchecks.io,
+api.github.com), the other two because the theme's versions carry ijosh.com's
+sitemap URL and bio. A theme change to any of the three must be re-applied to
+the local copy.
 
 - **Never edit anything under `themes/ijosh/`** — it is overwritten wholesale by
   `task theme:update`, which re-vendors ijosh.com master and pins the source
@@ -45,6 +47,8 @@ re-applied to the local copy.
   `task check`).
 - `static/_headers` — the theme's headers plus the two CSP `connect-src`
   entries the live cells need.
+- `static/robots.txt` and `static/llms.txt` — this site's crawler surface
+  (the theme's copies describe ijosh.com).
 - `layouts/partials/footer.html` — open-source note, attribution, contact links.
 
 ## Verify visual changes by rendering
@@ -59,13 +63,12 @@ in light and dark, desktop and ~390px mobile. The page is designed to fit a
 ## Gotchas
 
 - No third-party artwork (theme invariant). The Status cell fetches the
-  healthchecks.io **JSON** badge and shows a traffic-light Font Awesome icon
-  (green check / yellow ! / red x — this repo's `assets/icons/`, colored by
-  the `--status-*` tokens in `mirrors.css`) rather than embedding the badge
-  SVG; the icon links to the repo's Actions page, and the badge SVG URL rides
+  healthchecks.io **JSON** badge and shows a Font Awesome icon (green check
+  when up / red x when down — this repo's `assets/icons/`, colored by the
+  `--status-*` tokens in `mirrors.css`) rather than embedding the badge SVG;
+  the icon links to the repo's Actions page, and the badge SVG URL rides
   verbatim in `data-badge` (the script derives `.json` from it), which is what
-  `task check` greps for. Late is derived from the JSON's `grace`
-  count, so the two-state badge URLs still yield all three states.
+  `task check` greps for.
 - The Cloudflare beacon fires only if `params.cloudflareBeaconToken` is set in
   `hugo.toml` (currently unset).
 - `mirror.ijosh.com` → `mirrors.ijosh.com` is a zone-level Cloudflare redirect
