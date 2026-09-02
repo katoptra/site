@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/github/license/jshvn/mirrors)](LICENSE)
 
-The landing page for [mirrors.ijosh.com](https://mirrors.ijosh.com/). 
+The landing page for [mirrors.ijosh.com](https://mirrors.ijosh.com/).
 
 A Hugo site using [ijosh.com](https://github.com/jshvn/ijosh.com) design system. Deployed on Cloudflare Pages.
 
@@ -27,8 +27,10 @@ $ task check      # build and verify
 ## Want your own?
 
 Fork [this repo](https://github.com/jshvn/mirrors), swap the entries in
-`data/mirrors.toml` for your mirrors, and point `baseURL` in `hugo.toml` at your
-domain. It builds to a static site — host it anywhere.
+`data/mirrors.toml` for your mirrors, point `baseURL` in `hugo.toml` at your
+domain, and rewrite the identity-bearing files (`static/llms.txt`,
+`static/site.webmanifest`, the footer). It builds to a static site — host it
+anywhere.
 
 Pull requests are welcome.
 
