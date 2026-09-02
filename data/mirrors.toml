@@ -1,22 +1,20 @@
-# One entry per actively maintained mirror; the homepage renders this list in order.
-# Fields: name (display), url (mirror root), endpoint (URL tools should be pointed at),
-# cadence (sync schedule label), description (one sentence, plain text),
-# upstream {name, url}, repo (pipeline source).
+# One entry per actively maintained mirror; the homepage table renders this list
+# in order. Fields: name (display), url (mirror root), cadence (refresh schedule),
+# repo (sync pipeline), healthcheck (public healthchecks.io badge for the sync),
+# upstream {name, url}.
 
 [[mirrors]]
 name = "CTAN"
 url = "https://ctan.ijosh.com/"
-endpoint = "https://ctan.ijosh.com/"
 cadence = "hourly"
-description = "All of CTAN — about 511,000 files and 140 GB — with every CTAN path at the root. TeX Live control files are checked against a pinned signing key, every package against its checksum."
-upstream = { name = "ctan.org", url = "https://ctan.org" }
 repo = "https://github.com/jshvn/ctan"
+healthcheck = "https://healthchecks.io/b/2/f4ad55cc-4b2d-4cce-b133-aba5381d9e71.svg"
+upstream = { name = "ctan.org", url = "https://ctan.org" }
 
 [[mirrors]]
 name = "TeX Live (tlnet)"
 url = "https://tlnet.ijosh.com/"
-endpoint = "https://tlnet.ijosh.com/systems/texlive/tlnet/"
 cadence = "daily"
-description = "The tlnet repository tlmgr installs and updates from, complete with every platform, docs, and sources. Verified against SHA-512 sums and GPG signatures before it is served."
-upstream = { name = "CTAN systems/texlive/tlnet", url = "https://ctan.org/tex-archive/systems/texlive/tlnet" }
 repo = "https://github.com/jshvn/tlnet"
+healthcheck = "https://healthchecks.io/badge/8955b5d3-ba3b-4e8a-ac39-8501494333f5/otTXcui6-2.svg"
+upstream = { name = "ctan.org", url = "https://ctan.org/tex-archive/systems/texlive/tlnet" }

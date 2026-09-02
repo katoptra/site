@@ -1,7 +1,7 @@
 # mirrors.ijosh.com
 
-> Fast, verified mirrors of popular open-source software, served on
-> Cloudflare's global network and rebuilt from source by auditable pipelines.
+> Fast, verified mirrors of popular open-source software, synced on a schedule
+> by open pipelines and served on Cloudflare's global network.
 > Maintained by Josh Vaughen (https://ijosh.com).
 
 - CTAN mirror (hourly, full archive): https://ctan.ijosh.com/

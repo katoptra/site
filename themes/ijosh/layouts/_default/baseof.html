@@ -9,14 +9,29 @@
 
   <div class="fs-split">
 
-    <!-- Visual: typographic wordmark panel, doubling as the page heading -->
-    {{ partial "wordmark" . }}
+    <!-- Image -->
+    {{ if .Site.Params.visual.image.enable }}
+
+      <div class="split-image" role="img" aria-label="{{ .Site.Params.author }}">
+
+      </div>
+
+    <!-- Video -->
+    {{ else if .Site.Params.visual.video.enable }}
+
+      {{ partial "video" . }}
+
+    {{ end }}
 
     <!-- Content Side -->
     <main class="split-content">
       <div class="split-content-vertically-center">
+        <!-- Intro -->
+        {{ partial "intro" . }}
+
         <!-- Main -->
         {{ block "main" .  }}
+          <!-- Bio -->
           {{ partial "bio" . }}
         {{ end }}
 

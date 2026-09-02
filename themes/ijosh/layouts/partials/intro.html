@@ -1,0 +1,21 @@
+<div class="split-intro">
+  {{ with .Title }}<h1>{{ . }}</h1>{{ end }}
+  {{ with .Params.tagline }}<span class="tagline">{{ . }}</span>{{ end }}
+  {{ if .Site.Params.showlocation.enable }}
+    {{ with .Params.location }}
+    <div class="location-wrapper">
+        <span class="split-meta-icon">{{ (resources.Get "icons/location-dot.svg").Content | safeHTML }}</span>
+        <span class="location">{{ . }}</span>
+    </div>
+    {{ end }}
+  {{ end }}
+
+  {{ if .Site.Params.showemojis.enable }}
+    {{ with .Params.emojis }}
+    <div class="emojis-wrapper">
+        <span class="split-meta-icon">{{ (resources.Get "icons/id-badge.svg").Content | safeHTML }}</span>
+        <span class="emojis">{{ . }}</span>
+    </div>
+    {{ end }}
+  {{ end }}
+</div>

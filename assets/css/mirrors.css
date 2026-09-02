@@ -15,7 +15,7 @@
   }
 }
 
-/* ===== Left panel: typographic wordmark instead of the theme photo ===== */
+/* ===== Left panel: typographic wordmark, doubling as the page h1 ===== */
 .split-wordmark {
   background-color: var(--panel);
   display: flex;
@@ -29,6 +29,7 @@
   flex-direction: column;
   align-items: center;
   font-family: "Graduate";
+  font-weight: 400;
   text-transform: uppercase;
   font-size: clamp(2rem, 4.2vw, 3.6rem);
   line-height: 1;
@@ -59,102 +60,110 @@
   }
 }
 
-/* ===== Mirror index ===== */
-/* the split page is designed to fit a 1440x900 viewport without internal
-   scroll, so the rhythm below runs a notch tighter than the theme's bio */
+/* ===== Content column ===== */
+/* The theme's 640px column suits a bio; a five-column table needs more room.
+   width:100% (not content-sized) keeps the table's overflow inside
+   .mirror-table-wrap instead of widening the whole block past the viewport. */
+.fs-split .split-content .split-content-vertically-center {
+  max-width: 720px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Stacked layout: the content is short, so centering it in a forced full
+   viewport height just manufactures empty space above it */
+@media (max-width: 800px) {
+  .fs-split .split-content {
+    min-height: 0;
+  }
+}
+
+/* ===== Intro copy ===== */
 .split-bio {
-  padding: 28px 0 8px 0;
+  padding: 0 0 8px 0;
 }
 
-.mirror-list {
-  margin: 4px 0 26px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+/* ===== Mirror table ===== */
+.mirror-table-wrap {
+  overflow-x: auto;
+  margin: 8px 0 6px 0;
 }
 
-.mirror-head {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 8px;
+.mirror-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-a.mirror-name {
-  font-family: "Montserrat";
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 1.2;
-  letter-spacing: 0.06em;
-  color: var(--text);
-  transition: color 0.15s ease-out;
-}
-a.mirror-name:hover {
-  color: var(--accent);
-}
-
-.mirror-cadence {
+.mirror-table th {
   font-family: "Graduate";
+  font-weight: 400;
   font-size: 11px;
   line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.28em;
-  color: var(--text);
-  background-color: var(--pill-bg);
-  border-radius: 3px;
-  padding: 5px 3px 5px 8px; /* trailing letter-space balances the right side */
-}
-
-.mirror-desc {
-  margin-bottom: 10px;
-}
-
-a.mirror-endpoint {
-  display: block;
-  background-color: var(--pill-bg);
-  border-radius: 3px;
-  padding: 7px 12px;
-  margin-bottom: 8px;
-  overflow-x: auto;
-  white-space: nowrap;
-  transition: color 0.15s ease-out;
-}
-a.mirror-endpoint code {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 13px;
-  letter-spacing: 0;
+  letter-spacing: 0.2em;
   color: var(--text-muted);
-  transition: color 0.15s ease-out;
-}
-a.mirror-endpoint:hover code {
-  color: var(--accent);
+  text-align: left;
+  white-space: nowrap;
+  padding: 6px 16px 12px 0;
 }
 
-.mirror-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 20px;
-  font-size: 12px;
-  line-height: 1.5;
+.mirror-table td {
+  font-size: 14px;
+  line-height: 1.4;
   letter-spacing: 0;
+  color: var(--text-body);
+  white-space: nowrap;
+  border-top: 1px solid var(--pill-bg);
+  padding: 13px 16px 13px 0;
 }
-.mirror-links a {
+
+.mirror-table th:last-child,
+.mirror-table td:last-child {
+  padding-right: 0;
+}
+
+.mirror-table td a {
   color: var(--text-muted);
   border-bottom: 1px dotted var(--text-muted);
   transition-duration: 0.5s;
 }
-.mirror-links a:hover {
+.mirror-table td a:hover {
   color: var(--accent);
   border-bottom: 1px dotted var(--accent);
   transition-duration: 0.1s;
 }
 
-/* ===== Buttons row / credit ===== */
-#connectbuttoncontainer {
-  width: 175px; /* fits "ijosh.com" at the rect button's tracking */
+.mirror-table td a.mirror-name {
+  font-family: "Montserrat";
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  border-bottom: none;
+}
+.mirror-table td a.mirror-name:hover {
+  color: var(--accent);
+  border-bottom: none;
 }
 
+/* ===== Footer ===== */
 .split-credit {
-  margin-top: 22px;
+  margin-top: 26px;
+  opacity: 0.75;
+}
+.split-credit p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.split-credit p a {
+  color: var(--text-muted);
+  border-bottom: 1px dotted var(--text-muted);
+  transition-duration: 0.5s;
+}
+.split-credit p a:hover {
+  color: var(--accent);
+  border-bottom: 1px dotted var(--accent);
+  transition-duration: 0.1s;
 }

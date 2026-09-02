@@ -1,7 +1,5 @@
 +++
 title = "Mirrors"
-tagline = "Verified Software Mirrors"
-location = "Cloudflare's Global Network"
 +++
 
 These are the mirrors I run at ijosh.com. Each one syncs on a schedule,

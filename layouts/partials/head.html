@@ -73,7 +73,6 @@
 {{- $style := resources.Get "css/style.css" -}}
 {{- $mirrors := resources.Get "css/mirrors.css" -}}
 {{- $css := slice $fonts $split $style $mirrors | resources.Concat "css/bundle.css" | resources.Minify | resources.Fingerprint -}}
-<link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-600-latin.woff2" crossorigin />
 <link rel="preload" as="font" type="font/woff2" href="/fonts/graduate-400-latin.woff2" crossorigin />
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
 

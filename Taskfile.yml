@@ -1,13 +1,15 @@
-# mirrors.ijosh.com — the landing page for the mirrors run at ijosh.com, a Hugo site
-# deployed by Cloudflare Pages on push to master. The design system is not local:
-# layouts, tokens, and fonts come from the ijosh.com repo vendored as the theme
-# submodule at themes/ijosh; this repo only overrides what a mirrors index needs.
+# mirrors — the landing page for mirrors.ijosh.com, a Hugo site deployed by
+# Cloudflare Pages on push to master. The design system is not local: layouts,
+# tokens, and fonts are vendored from the ijosh.com repo into themes/ijosh by
+# `task theme:update` (pinned by themes/ijosh/THEME_COMMIT); this repo only
+# overrides what a mirrors index needs.
 
 version: "3"
 
 vars:
   GIT_DIR:
     sh: pwd
+  THEME_REPO: https://github.com/jshvn/ijosh.com
 
 tasks:
   default:
@@ -20,7 +22,7 @@ tasks:
         b=$(printf '\033[1m'); c=$(printf '\033[1;36m'); d=$(printf '\033[2m'); r=$(printf '\033[0m')
         printf '%s\n' \
           "" \
-          "${b}mirrors.ijosh.com${r}   ${d}landing page for the mirrors run at ijosh.com${r}" \
+          "${b}mirrors${r}   ${d}landing page for the mirrors run at ijosh.com${r}" \
           "" \
           "${c}build -- offline, changes nothing live${r}" \
           "  task serve                Build and serve with drafts + watch" \
@@ -28,18 +30,14 @@ tasks:
           "                            ${d}deploys happen on push to master, not from here${r}" \
           "" \
           "${c}checks -- offline, no credentials needed${r}" \
-          "  task visual:check         Fail if the build drifts from the golden baselines" \
-          "                            ${d}light + dark x desktop + mobile; CSS reasoning is not verification${r}" \
-          "  task visual:bless         Re-capture the goldens after an intentional visual change" \
-          "  task visual:vs-live       Diff the local build against live mirrors.ijosh.com" \
+          "  task check                Build, then fail if any link in data/mirrors.toml is missing from the page" \
           "" \
           "${c}theme -- the design system lives in the ijosh.com repo${r}" \
-          "  task theme:update         Pull the latest ijosh.com master into themes/ijosh" \
-          "                            ${d}run visual:check after; a recolor upstream lands here too${r}" \
+          "  task theme:update         Re-vendor ijosh.com master into themes/ijosh" \
+          "                            ${d}pins the commit in themes/ijosh/THEME_COMMIT; eyeball the page after${r}" \
           "" \
           "${c}clean${r}" \
           "  task clean                Remove generated and auxiliary files" \
-          "  task clean:deep           Also remove the visual-test virtualenv" \
           ""
 
   serve:
@@ -53,52 +51,34 @@ tasks:
     cmds:
       - hugo --minify --gc
 
+  check:
+    desc: Build, then verify every URL in data/mirrors.toml renders into the page
+    cmds:
+      - hugo --minify --gc
+      - |
+        fail=0
+        for url in $(grep -Eo 'https://[^"]+' data/mirrors.toml); do
+          grep -qF "$url" public/index.html || { echo "MISSING $url"; fail=1; }
+        done
+        [ "$fail" -eq 0 ] && echo "check: all mirror links present in public/index.html"
+        exit "$fail"
+
+  theme:update:
+    desc: Re-vendor the ijosh design system (layouts/assets/static) from ijosh.com master
+    cmds:
+      - |
+        tmp=$(mktemp -d)
+        git clone --quiet --depth 1 {{.THEME_REPO}} "$tmp"
+        rm -rf {{.GIT_DIR}}/themes/ijosh
+        mkdir -p {{.GIT_DIR}}/themes/ijosh
+        cp -R "$tmp"/layouts "$tmp"/assets "$tmp"/static {{.GIT_DIR}}/themes/ijosh/
+        git -C "$tmp" rev-parse HEAD > {{.GIT_DIR}}/themes/ijosh/THEME_COMMIT
+        rm -rf "$tmp"
+        echo "themes/ijosh now at $(cat {{.GIT_DIR}}/themes/ijosh/THEME_COMMIT)"
+
   clean:
     desc: Remove generated and auxiliary files
     cmds:
       - rm -rf {{.GIT_DIR}}/public/
       - rm -rf {{.GIT_DIR}}/resources/
-      - rm -rf {{.GIT_DIR}}/tests/visual/out/
       - rm -f {{.GIT_DIR}}/.hugo_build* {{.GIT_DIR}}/hugo_stats.json
-
-  clean:deep:
-    desc: Remove generated files plus the visual-test virtualenv (slow to rebuild)
-    deps: [clean]
-    cmds:
-      - rm -rf {{.GIT_DIR}}/.venv-visual/
-
-  theme:update:
-    desc: Update the ijosh design-system submodule to the latest master
-    cmds:
-      - git submodule update --remote themes/ijosh
-      - git -C themes/ijosh log --oneline -1
-
-  visual:setup:
-    desc: Create the visual-test virtualenv (Pillow + Playwright)
-    internal: true
-    cmds:
-      - python3 -m venv .venv-visual
-      - ./.venv-visual/bin/pip install --quiet --upgrade pip Pillow playwright
-    status:
-      - ./.venv-visual/bin/python -c "import PIL, playwright"
-
-  visual:bless:
-    desc: Capture the current build as the golden visual baseline (re-run after intended UI changes)
-    deps: [visual:setup]
-    cmds:
-      - hugo --minify --gc
-      - ./.venv-visual/bin/python scripts/visual-diff.py bless
-
-  visual:check:
-    desc: Fail if the current build drifts visually from the golden baseline
-    deps: [visual:setup]
-    cmds:
-      - hugo --minify --gc
-      - ./.venv-visual/bin/python scripts/visual-diff.py check
-
-  visual:vs-live:
-    desc: Compare the local build against the live site (mirrors.ijosh.com)
-    deps: [visual:setup]
-    cmds:
-      - hugo --minify --gc
-      - ./.venv-visual/bin/python scripts/visual-diff.py vs-live
