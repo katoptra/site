@@ -2,11 +2,9 @@
 
 [![license](https://img.shields.io/github/license/jshvn/mirrors)](LICENSE)
 
-The landing page for [mirrors.ijosh.com](https://mirrors.ijosh.com/) — the index of the
-software mirrors run at ijosh.com, in the spirit of
-[mirrors.mit.edu](https://mirrors.mit.edu/) but wearing the
-[ijosh.com](https://ijosh.com) design system. A Hugo site, deployed by Cloudflare Pages
-on every push to `master`.
+The landing page for [mirrors.ijosh.com](https://mirrors.ijosh.com/). 
+
+A Hugo site using [ijosh.com](https://github.com/jshvn/ijosh.com) design system. Deployed on Cloudflare Pages.
 
 ## How it works
 
@@ -20,10 +18,10 @@ on every push to `master`.
 ## Working on it
 
 ```sh
-git clone https://github.com/jshvn/mirrors
-task            # the menu
-task serve      # local dev server — look at light and dark, desktop and mobile
-task check      # build, verify every mirror link renders, run the JS self-check
+$ git clone https://github.com/jshvn/mirrors
+$ task            # the menu
+$ task serve      # local dev server
+$ task check      # build and verify
 ```
 
 ## Want your own?
