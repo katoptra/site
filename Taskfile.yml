@@ -76,6 +76,11 @@ tasks:
         git -C "$tmp" rev-parse HEAD > {{.GIT_DIR}}/themes/ijosh/THEME_COMMIT
         rm -rf "$tmp"
         echo "themes/ijosh now at $(cat {{.GIT_DIR}}/themes/ijosh/THEME_COMMIT)"
+        echo "-- local shadows vs the theme's copies (re-apply theme changes by hand) --"
+        for f in _headers llms.txt site.webmanifest robots.txt; do
+          [ -f {{.GIT_DIR}}/static/$f ] || continue
+          diff -u {{.GIT_DIR}}/themes/ijosh/static/$f {{.GIT_DIR}}/static/$f || true
+        done
 
   clean:
     desc: Remove generated and auxiliary files
