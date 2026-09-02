@@ -3,6 +3,7 @@ baseURL = "https://mirrors.ijosh.com/"
 locale = "en-US"
 title = "Mirrors - Verified Open-Source Software Mirrors by Josh Vaughen"
 theme = "ijosh"
+enableRobotsTXT = true
 disableKinds = ["section", "taxonomy", "RSS"]
 
 # Copyright
@@ -22,8 +23,3 @@ copyright = "&copy;2026 Josh Vaughen"
 
   # Cloudflare Web Analytics beacon token (public; omit to disable the beacon)
   # cloudflareBeaconToken = ""
-
-  # Social Links (footer)
-  [params.social]
-    github = "https://github.com/jshvn"
-    website = "https://ijosh.com"
