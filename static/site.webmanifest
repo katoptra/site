@@ -1,0 +1,12 @@
+{
+  "name": "mirrors.ijosh.com",
+  "short_name": "mirrors",
+  "description": "Fast, verified mirrors of popular open-source software, served on Cloudflare's global network.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#17191c",
+  "theme_color": "#17191c",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" }
+  ]
+}

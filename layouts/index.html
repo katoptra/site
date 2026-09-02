@@ -1,0 +1,26 @@
+{{ define "main" }}
+  <!-- Intro copy -->
+  {{ partial "bio" . }}
+
+  <!-- Mirror index -->
+  <ul class="mirror-list">
+    {{ range hugo.Data.mirrors.mirrors }}
+    <li class="mirror">
+      <div class="mirror-head">
+        <a class="mirror-name" href="{{ .url }}">{{ .name }}</a>
+        <span class="mirror-cadence">{{ .cadence }}</span>
+      </div>
+      <p class="mirror-desc">{{ .description }}</p>
+      <a class="mirror-endpoint" href="{{ .endpoint }}"><code>{{ .endpoint }}</code></a>
+      <div class="mirror-links">
+        <a href="{{ .url }}">browse the mirror</a>
+        <a rel="noopener" target="_blank" href="{{ .repo }}">sync pipeline</a>
+        <a rel="noopener" target="_blank" href="{{ .upstream.url }}">upstream: {{ .upstream.name }}</a>
+      </div>
+    </li>
+    {{ end }}
+  </ul>
+
+  <!-- Buttons -->
+  {{ partial "buttons" . }}
+{{ end }}

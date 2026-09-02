@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale | default "en-us" }}">
+
+<head>
+  {{ partial "head" . }}
+</head>
+
+<body id="fullsingle" class="page-template-page-fullsingle-split">
+
+  <div class="fs-split">
+
+    <!-- Visual: typographic wordmark panel (the theme's photo/video visuals stay off) -->
+    {{ partial "wordmark" . }}
+
+    <!-- Content Side -->
+    <main class="split-content">
+      <div class="split-content-vertically-center">
+        <!-- Intro -->
+        {{ partial "intro" . }}
+
+        <!-- Main -->
+        {{ block "main" .  }}
+          {{ partial "bio" . }}
+        {{ end }}
+
+        <!-- Footer -->
+        {{ partial "footer" . }}
+      </div>
+    </main>
+
+  </div>
+
+</body>
+</html>

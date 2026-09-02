@@ -1,0 +1,10 @@
+# mirrors.ijosh.com
+
+> Fast, verified mirrors of popular open-source software, served on
+> Cloudflare's global network and rebuilt from source by auditable pipelines.
+> Maintained by Josh Vaughen (https://ijosh.com).
+
+- CTAN mirror (hourly, full archive): https://ctan.ijosh.com/
+- TeX Live tlnet mirror (daily, for tlmgr): https://tlnet.ijosh.com/systems/texlive/tlnet/
+- Sync pipelines: https://github.com/jshvn/ctan and https://github.com/jshvn/tlnet
+- Maintainer: https://ijosh.com

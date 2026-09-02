@@ -1,0 +1,44 @@
+# Site settings
+baseURL = "https://mirrors.ijosh.com/"
+locale = "en-US"
+title = "Mirrors - Verified Open-Source Software Mirrors by Josh Vaughen"
+theme = "ijosh"
+disableKinds = ["section", "taxonomy", "RSS"]
+
+# Copyright
+copyright = "&copy;2026 Josh Vaughen"
+
+[sitemap]
+  changeFreq = 'monthly'
+  disable = false
+  filename = 'sitemap.xml'
+  priority = 0.8
+
+[params]
+
+  # Metadata for search engines and social sharing
+  author = "Josh Vaughen"
+  description = "Fast, verified mirrors of popular open-source software, served on Cloudflare's global network and rebuilt from source by auditable pipelines."
+
+  # Cloudflare Web Analytics beacon token (public; omit to disable the beacon)
+  # cloudflareBeaconToken = ""
+
+  # Social Links (footer)
+  [params.social]
+    github = "https://github.com/jshvn"
+    website = "https://ijosh.com"
+
+  # Theme params consumed by the ijosh theme's intro partial
+  [params.showlocation]
+    enable = true
+
+  [params.showemojis]
+    enable = false
+
+  # The left visual is the typographic wordmark panel (layouts/_default/baseof.html);
+  # the theme's image/video visuals stay off.
+  [params.visual]
+    [params.visual.image]
+      enable = false
+    [params.visual.video]
+      enable = false

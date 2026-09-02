@@ -1,0 +1,7 @@
+public/
+resources/
+.hugo_build.lock
+hugo_stats.json
+.venv-visual/
+tests/visual/out/
+__pycache__/

@@ -1,0 +1,10 @@
+<nav class="button-container" aria-label="Site links">
+    <div class="dark" id="connectbuttoncontainer">
+        <a class="button button--rect button--rect--dark" rel="me" aria-label="Josh Vaughen's personal site" title="ijosh.com" id="connectbutton" href="https://ijosh.com">ijosh.com</a>
+    </div>
+    <div class="dark-icons">
+        <span class="spacer"></span>
+        <a rel="me noopener" target="_blank" aria-label="GitHub (opens in new tab)" title="GitHub" class="button social-icon" href="{{ .Site.Params.social.github }}">{{ (resources.Get "icons/github.svg").Content | safeHTML }}</a>
+        <span class="spacer"></span>
+    </div>
+</nav>

@@ -1,0 +1,83 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#17191c" media="(prefers-color-scheme: dark)" />
+
+<!-- SEO -->
+<title>{{ .Site.Title }}</title>
+{{ with .Site.Params.author }}
+  <meta name="author" content="{{ . }}" />
+{{ end }}
+{{ with .Site.Params.description }}
+  <meta name="description" content="{{ . }}" />
+{{ end }}
+
+<!-- Favicons (served from the ijosh theme's static/) -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="canonical" href="{{ .Site.BaseURL }}"/>
+
+<!-- Social & Open Graph -->
+<meta property="og:site_name" content="mirrors.ijosh.com"/>
+<meta property="og:title" content="{{ .Site.Title }}" />
+{{ with .Site.Params.description }}
+  <meta property="og:description" content="{{ . }}" />
+  <meta name="twitter:description" content="{{ . }}" />
+{{ end }}
+<meta property="og:url" content="{{ .Site.BaseURL }}" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "{{ .Site.BaseURL }}#website",
+  "url": "{{ .Site.BaseURL }}",
+  "name": "mirrors.ijosh.com",
+  "description": "{{ .Site.Params.description }}",
+  "publisher": {
+    "@type": "Person",
+    "@id": "https://ijosh.com/#person",
+    "name": "Josh Vaughen",
+    "url": "https://ijosh.com"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "{{ .Site.BaseURL }}#mirrors",
+  "name": "Software mirrors at ijosh.com",
+  "itemListElement": [
+    {{- range $i, $m := hugo.Data.mirrors.mirrors }}
+    {{- if $i }},{{ end }}
+    {
+      "@type": "ListItem",
+      "position": {{ add $i 1 }},
+      "name": "{{ $m.name }}",
+      "url": "{{ $m.url }}"
+    }
+    {{- end }}
+  ]
+}
+</script>
+
+<!-- Styles: the ijosh theme bundle (self-hosted fonts + design tokens) plus the mirrors layer,
+     concatenated, minified, fingerprinted (SRI + immutable caching) -->
+{{- $fonts := resources.Get "css/fonts.css" -}}
+{{- $split := resources.Get "css/split.css" -}}
+{{- $style := resources.Get "css/style.css" -}}
+{{- $mirrors := resources.Get "css/mirrors.css" -}}
+{{- $css := slice $fonts $split $style $mirrors | resources.Concat "css/bundle.css" | resources.Minify | resources.Fingerprint -}}
+<link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-600-latin.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/graduate-400-latin.woff2" crossorigin />
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
+
+<!-- Cloudflare Web Analytics -->
+{{ with .Site.Params.cloudflareBeaconToken }}
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{ . }}"}'></script>
+{{ end }}

@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://mirrors.ijosh.com/sitemap.xml
