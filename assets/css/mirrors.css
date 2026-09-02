@@ -2,80 +2,35 @@
    Loads after the theme's fonts/split/style in the bundle, so ties in
    specificity resolve here. Everything colors through the theme tokens. */
 
-:root {
-  --panel: #1c1c1c;                          /* matches --btn-bg, the site's charcoal */
-  --panel-fg: #f4f7fb;
-  --panel-muted: rgba(244, 247, 251, 0.30);  /* wordmark reflection */
+/* ===== Page: one centered column ===== */
+.page-single {
+  box-sizing: border-box;
+  max-width: 920px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 64px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --panel: #20252b;                        /* a step above --bg so the split still reads */
-    --panel-muted: rgba(244, 247, 251, 0.24);
+@media (max-width: 800px) {
+  .page-single {
+    min-height: 0;
+    padding: 40px 20px;
   }
 }
 
-/* ===== Left panel: typographic wordmark, doubling as the page h1 ===== */
-.split-wordmark {
-  background-color: var(--panel);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.wordmark {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ===== Masthead ===== */
+.masthead {
   font-family: "Graduate";
   font-weight: 400;
   text-transform: uppercase;
-  font-size: clamp(2rem, 4.2vw, 3.6rem);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   line-height: 1;
   letter-spacing: 0.42em;
-  color: var(--panel-fg);
-}
-
-/* letter-spacing trails the last glyph; matching left padding recenters the word */
-.wordmark-text,
-.wordmark-reflection {
-  padding-left: 0.42em;
-}
-
-.wordmark-reflection {
-  transform: scaleY(-1);
-  margin-top: 0.22em;
-  color: var(--panel-muted);
-  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 75%);
-  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 75%);
-  user-select: none;
-}
-
-/* The photo panel's 80vh is for a portrait; the wordmark needs a band, not a wall */
-@media (max-width: 800px) {
-  .fs-split .split-wordmark {
-    height: 32vh;
-    min-height: 200px;
-  }
-}
-
-/* ===== Content column ===== */
-/* The theme's 640px column suits a bio; a five-column table needs more room.
-   width:100% (not content-sized) keeps the table's overflow inside
-   .mirror-table-wrap instead of widening the whole block past the viewport. */
-.fs-split .split-content .split-content-vertically-center {
-  max-width: 720px;
-  width: 100%;
-  min-width: 0;
-}
-
-/* Stacked layout: the content is short, so centering it in a forced full
-   viewport height just manufactures empty space above it */
-@media (max-width: 800px) {
-  .fs-split .split-content {
-    min-height: 0;
-  }
+  color: var(--text);
+  margin: 0 0 20px 0;
 }
 
 /* ===== Intro copy ===== */
@@ -145,6 +100,28 @@
 .mirror-table td a.mirror-name:hover {
   color: var(--accent);
   border-bottom: none;
+}
+
+/* ===== Live status (filled by status.js; theme tokens only, no badge art) ===== */
+.mirror-status[data-state]::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 7px;
+  background-color: var(--text-muted);
+}
+.mirror-status[data-state="down"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.mirror-status[data-state="down"]::before {
+  background-color: var(--accent);
+}
+
+.mirror-synced {
+  color: var(--text-muted);
 }
 
 /* ===== Footer ===== */

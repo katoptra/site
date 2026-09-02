@@ -7,25 +7,16 @@
 
 <body id="fullsingle" class="page-template-page-fullsingle-split">
 
-  <div class="fs-split">
+  <!-- Single centered column; the theme's split layout is not used here -->
+  <main class="page-single">
+    <h1 class="masthead">Mirrors</h1>
 
-    <!-- Visual: typographic wordmark panel, doubling as the page heading -->
-    {{ partial "wordmark" . }}
+    {{ block "main" .  }}
+      {{ partial "bio" . }}
+    {{ end }}
 
-    <!-- Content Side -->
-    <main class="split-content">
-      <div class="split-content-vertically-center">
-        <!-- Main -->
-        {{ block "main" .  }}
-          {{ partial "bio" . }}
-        {{ end }}
-
-        <!-- Footer -->
-        {{ partial "footer" . }}
-      </div>
-    </main>
-
-  </div>
+    {{ partial "footer" . }}
+  </main>
 
 </body>
 </html>

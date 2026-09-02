@@ -30,7 +30,7 @@ tasks:
           "                            ${d}deploys happen on push to master, not from here${r}" \
           "" \
           "${c}checks -- offline, no credentials needed${r}" \
-          "  task check                Build, then fail if any link in data/mirrors.toml is missing from the page" \
+          "  task check                Build, fail if any data/mirrors.toml link is missing from the page, run the JS self-check" \
           "" \
           "${c}theme -- the design system lives in the ijosh.com repo${r}" \
           "  task theme:update         Re-vendor ijosh.com master into themes/ijosh" \
@@ -52,9 +52,10 @@ tasks:
       - hugo --minify --gc
 
   check:
-    desc: Build, then verify every URL in data/mirrors.toml renders into the page
+    desc: Build, verify every URL in data/mirrors.toml renders into the page, run the JS self-check
     cmds:
       - hugo --minify --gc
+      - node assets/js/status.check.mjs
       - |
         fail=0
         for url in $(grep -Eo 'https://[^"]+' data/mirrors.toml); do

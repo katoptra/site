@@ -10,8 +10,11 @@ The [ijosh.com repo](https://github.com/jshvn/ijosh.com) is the design system.
 Its `layouts/`, `assets/`, and `static/` are **vendored** into `themes/ijosh/`
 (a plain committed directory — not a submodule, not a Hugo Module) and consumed
 as a Hugo theme. All tokens (`--bg`, `--text`, `--accent`, ...), fonts, icons,
-the CSS reset/theme (`fonts.css`, `split.css`, `style.css`), favicons, and
-`static/_headers` (CSP) come from the theme.
+the CSS reset/theme (`fonts.css`, `split.css`, `style.css`), and favicons come
+from the theme. The one deliberate fork: `static/_headers` here shadows the
+theme's copy, because the live status cells need extra CSP `connect-src`
+entries (healthchecks.io, api.github.com) — a theme `_headers` change must be
+re-applied to the local copy.
 
 - **Never edit anything under `themes/ijosh/`** — it is overwritten wholesale by
   `task theme:update`, which re-vendors ijosh.com master and pins the source
@@ -27,13 +30,21 @@ the CSS reset/theme (`fonts.css`, `split.css`, `style.css`), favicons, and
   Per mirror: display name, mirror URL, refresh cadence, pipeline repo, public
   healthchecks.io badge URL, upstream name + URL.
 - `content/_index.md` — the intro paragraph.
-- `layouts/_default/baseof.html` — swaps the theme's photo panel for the
-  typographic wordmark partial (`layouts/partials/wordmark.html`), which is the
-  page's `<h1>`.
+- `layouts/_default/baseof.html` — replaces the theme's split layout with a
+  single centered column (`.page-single`) headed by the `Mirrors` masthead
+  `<h1>`.
 - `layouts/index.html` — the mirror table.
 - `layouts/partials/head.html` — mirrors-specific SEO (WebSite + ItemList
-  JSON-LD; the Person schema stays on ijosh.com) and the CSS bundle, which is the
-  theme's three files **plus** `assets/css/mirrors.css`.
+  JSON-LD; the Person schema stays on ijosh.com), the CSS bundle (the theme's
+  three files **plus** `assets/css/mirrors.css`), and the `assets/js/status.js`
+  module.
+- `assets/js/status.js` — fills the Status and Last synced cells at page load
+  from healthchecks.io's JSON badges and the GitHub Actions API, so both are
+  live at the moment the visitor opens the page. On fetch failure a cell keeps
+  its static fallback. Self-check: `node assets/js/status.check.mjs` (part of
+  `task check`).
+- `static/_headers` — the theme's headers plus the two CSP `connect-src`
+  entries the live cells need.
 - `layouts/partials/footer.html` — open-source note, attribution, contact links.
 
 ## Verify visual changes by rendering
@@ -47,9 +58,10 @@ in light and dark, desktop and ~390px mobile. The page is designed to fit a
 
 ## Gotchas
 
-- No third-party runtime assets (theme invariant). That is why the Status column
-  links to the healthchecks.io badge instead of embedding it — an `<img>` would
-  need CSP `img-src` changes and an external request.
+- No third-party artwork (theme invariant). The Status cell fetches the
+  healthchecks.io **JSON** badge and renders the state with theme tokens rather
+  than embedding the green/red badge SVG; the cell's `href` still points at the
+  badge SVG, which `task check` greps for.
 - The Cloudflare beacon fires only if `params.cloudflareBeaconToken` is set in
   `hugo.toml` (currently unset).
 - `mirror.ijosh.com` → `mirrors.ijosh.com` is a zone-level Cloudflare redirect

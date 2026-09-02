@@ -11,6 +11,7 @@
           <th scope="col">Refreshed</th>
           <th scope="col">Repo</th>
           <th scope="col">Status</th>
+          <th scope="col">Last synced</th>
           <th scope="col">Upstream</th>
         </tr>
       </thead>
@@ -20,7 +21,9 @@
           <td><a class="mirror-name" href="{{ .url }}">{{ .name }}</a></td>
           <td class="mirror-cadence">{{ .cadence }}</td>
           <td><a rel="noopener" target="_blank" href="{{ .repo }}">{{ replace .repo "https://github.com/" "" }}</a></td>
-          <td><a rel="noopener" target="_blank" href="{{ .healthcheck }}">healthcheck</a></td>
+          <td><a class="mirror-status" rel="noopener" target="_blank" href="{{ .healthcheck }}"
+                 data-status-json="{{ replace .healthcheck ".svg" ".json" }}">healthcheck</a></td>
+          <td class="mirror-synced" data-runs-api="https://api.github.com/repos/{{ replace .repo "https://github.com/" "" }}/actions/runs?per_page=1&status=success">&mdash;</td>
           <td><a rel="noopener" target="_blank" href="{{ .upstream.url }}">{{ .upstream.name }}</a></td>
         </tr>
         {{ end }}
