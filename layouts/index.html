@@ -21,8 +21,8 @@
           <td><a class="mirror-name" href="{{ .url }}">{{ .name }}</a></td>
           <td class="mirror-cadence">{{ .cadence }}</td>
           <td><a rel="noopener" target="_blank" href="{{ .repo }}">{{ replace .repo "https://github.com/" "" }}</a></td>
-          <td><a class="mirror-status" rel="noopener" target="_blank" href="{{ .healthcheck }}"
-                 data-status-json="{{ replace .healthcheck ".svg" ".json" }}">
+          <td><a class="mirror-status" rel="noopener" target="_blank" href="{{ .repo }}/actions"
+                 data-badge="{{ .healthcheck }}">
             <span class="status-fallback">healthcheck</span>
             <span class="status-icon status-icon-up">{{ (resources.Get "icons/check.svg").Content | safeHTML }}</span>
             <span class="status-icon status-icon-late">{{ (resources.Get "icons/exclamation.svg").Content | safeHTML }}</span>

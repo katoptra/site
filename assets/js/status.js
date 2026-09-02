@@ -22,8 +22,8 @@ const json = (url) =>
   fetch(url).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))));
 
 if (typeof document !== "undefined") {
-  for (const a of document.querySelectorAll("[data-status-json]")) {
-    json(a.dataset.statusJson)
+  for (const a of document.querySelectorAll("[data-badge]")) {
+    json(a.dataset.badge.replace(/\.svg$/, ".json"))
       .then((badge) => {
         const state = stateFor(badge);
         a.dataset.state = state;
