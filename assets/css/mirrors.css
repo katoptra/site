@@ -107,13 +107,11 @@
    AA against both grounds. */
 :root {
   --status-up: #1a7f37;
-  --status-late: #9a6700;
   --status-down: #cf222e;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --status-up: #3fb950;
-    --status-late: #d29922;
     --status-down: #f85149;
   }
 }
@@ -125,10 +123,6 @@
 .mirror-status[data-state="up"],
 .mirror-status[data-state="up"]:hover {
   color: var(--status-up);
-}
-.mirror-status[data-state="late"],
-.mirror-status[data-state="late"]:hover {
-  color: var(--status-late);
 }
 .mirror-status[data-state="down"],
 .mirror-status[data-state="down"]:hover {
@@ -147,7 +141,6 @@
   display: none;
 }
 .mirror-status[data-state="up"] .status-icon-up,
-.mirror-status[data-state="late"] .status-icon-late,
 .mirror-status[data-state="down"] .status-icon-down {
   display: inline-block;
 }

@@ -13,9 +13,7 @@ export function relTime(iso, now = Date.now()) {
 }
 
 export function stateFor(badge) {
-  if (badge.down > 0 || badge.status === "down") return "down";
-  if (badge.grace > 0 || badge.status === "late") return "late";
-  return "up";
+  return badge.down > 0 || badge.status === "down" ? "down" : "up";
 }
 
 const json = (url) =>
