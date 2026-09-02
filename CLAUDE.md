@@ -38,12 +38,12 @@ the CSS reset/theme (`fonts.css`, `split.css`, `style.css`), favicons, and
 
 ## Verify visual changes by rendering
 
-There is no golden-baseline harness here (deliberate — the visual contract lives
-in the ijosh.com repo). Verify layout/CSS changes by rendering, not by reasoning:
-`task serve` and look, in light and dark, desktop and ~390px mobile. The page is
-designed to fit a 1440x900 viewport without internal scroll — check that when
-adding mirrors. `task check` is the functional gate: it builds and fails if any
-URL in `data/mirrors.toml` is missing from the rendered page.
+Verify layout/CSS changes by rendering, not by reasoning: `task serve` and look,
+in light and dark, desktop and ~390px mobile. The page is designed to fit a
+1440x900 viewport without internal scroll, and the mirror table scrolls inside
+`.mirror-table-wrap` without widening the page — check both when adding mirrors.
+`task check` is the functional gate: it builds and fails if any URL in
+`data/mirrors.toml` is missing from the rendered page.
 
 ## Gotchas
 
