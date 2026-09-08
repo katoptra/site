@@ -1,6 +1,6 @@
 # mirrors
 
-[![license](https://img.shields.io/github/license/jshvn/mirrors)](LICENSE)
+[![license](https://img.shields.io/github/license/katoptra/site)](LICENSE)
 
 The landing page for [mirrors.ijosh.com](https://mirrors.ijosh.com/).
 
@@ -18,7 +18,7 @@ A Hugo site using [ijosh.com](https://github.com/jshvn/ijosh.com) design system.
 ## Working on it
 
 ```sh
-$ git clone https://github.com/jshvn/mirrors
+$ git clone https://github.com/katoptra/site
 $ task            # the menu
 $ task serve      # local dev server
 $ task check      # build and verify
@@ -26,7 +26,7 @@ $ task check      # build and verify
 
 ## Want your own?
 
-Fork [this repo](https://github.com/jshvn/mirrors), swap the entries in
+Fork [this repo](https://github.com/katoptra/site), swap the entries in
 `data/mirrors.toml` for your mirrors, point `baseURL` in `hugo.toml` at your
 domain, and rewrite the identity-bearing files (`static/llms.txt`,
 `static/site.webmanifest`, the footer). It builds to a static site — host it

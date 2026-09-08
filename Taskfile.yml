@@ -77,7 +77,7 @@ tasks:
         rm -rf "$tmp"
         echo "themes/ijosh now at $(cat {{.GIT_DIR}}/themes/ijosh/THEME_COMMIT)"
         echo "-- local shadows vs the theme's copies (re-apply theme changes by hand) --"
-        for f in _headers llms.txt site.webmanifest robots.txt; do
+        for f in _headers llms.txt site.webmanifest robots.txt favicon.svg favicon.ico; do
           [ -f {{.GIT_DIR}}/static/$f ] || continue
           diff -u {{.GIT_DIR}}/themes/ijosh/static/$f {{.GIT_DIR}}/static/$f || true
         done

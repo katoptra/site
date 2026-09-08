@@ -10,12 +10,14 @@ The [ijosh.com repo](https://github.com/jshvn/ijosh.com) is the design system.
 Its `layouts/`, `assets/`, and `static/` are **vendored** into `themes/ijosh/`
 (a plain committed directory — not a submodule, not a Hugo Module) and consumed
 as a Hugo theme. All tokens (`--bg`, `--text`, `--accent`, ...), fonts, icons,
-the CSS reset/theme (`fonts.css`, `split.css`, `style.css`), and favicons come
-from the theme. Deliberate forks: `static/_headers`, `static/llms.txt`, and
-`static/site.webmanifest` here shadow the theme's copies — `_headers` because
-the live status cells need extra CSP `connect-src` entries (healthchecks.io,
-api.github.com), the other two because the theme's versions carry ijosh.com's
-bio and branding — and `layouts/robots.txt` replaces the theme's static
+and the CSS reset/theme (`fonts.css`, `split.css`, `style.css`) come from the
+theme. Deliberate forks: `static/_headers`, `static/llms.txt`,
+`static/site.webmanifest`, `static/favicon.svg` and `static/favicon.ico` here
+shadow the theme's copies — `_headers` because the live status cells need extra
+CSP `connect-src` entries (healthchecks.io, api.github.com), the manifest and
+llms.txt because the theme's versions carry ijosh.com's bio and branding, the
+favicons because this site is katoptra's K drawn in the theme's own stroke
+style, not ijosh.com's J — and `layouts/robots.txt` replaces the theme's static
 robots.txt with a template. A theme change to any of these must be re-applied
 locally; `task theme:update` prints the diff of each shadowed pair after
 re-vendoring.
