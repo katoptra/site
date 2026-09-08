@@ -56,6 +56,11 @@ re-vendoring.
 - `layouts/partials/footer.html` — open-source note and the MIT/attribution line.
 - `layouts/robots.txt` — templated (`enableRobotsTXT`); the sitemap URL derives
   from `baseURL`, and the rendered file wins over the theme's static copy.
+- `brand/github-avatar.png` — the GitHub org avatar: the favicon K on a
+  full-bleed square, because GitHub clips avatars to its own radius and the
+  favicon's rounded corners would show as a halo inside it. Not served by Hugo.
+  Regenerate with `uv run --with pillow brand/render_github_avatar.py` whenever
+  `static/favicon.svg` changes.
 
 ## Verify visual changes by rendering
 
