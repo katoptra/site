@@ -11,7 +11,7 @@
 name = "CTAN"
 url = "https://ctan.ijosh.com/"
 cadence = "hourly"
-repo = "https://github.com/jshvn/ctan"
+repo = "https://github.com/katoptra/ctan"
 healthcheck = "https://healthchecks.io/b/2/f4ad55cc-4b2d-4cce-b133-aba5381d9e71.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org" }
 
