@@ -19,6 +19,6 @@ upstream = { name = "ctan.org", url = "https://ctan.org" }
 name = "TeX Live (tlnet)"
 url = "https://tlnet.ijosh.com/"
 cadence = "daily"
-repo = "https://github.com/jshvn/tlnet"
+repo = "https://github.com/katoptra/tlnet"
 healthcheck = "https://healthchecks.io/b/2/f34567b9-d513-41a5-93d8-56fb69d25257.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org/tex-archive/systems/texlive/tlnet" }
