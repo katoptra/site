@@ -34,16 +34,25 @@ re-vendoring.
 - `data/mirrors.toml` — the mirror index. **Adding/retiring a mirror is an edit
   here**, nothing else; the homepage table and the ItemList JSON-LD render from it.
   Per mirror: display name, mirror URL, refresh cadence, pipeline repo, public
-  healthchecks.io badge URL, upstream name + URL.
-- `content/_index.md` — the intro paragraph.
+  healthchecks.io badge URL, upstream name + URL, one sentence of `usage`, and
+  the `command` a reader pastes. Keep `command` copied from the mirror repo's
+  own README rather than paraphrased, and write real punctuation (—) in
+  `usage`: data fields bypass the markdown typographer.
+- `content/_index.md` — the intro paragraph, and the page's only prose that is
+  not per-mirror. It carries the service framing; the mirror names live in
+  `data/mirrors.toml` and reach the page through the table and the `<h2>`s, so
+  nothing here or in `hugo.toml` names a mirror.
 - `layouts/_default/baseof.html` — replaces the theme's split layout with a
   single centered column (`.page-single`) headed by the `Mirrors` masthead
   `<h1>`.
-- `layouts/index.html` — the mirror table.
+- `layouts/index.html` — the mirror table, and one `<section class="mirror-usage">`
+  per mirror below it. Every `<td>` carries its column name in `data-label`;
+  under 640px `mirrors.css` hides the header row and reads those back, so the
+  table becomes a stack of cards rather than something to scroll sideways.
 - `layouts/partials/head.html` — mirrors-specific SEO (WebSite + ItemList
-  JSON-LD; the Person schema stays on ijosh.com), the CSS bundle (the theme's
-  three files **plus** `assets/css/mirrors.css`), and the `assets/js/status.js`
-  module.
+  JSON-LD; the Person schema stays on ijosh.com), the Open Graph and Twitter
+  card tags, the CSS bundle (the theme's three files **plus**
+  `assets/css/mirrors.css`), and the `assets/js/status.js` module.
 - `assets/js/status.js` — fills the Status and Last synced cells at page load
   from healthchecks.io's JSON badges and the GitHub Actions API, so both are
   live at the moment the visitor opens the page. On fetch failure a cell keeps
@@ -61,15 +70,25 @@ re-vendoring.
   favicon's rounded corners would show as a halo inside it. Not served by Hugo.
   Regenerate with `uv run --with pillow brand/render_github_avatar.py` whenever
   `static/favicon.svg` changes.
+- `brand/render_og_image.py` → `static/images/og.png` — the 1200x630 unfurl card,
+  the same favicon geometry over a wordmark set in the theme's own Graduate and
+  Montserrat (Pillow needs sfnt, so the script strips the woff2 compression in
+  memory). Served at `/images/og.png`, which picks up the `/images/*` cache rule
+  in `static/_headers`. Regenerate with
+  `uv run --with pillow --with 'fonttools[woff]' brand/render_og_image.py --wordmark`
+  whenever `static/favicon.svg` changes; `--wordmark` is the variant that ships,
+  and dropping it renders the mark alone.
 
 ## Verify visual changes by rendering
 
 Verify layout/CSS changes by rendering, not by reasoning: `task serve` and look,
 in light and dark, desktop and ~390px mobile. The page is designed to fit a
-1440x900 viewport without internal scroll, and the mirror table scrolls inside
-`.mirror-table-wrap` without widening the page — check both when adding mirrors.
+1440x900 viewport without internal scroll, and at 390px nothing may overflow
+horizontally — check both when adding a mirror, since each one adds a table row,
+a card, and a usage section.
 `task check` is the functional gate: it builds and fails if any URL in
-`data/mirrors.toml` is missing from the rendered page.
+`data/mirrors.toml` is missing from the rendered page, if the Open Graph tags
+are absent, or if `public/images/og.png` is missing or empty.
 
 ## Gotchas
 
