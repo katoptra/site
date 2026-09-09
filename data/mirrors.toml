@@ -1,7 +1,9 @@
 # One entry per actively maintained mirror; the homepage table renders this list
 # in order. Fields: name (display), url (mirror root), cadence (refresh schedule),
 # repo (sync pipeline), healthcheck (public healthchecks.io badge for the sync),
-# upstream {name, url}.
+# upstream {name, url}, usage (one sentence, how a reader points a tool at it),
+# command (the line they paste -- keep it copied from the mirror repo's README,
+# not paraphrased).
 #
 # healthcheck must be the single-check two-state badge URL (/b/2/<uuid>.svg).
 # The page maps any status other than "down" to a green check, so a three-state
@@ -14,6 +16,8 @@ cadence = "hourly"
 repo = "https://github.com/katoptra/ctan"
 healthcheck = "https://healthchecks.io/b/2/f4ad55cc-4b2d-4cce-b133-aba5381d9e71.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org" }
+usage = "Every CTAN path is served at the root, so the host drops in anywhere a CTAN mirror URL is accepted. TeX Live and TinyTeX both reach it through tlmgr."
+command = "tlmgr option repository https://ctan.katoptra.org/systems/texlive/tlnet/"
 
 [[mirrors]]
 name = "TeX Live (tlnet)"
@@ -22,3 +26,5 @@ cadence = "daily"
 repo = "https://github.com/katoptra/tlnet"
 healthcheck = "https://healthchecks.io/b/2/f34567b9-d513-41a5-93d8-56fb69d25257.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org/tex-archive/systems/texlive/tlnet" }
+usage = "The tlnet subtree alone — the directory tlmgr installs and updates from — with every platform, doc and source. It tracks the current TeX Live release and moves to the next when upstream does."
+command = "tlmgr option repository https://tlnet.katoptra.org/systems/texlive/tlnet/"

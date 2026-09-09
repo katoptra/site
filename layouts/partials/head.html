@@ -18,9 +18,12 @@
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="canonical" href="{{ .Site.BaseURL }}"/>
 
-<!-- Social & Open Graph -->
+<!-- Social & Open Graph. The card image is generated from the favicon geometry by
+     brand/render_og_image.py; width/height let a scraper lay the card out before
+     it has fetched the file. -->
 <meta property="og:site_name" content="katoptra.org"/>
 <meta property="og:title" content="{{ .Site.Title }}" />
+<meta name="twitter:title" content="{{ .Site.Title }}" />
 {{ with .Site.Params.description }}
   <meta property="og:description" content="{{ . }}" />
   <meta name="twitter:description" content="{{ . }}" />
@@ -28,6 +31,14 @@
 <meta property="og:url" content="{{ .Site.BaseURL }}" />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image" />
+{{ $og := "images/og.png" | absURL }}
+<meta property="og:image" content="{{ $og }}" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="katoptra.org - verified open-source software mirrors" />
+<meta name="twitter:image" content="{{ $og }}" />
 
 <script type="application/ld+json">
 {
@@ -58,8 +69,16 @@
     {
       "@type": "ListItem",
       "position": {{ add $i 1 }},
-      "name": "{{ $m.name }}",
-      "url": "{{ $m.url }}"
+      "url": "{{ $m.url }}",
+      "item": {
+        "@type": "WebSite",
+        "@id": "{{ $m.url }}",
+        "url": "{{ $m.url }}",
+        "name": "{{ $m.name }} mirror",
+        "description": "{{ $m.usage }}",
+        "isBasedOn": "{{ $m.upstream.url }}",
+        "isAccessibleForFree": true
+      }
     }
     {{- end }}
   ]
