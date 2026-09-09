@@ -2,7 +2,8 @@
   <!-- Intro copy -->
   {{ partial "bio" . }}
 
-  <!-- Mirror index -->
+  <!-- Mirror index. Every td carries its column name in data-label; under 640px
+       the table becomes a stack of cards and CSS reads the label back in. -->
   <div class="mirror-table-wrap">
     <table class="mirror-table">
       <thead>
@@ -19,19 +20,29 @@
         {{ range hugo.Data.mirrors.mirrors }}
         <tr>
           <td><a class="mirror-name" href="{{ .url }}">{{ .name }}</a></td>
-          <td class="mirror-cadence">{{ .cadence }}</td>
-          <td><a rel="noopener" target="_blank" href="{{ .repo }}">{{ replace .repo "https://github.com/" "" }}</a></td>
-          <td><a class="mirror-status" rel="noopener" target="_blank" href="{{ .repo }}/actions"
+          <td class="mirror-cadence" data-label="Refreshed">{{ .cadence }}</td>
+          <td data-label="Repo"><a rel="noopener" target="_blank" href="{{ .repo }}">{{ replace .repo "https://github.com/" "" }}</a></td>
+          <td data-label="Status"><a class="mirror-status" rel="noopener" target="_blank" href="{{ .repo }}/actions"
                  data-badge="{{ .healthcheck }}">
             <span class="status-fallback">status</span>
             <span class="status-icon status-icon-up">{{ (resources.Get "icons/check.svg").Content | safeHTML }}</span>
             <span class="status-icon status-icon-down">{{ (resources.Get "icons/xmark.svg").Content | safeHTML }}</span>
           </a></td>
-          <td class="mirror-synced" data-runs-api="https://api.github.com/repos/{{ replace .repo "https://github.com/" "" }}/actions/runs?per_page=1&status=success">&mdash;</td>
-          <td><a rel="noopener" target="_blank" href="{{ .upstream.url }}">{{ .upstream.name }}</a></td>
+          <td class="mirror-synced" data-label="Last synced" data-runs-api="https://api.github.com/repos/{{ replace .repo "https://github.com/" "" }}/actions/runs?per_page=1&status=success">&mdash;</td>
+          <td data-label="Upstream"><a rel="noopener" target="_blank" href="{{ .upstream.url }}">{{ .upstream.name }}</a></td>
         </tr>
         {{ end }}
       </tbody>
     </table>
   </div>
+
+  <!-- Per-mirror usage: the paste-able line, and the one heading per mirror that
+       carries its name as prose rather than as a table cell. -->
+  {{ range hugo.Data.mirrors.mirrors }}
+  <section class="mirror-usage">
+    <h2>Using the {{ .name }} mirror</h2>
+    <p>{{ .usage }}</p>
+    <pre><code>{{ .command }}</code></pre>
+  </section>
+  {{ end }}
 {{ end }}

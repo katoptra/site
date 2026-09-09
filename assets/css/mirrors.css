@@ -169,3 +169,111 @@
   border-bottom: 1px dotted var(--accent);
   transition-duration: 0.1s;
 }
+
+/* ===== Per-mirror usage =====
+   One section per mirror, rendered from data/mirrors.toml. The heading is the
+   only place a mirror's name appears as prose rather than as a table cell. */
+.mirror-usage {
+  margin-top: 24px;
+}
+
+.mirror-usage h2 {
+  font-family: "Graduate";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin: 0 0 10px 0;
+}
+
+.mirror-usage p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-body);
+  margin: 0 0 10px 0;
+}
+
+/* Hanging indent: the command is one long token, so on a narrow screen it wraps
+   mid-URL -- without this the continuation reads as a second command. */
+.mirror-usage pre {
+  margin: 0;
+  padding: 11px 14px 11px calc(14px + 1.4em);
+  text-indent: -1.4em;
+  background: var(--pill-bg);
+  border-radius: 6px;
+}
+
+/* System mono stack: a command wants monospace and the theme self-hosts no
+   mono face -- this costs no download. */
+.mirror-usage code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ===== Mobile: the table becomes a stack of cards =====
+   Six columns cannot fit a phone, and the wrapper's overflow-x turned that into
+   a sideways scroll that hid half the row. Each row becomes a card instead: the
+   header row goes to assistive tech only, and every cell prints its own column
+   name from data-label. Above this width the real table is unchanged. */
+@media (max-width: 640px) {
+  .mirror-table-wrap {
+    overflow-x: visible;
+  }
+
+  .mirror-table,
+  .mirror-table tbody,
+  .mirror-table tr,
+  .mirror-table td {
+    display: block;
+  }
+
+  .mirror-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .mirror-table tr {
+    border-top: 1px solid var(--pill-bg);
+    padding: 15px 0 17px 0;
+  }
+
+  .mirror-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    border-top: none;
+    padding: 3px 0;
+    white-space: normal;
+  }
+
+  .mirror-table td[data-label]::before {
+    content: attr(data-label);
+    flex: none;
+    font-family: "Graduate";
+    font-size: 11px;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+  }
+
+  /* The name is the card's heading, not a label/value pair */
+  .mirror-table td:first-child {
+    display: block;
+    padding: 0 0 9px 0;
+  }
+  .mirror-table td a.mirror-name {
+    font-size: 15px;
+  }
+}
