@@ -9,7 +9,7 @@
 
 [[mirrors]]
 name = "CTAN"
-url = "https://ctan.ijosh.com/"
+url = "https://ctan.katoptra.org/"
 cadence = "hourly"
 repo = "https://github.com/katoptra/ctan"
 healthcheck = "https://healthchecks.io/b/2/f4ad55cc-4b2d-4cce-b133-aba5381d9e71.svg"
@@ -17,7 +17,7 @@ upstream = { name = "ctan.org", url = "https://ctan.org" }
 
 [[mirrors]]
 name = "TeX Live (tlnet)"
-url = "https://tlnet.ijosh.com/"
+url = "https://tlnet.katoptra.org/"
 cadence = "daily"
 repo = "https://github.com/katoptra/tlnet"
 healthcheck = "https://healthchecks.io/b/2/f34567b9-d513-41a5-93d8-56fb69d25257.svg"

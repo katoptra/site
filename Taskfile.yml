@@ -1,4 +1,4 @@
-# mirrors — the landing page for mirrors.ijosh.com, a Hugo site deployed by
+# mirrors — the landing page for katoptra.org, a Hugo site deployed by
 # Cloudflare Pages on push to master. The design system is not local: layouts,
 # tokens, and fonts are vendored from the ijosh.com repo into themes/ijosh by
 # `task theme:update` (pinned by themes/ijosh/THEME_COMMIT); this repo only
@@ -22,7 +22,7 @@ tasks:
         b=$(printf '\033[1m'); c=$(printf '\033[1;36m'); d=$(printf '\033[2m'); r=$(printf '\033[0m')
         printf '%s\n' \
           "" \
-          "${b}mirrors${r}   ${d}landing page for the mirrors run at ijosh.com${r}" \
+          "${b}mirrors${r}   ${d}landing page for the mirrors run at katoptra.org${r}" \
           "" \
           "${c}build -- offline, changes nothing live${r}" \
           "  task serve                Build and serve with drafts + watch" \

@@ -19,7 +19,7 @@
 <link rel="canonical" href="{{ .Site.BaseURL }}"/>
 
 <!-- Social & Open Graph -->
-<meta property="og:site_name" content="mirrors.ijosh.com"/>
+<meta property="og:site_name" content="katoptra.org"/>
 <meta property="og:title" content="{{ .Site.Title }}" />
 {{ with .Site.Params.description }}
   <meta property="og:description" content="{{ . }}" />
@@ -35,7 +35,7 @@
   "@type": "WebSite",
   "@id": "{{ .Site.BaseURL }}#website",
   "url": "{{ .Site.BaseURL }}",
-  "name": "mirrors.ijosh.com",
+  "name": "katoptra.org",
   "description": "{{ .Site.Params.description }}",
   "publisher": {
     "@type": "Person",
@@ -51,7 +51,7 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "@id": "{{ .Site.BaseURL }}#mirrors",
-  "name": "Software mirrors at ijosh.com",
+  "name": "Software mirrors at katoptra.org",
   "itemListElement": [
     {{- range $i, $m := hugo.Data.mirrors.mirrors }}
     {{- if $i }},{{ end }}

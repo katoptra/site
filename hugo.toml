@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "https://mirrors.ijosh.com/"
+baseURL = "https://katoptra.org/"
 locale = "en-US"
 title = "Mirrors - Verified Open-Source Software Mirrors by Josh Vaughen"
 theme = "ijosh"
