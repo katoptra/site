@@ -1,4 +1,4 @@
-# mirrors.ijosh.com
+# katoptra.org
 
 > Fast, verified mirrors of popular open-source software, synced on a
 > schedule by open pipelines and served on Cloudflare's global network.
@@ -6,9 +6,9 @@
 
 ## Mirrors
 
-- CTAN: https://ctan.ijosh.com/ (upstream: https://ctan.org)
-- TeX Live (tlnet): https://tlnet.ijosh.com/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet)
+- CTAN: https://ctan.katoptra.org/ (upstream: https://ctan.org)
+- TeX Live (tlnet): https://tlnet.katoptra.org/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet)
 
 ## Source
 
-- Sync pipelines and site: https://github.com/jshvn
+- Sync pipelines and site: https://github.com/katoptra

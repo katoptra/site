@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/github/license/katoptra/site)](LICENSE)
 
-The landing page for [mirrors.ijosh.com](https://mirrors.ijosh.com/).
+The landing page for [katoptra.org](https://katoptra.org/).
 
 A Hugo site using [ijosh.com](https://github.com/jshvn/ijosh.com) design system. Deployed on Cloudflare Pages.
 

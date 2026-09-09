@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-Landing page for **mirrors.ijosh.com** — a Hugo static site indexing the software
-mirrors run at ijosh.com (ctan.ijosh.com, tlnet.ijosh.com, ...). Deployed on
+Landing page for **katoptra.org** — a Hugo static site indexing the software
+mirrors run at katoptra.org (ctan.katoptra.org, tlnet.katoptra.org, ...). Deployed on
 Cloudflare Pages on push to `master`; develop on any other branch.
 
 ## The one invariant: the design system is not here
@@ -82,7 +82,7 @@ in light and dark, desktop and ~390px mobile. The page is designed to fit a
   `task check` greps for.
 - The Cloudflare beacon fires only if `params.cloudflareBeaconToken` is set in
   `hugo.toml` (currently unset).
-- `mirror.ijosh.com` → `mirrors.ijosh.com` is a zone-level Cloudflare redirect
-  rule, configured in the dashboard, not in this repo.
+- `mirrors.ijosh.com` and `mirror.ijosh.com` → `katoptra.org` are zone-level
+  Cloudflare redirect rules on the ijosh.com zone, not in this repo.
 - Cloudflare Pages settings (dashboard, not repo): build `hugo --minify --gc`,
   output `public`, `HUGO_VERSION=0.165.0` (extended).
