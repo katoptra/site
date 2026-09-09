@@ -1,6 +1,6 @@
 {{ define "main" }}
-  <!-- Intro copy -->
-  {{ partial "bio" . }}
+  <!-- Intro line -->
+  <div class="split-bio"><p>{{ .Params.tagline | markdownify }}</p></div>
 
   <!-- Mirror index. Every td carries its column name in data-label; under 640px
        the table becomes a stack of cards and CSS reads the label back in. -->

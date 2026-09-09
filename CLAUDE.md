@@ -38,11 +38,12 @@ re-vendoring.
   which reaches the page only as that mirror's description in the ItemList
   JSON-LD. Write real punctuation (—) in `usage`: data fields bypass the
   markdown typographer.
-- `content/_index.md` — the intro, and the page's only prose. It carries the
-  service framing; the mirror names live in `data/mirrors.toml` and reach the
-  page through the table, so nothing here or in `hugo.toml` names a mirror.
+- `content/_index.md` — the one-line `tagline` param rendered above the table,
+  the page's only prose outside the footer. It carries the service framing;
+  the mirror names live in `data/mirrors.toml` and reach the page through the
+  table, so nothing here or in `hugo.toml` names a mirror.
 - `layouts/_default/baseof.html` — replaces the theme's split layout with a
-  single centered column (`.page-single`) headed by the `Mirrors` masthead
+  single centered column (`.page-single`) headed by the `Katoptra` masthead
   `<h1>`.
 - `layouts/index.html` — the mirror table. Every `<td>` carries its column name
   in `data-label`; under 640px `mirrors.css` hides the header row and reads those
@@ -61,7 +62,8 @@ re-vendoring.
   entries the live cells need.
 - `static/llms.txt` and `static/site.webmanifest` — this site's crawler and
   install surface (the theme's copies describe ijosh.com).
-- `layouts/partials/footer.html` — open-source note and the MIT/attribution line.
+- `layouts/partials/footer.html` — how the mirrors are synced and served, the
+  open-source note, and the MIT/attribution line.
 - `layouts/robots.txt` — templated (`enableRobotsTXT`); the sitemap URL derives
   from `baseURL`, and the rendered file wins over the theme's static copy.
 - `brand/github-avatar.png` — the GitHub org avatar: the favicon K on a

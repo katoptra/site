@@ -38,21 +38,6 @@
   padding: 0 0 8px 0;
 }
 
-/* The theme's paragraph rule (body.page-template-page-fullsingle-split p, in
-   split.css) names p alone, so a list in the intro keeps .split-bio's own 21px
-   Lora in the muted grey and outsizes the prose it belongs to. Give lists what
-   paragraphs get -- only the properties that actually differ. Re-check against
-   that rule after `task theme:update`. */
-.split-bio ul,
-.split-bio ol,
-.split-bio li {
-  font-family: "PT Serif";
-  font-size: 16px;
-  letter-spacing: 0.01em;
-  line-height: 1.4em;
-  color: var(--text-body);
-}
-
 /* ===== Mirror table ===== */
 .mirror-table-wrap {
   overflow-x: auto;
