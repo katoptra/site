@@ -35,14 +35,4 @@
       </tbody>
     </table>
   </div>
-
-  <!-- Per-mirror usage: the paste-able line, and the one heading per mirror that
-       carries its name as prose rather than as a table cell. -->
-  {{ range hugo.Data.mirrors.mirrors }}
-  <section class="mirror-usage">
-    <h2>Using the {{ .name }} mirror</h2>
-    <p>{{ .usage }}</p>
-    <pre><code>{{ .command }}</code></pre>
-  </section>
-  {{ end }}
 {{ end }}

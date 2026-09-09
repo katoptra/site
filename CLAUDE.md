@@ -34,21 +34,20 @@ re-vendoring.
 - `data/mirrors.toml` — the mirror index. **Adding/retiring a mirror is an edit
   here**, nothing else; the homepage table and the ItemList JSON-LD render from it.
   Per mirror: display name, mirror URL, refresh cadence, pipeline repo, public
-  healthchecks.io badge URL, upstream name + URL, one sentence of `usage`, and
-  the `command` a reader pastes. Keep `command` copied from the mirror repo's
-  own README rather than paraphrased, and write real punctuation (—) in
-  `usage`: data fields bypass the markdown typographer.
-- `content/_index.md` — the intro paragraph, and the page's only prose that is
-  not per-mirror. It carries the service framing; the mirror names live in
-  `data/mirrors.toml` and reach the page through the table and the `<h2>`s, so
-  nothing here or in `hugo.toml` names a mirror.
+  healthchecks.io badge URL, upstream name + URL, and one sentence of `usage`,
+  which reaches the page only as that mirror's description in the ItemList
+  JSON-LD. Write real punctuation (—) in `usage`: data fields bypass the
+  markdown typographer.
+- `content/_index.md` — the intro, and the page's only prose. It carries the
+  service framing; the mirror names live in `data/mirrors.toml` and reach the
+  page through the table, so nothing here or in `hugo.toml` names a mirror.
 - `layouts/_default/baseof.html` — replaces the theme's split layout with a
   single centered column (`.page-single`) headed by the `Mirrors` masthead
   `<h1>`.
-- `layouts/index.html` — the mirror table, and one `<section class="mirror-usage">`
-  per mirror below it. Every `<td>` carries its column name in `data-label`;
-  under 640px `mirrors.css` hides the header row and reads those back, so the
-  table becomes a stack of cards rather than something to scroll sideways.
+- `layouts/index.html` — the mirror table. Every `<td>` carries its column name
+  in `data-label`; under 640px `mirrors.css` hides the header row and reads those
+  back, so the table becomes a stack of cards rather than something to scroll
+  sideways.
 - `layouts/partials/head.html` — mirrors-specific SEO (WebSite + ItemList
   JSON-LD; the Person schema stays on ijosh.com), the Open Graph and Twitter
   card tags, the CSS bundle (the theme's three files **plus**
@@ -84,8 +83,7 @@ re-vendoring.
 Verify layout/CSS changes by rendering, not by reasoning: `task serve` and look,
 in light and dark, desktop and ~390px mobile. The page is designed to fit a
 1440x900 viewport without internal scroll, and at 390px nothing may overflow
-horizontally — check both when adding a mirror, since each one adds a table row,
-a card, and a usage section.
+horizontally — check both when adding a mirror.
 `task check` is the functional gate: it builds and fails if any URL in
 `data/mirrors.toml` is missing from the rendered page, if the Open Graph tags
 are absent, or if `public/images/og.png` is missing or empty.
