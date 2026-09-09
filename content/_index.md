@@ -1,8 +1,7 @@
 +++
-title = "Mirrors"
+title = "Katoptra"
+tagline = "[Katoptra](https://katoptra.org) is Greek for mirrors, and bytes here are closer than they appear."
 +++
-
-[Katoptra](https://katoptra.org) is Greek for mirrors, and bytes here are closer than they appear.
 
 These are public mirrors of open-source software archives, kept honest by:
 
