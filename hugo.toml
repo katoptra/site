@@ -1,7 +1,7 @@
 # Site settings
 baseURL = "https://katoptra.org/"
 locale = "en-US"
-title = "Mirrors - Verified Open-Source Software Mirrors by Josh Vaughen"
+title = "Verified Open-Source Software Mirrors - katoptra.org"
 theme = "ijosh"
 enableRobotsTXT = true
 disableKinds = ["section", "taxonomy", "RSS"]

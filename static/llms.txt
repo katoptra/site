@@ -1,13 +1,21 @@
 # katoptra.org
 
-> Fast, verified mirrors of popular open-source software, synced on a
-> schedule by open pipelines and served on Cloudflare's global network.
-> Run by Josh Vaughen (https://ijosh.com).
+> Public mirrors of open-source software archives. Each mirror syncs from its
+> upstream on a fixed schedule through an open pipeline, is verified against the
+> upstream's own signatures and checksums, and is served on Cloudflare's global
+> network. Paths and bytes are unchanged from upstream, so a mirror here drops in
+> wherever that archive's URL is accepted. Run by Josh Vaughen (https://ijosh.com).
 
 ## Mirrors
 
-- CTAN: https://ctan.katoptra.org/ (upstream: https://ctan.org)
-- TeX Live (tlnet): https://tlnet.katoptra.org/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet)
+- CTAN: https://ctan.katoptra.org/ (upstream: https://ctan.org, refreshed hourly)
+  Every CTAN path at the root. Point tlmgr at it:
+  `tlmgr option repository https://ctan.katoptra.org/systems/texlive/tlnet/`
+- TeX Live (tlnet): https://tlnet.katoptra.org/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet, refreshed daily)
+  The tlnet subtree alone, every platform. Point tlmgr at it:
+  `tlmgr option repository https://tlnet.katoptra.org/systems/texlive/tlnet/`
+
+To leave a mirror: `tlmgr option repository ctan`.
 
 ## Source
 

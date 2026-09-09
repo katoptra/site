@@ -38,6 +38,21 @@
   padding: 0 0 8px 0;
 }
 
+/* The theme's paragraph rule (body.page-template-page-fullsingle-split p, in
+   split.css) names p alone, so a list in the intro keeps .split-bio's own 21px
+   Lora in the muted grey and outsizes the prose it belongs to. Give lists what
+   paragraphs get -- only the properties that actually differ. Re-check against
+   that rule after `task theme:update`. */
+.split-bio ul,
+.split-bio ol,
+.split-bio li {
+  font-family: "PT Serif";
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  line-height: 1.4em;
+  color: var(--text-body);
+}
+
 /* ===== Mirror table ===== */
 .mirror-table-wrap {
   overflow-x: auto;
@@ -168,4 +183,66 @@
   color: var(--accent);
   border-bottom: 1px dotted var(--accent);
   transition-duration: 0.1s;
+}
+
+/* ===== Mobile: the table becomes a stack of cards =====
+   Six columns cannot fit a phone, and the wrapper's overflow-x turned that into
+   a sideways scroll that hid half the row. Each row becomes a card instead: the
+   header row goes to assistive tech only, and every cell prints its own column
+   name from data-label. Above this width the real table is unchanged. */
+@media (max-width: 640px) {
+  .mirror-table-wrap {
+    overflow-x: visible;
+  }
+
+  .mirror-table,
+  .mirror-table tbody,
+  .mirror-table tr,
+  .mirror-table td {
+    display: block;
+  }
+
+  .mirror-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .mirror-table tr {
+    border-top: 1px solid var(--pill-bg);
+    padding: 15px 0 17px 0;
+  }
+
+  .mirror-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    border-top: none;
+    padding: 3px 0;
+    white-space: normal;
+  }
+
+  .mirror-table td[data-label]::before {
+    content: attr(data-label);
+    flex: none;
+    font-family: "Graduate";
+    font-size: 11px;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+  }
+
+  /* The name is the card's heading, not a label/value pair */
+  .mirror-table td:first-child {
+    display: block;
+    padding: 0 0 9px 0;
+  }
+  .mirror-table td a.mirror-name {
+    font-size: 15px;
+  }
 }
