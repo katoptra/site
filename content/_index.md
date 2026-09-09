@@ -2,7 +2,9 @@
 title = "Mirrors"
 +++
 
-[Katoptra](https://katoptra.org) is Greek for mirrors, and bytes here are closer than they appear: public mirrors of open-source software archives, kept honest by:
+[Katoptra](https://katoptra.org) is Greek for mirrors, and bytes here are closer than they appear.
+
+These are public mirrors of open-source software archives, kept honest by:
 
 - an open-source sync pipeline running on GitHub Actions
 - Cloudflare's global network doing the serving
