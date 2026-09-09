@@ -52,7 +52,7 @@ tasks:
       - hugo --minify --gc
 
   check:
-    desc: Build, verify every URL in data/mirrors.toml renders into the page, run the JS self-check
+    desc: Build, verify every URL in data/mirrors.toml renders into the page, check the social card, run the JS self-check
     cmds:
       - hugo --minify --gc
       - node assets/js/status.check.mjs
@@ -62,7 +62,48 @@ tasks:
           grep -qF "$url" public/index.html || { echo "MISSING $url"; fail=1; }
         done
         [ "$fail" -eq 0 ] && echo "check: all mirror links present in public/index.html"
+        # The unfurl card is a generated file plus its tags -- either half alone
+        # ships a broken preview, so assert both.
+        for tag in 'og:image' 'twitter:card' 'og:image:width'; do
+          grep -qF "$tag" public/index.html || { echo "MISSING meta $tag"; fail=1; }
+        done
+        if [ -s public/images/og.png ]; then
+          echo "check: social card present ($(wc -c < public/images/og.png | tr -d ' ') bytes)"
+        else
+          echo "MISSING public/images/og.png -- run brand/render_og_image.py"; fail=1
+        fi
         exit "$fail"
+      # The JSON-LD is hand-templated inside a script block, where Go's
+      # contextual escaping is easy to fight and lose to; parse it rather than
+      # eyeball it.
+      - |
+        node <<'JS'
+        const fs = require("node:fs");
+        const html = fs.readFileSync("public/index.html", "utf8");
+        const blocks = [...html.matchAll(
+          /<script type=["']?application\/ld\+json["']?>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+        if (blocks.length !== 2) {
+          console.error(`ld+json: expected 2 blocks (WebSite, ItemList), found ${blocks.length}`);
+          process.exit(1);
+        }
+        const types = blocks.map((b) => {
+          let d;
+          try {
+            d = JSON.parse(b);
+          } catch (e) {
+            console.error(`ld+json: block does not parse -- ${e.message}`);
+            process.exit(1);
+          }
+          return d["@type"];
+        });
+        for (const want of ["WebSite", "ItemList"]) {
+          if (!types.includes(want)) {
+            console.error(`ld+json: no ${want} block`);
+            process.exit(1);
+          }
+        }
+        console.log(`check: JSON-LD parses (${types.join(", ")})`);
+        JS
 
   theme:update:
     desc: Re-vendor the ijosh design system (layouts/assets/static) from ijosh.com master
