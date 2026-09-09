@@ -1,5 +1,5 @@
 {{ define "main" }}
-  <!-- One-line intro; the rest of the prose follows the table -->
+  <!-- Intro line -->
   <div class="split-bio"><p>{{ .Params.tagline | markdownify }}</p></div>
 
   <!-- Mirror index. Every td carries its column name in data-label; under 640px
@@ -35,7 +35,4 @@
       </tbody>
     </table>
   </div>
-
-  <!-- How the mirrors are kept honest -->
-  {{ partial "bio" . }}
 {{ end }}
