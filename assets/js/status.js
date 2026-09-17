@@ -1,6 +1,7 @@
-/* Live table cells, filled at page load: health status from healthchecks.io's
-   JSON badge, and time since the last sync run from the GitHub Actions API.
-   On any fetch failure a cell keeps its static fallback (the badge link / a dash). */
+/* Live parts of each mirror tile, filled at page load: health status from
+   healthchecks.io's JSON badge, and time since the last sync run from the GitHub
+   Actions API. On any fetch failure the status pill keeps its "Status" fallback
+   and the synced time stays empty, which hides it. */
 
 export function relTime(iso, now = Date.now()) {
   const m = Math.round((now - Date.parse(iso)) / 60000);
@@ -24,7 +25,7 @@ if (typeof document !== "undefined") {
     json(a.dataset.badge.replace(/\.svg$/, ".json"))
       .then((badge) => {
         const state = stateFor(badge);
-        const name = a.closest("tr")?.querySelector(".mirror-name")?.textContent.trim();
+        const name = a.closest(".mirror")?.querySelector(".mirror-name")?.textContent.trim();
         a.dataset.state = state;
         a.title = state;
         a.setAttribute("aria-label", name ? `${name} sync: ${state}` : state);
@@ -32,13 +33,13 @@ if (typeof document !== "undefined") {
       .catch(() => {});
   }
 
-  for (const td of document.querySelectorAll("[data-runs-api]")) {
-    json(td.dataset.runsApi)
+  for (const el of document.querySelectorAll("[data-runs-api]")) {
+    json(el.dataset.runsApi)
       .then((d) => {
         const run = d.workflow_runs && d.workflow_runs[0];
         if (run) {
-          td.textContent = relTime(run.run_started_at);
-          td.title = run.run_started_at;
+          el.textContent = "synced " + relTime(run.run_started_at);
+          el.title = run.run_started_at;
         }
       })
       .catch(() => {});

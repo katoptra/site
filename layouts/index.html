@@ -1,10 +1,25 @@
 {{ define "main" }}
-  <!-- Intro line -->
-  <div class="split-bio"><p>{{ .Params.tagline | markdownify }}</p></div>
+  {{- $public := hugo.Data.mirrors.mirrors }}
+  {{- $private := hugo.Data.mirrors.private }}
+  <!-- Public / Private switch: two radios drawn as one pill control, and the
+       checked one hides the other group's panel. Pure CSS, so it works without
+       JavaScript and never paints both panels while the page loads. -->
+  <div class="groups">
+    <input class="group-radio" type="radio" name="group" id="group-public" checked>
+    <input class="group-radio" type="radio" name="group" id="group-private">
+    <div class="group-switch">
+      <label for="group-public">Public <span class="group-count">{{ len $public }}</span></label>
+      <label for="group-private">Private <span class="group-count">{{ len $private }}</span></label>
+    </div>
 
-  <h2 class="mirror-heading">Public mirrors</h2>
-  {{ partial "mirror-table.html" hugo.Data.mirrors.mirrors }}
+    <section class="group group-public" aria-labelledby="group-public-title">
+      <h2 class="visually-hidden" id="group-public-title">Public mirrors</h2>
+      {{- range $public }}{{ partial "mirror.html" . }}{{ end }}
+    </section>
 
-  <h2 class="mirror-heading">Private mirrors</h2>
-  {{ partial "mirror-table.html" hugo.Data.mirrors.private }}
+    <section class="group group-private" aria-labelledby="group-private-title">
+      <h2 class="visually-hidden" id="group-private-title">Private mirrors</h2>
+      {{- range $private }}{{ partial "mirror.html" . }}{{ end }}
+    </section>
+  </div>
 {{ end }}

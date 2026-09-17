@@ -1,0 +1,28 @@
+{{- /* One mirror's tile, given an entry from data/mirrors.toml. A mirror with no url
+       has nothing to browse: its name is plain text and the tile names where it
+       copies to instead of a hostname. status.js fills the status pill and the
+       synced time; until it does, the pill reads "Status" and the time is absent. */ -}}
+{{- $repo := strings.TrimPrefix "https://github.com/" .repo }}
+<article class="mirror">
+  <div class="mirror-head">
+    <h3 class="mirror-name">{{ if .url }}<a href="{{ .url }}">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}</h3>
+    <a class="pill mirror-status" rel="noopener" target="_blank" href="{{ .repo }}/actions" data-badge="{{ .healthcheck }}">
+      <span class="status-fallback">Status</span>
+      <span class="status-up"><span class="dot"></span>Up</span>
+      <span class="status-down"><span class="dot"></span>Down</span>
+    </a>
+  </div>
+  <p class="mirror-facts">
+    {{- if .url }}
+    <a href="{{ .url }}">{{ strings.TrimSuffix "/" (strings.TrimPrefix "https://" .url) }}</a>
+    {{- else }}
+    <span>Into {{ .into }}</span>
+    {{- end }}
+    <span>{{ strings.FirstUpper .cadence }}</span>
+    <span class="mirror-synced" data-runs-api="https://api.github.com/repos/{{ $repo }}/actions/runs?per_page=1&status=success"></span>
+  </p>
+  <p class="mirror-facts mirror-source">
+    <span>From <a rel="noopener" target="_blank" href="{{ .upstream.url }}">{{ .upstream.name }}</a></span>
+    <a rel="noopener" target="_blank" href="{{ .repo }}">{{ $repo }}</a>
+  </p>
+</article>

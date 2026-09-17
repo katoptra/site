@@ -3,8 +3,9 @@
 [![license](https://img.shields.io/github/license/katoptra/site)](LICENSE)
 
 The landing page for [katoptra.org](https://katoptra.org/): a Hugo site that lists every
-mirror with its upstream, cadence, repository, live status and last sync time: the public
-ones, and the private ones that copy the owner's own accounts.
+mirror with its upstream, cadence, repository, live status and last sync time, as tiles
+under a Public / Private switch: the public mirrors, and the private ones that copy the
+owner's own accounts.
 Deployed on Cloudflare Pages on push to `master`.
 
 ## How it works
@@ -13,11 +14,11 @@ Deployed on Cloudflare Pages on push to `master`.
    `task theme:update` into `themes/ijosh/`, pinned in `themes/ijosh/THEME_COMMIT`. Nothing
    under `themes/` is edited here; a change to the design system goes there first.
 2. **Data** is one entry per mirror in [`data/mirrors.toml`](data/mirrors.toml). The
-   homepage tables and the ItemList JSON-LD render from it, so adding or retiring a mirror
+   homepage tiles and the ItemList JSON-LD render from it, so adding or retiring a mirror
    is an edit there and nothing else.
 3. **Liveness** is [`assets/js/status.js`](assets/js/status.js): at page load it reads each
-   mirror's healthchecks.io JSON badge and its GitHub Actions run list, fills the Status
-   and Last synced cells, and on a fetch failure leaves a cell's static fallback. Every
+   mirror's healthchecks.io JSON badge and its GitHub Actions run list, fills each tile's
+   status pill and synced time, and on a fetch failure leaves the pill reading "Status". Every
    mirror's pipeline pings a healthcheck at the end of each run, which is what the badge
    reports; [katoptra/lib](https://github.com/katoptra/lib#monitoring) has the rest.
 4. **Deploy** is `hugo --minify --gc` on push to `master`, by Cloudflare Pages.

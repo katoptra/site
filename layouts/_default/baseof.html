@@ -9,7 +9,16 @@
 
   <!-- Single centered column; the theme's split layout is not used here -->
   <main class="page-single">
-    <h1 class="masthead">Katoptra</h1>
+    <!-- Masthead: the favicon's K, inlined so its tile follows the theme, beside
+         the wordmark and the tagline -->
+    <header class="masthead">
+      <svg class="masthead-mark" viewBox="0 0 100 100" aria-hidden="true">
+        <rect width="100" height="100" rx="22"/>
+        <path d="M34 28 V76 M66 28 L36 54 L66 76" fill="none" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1 class="masthead-name">Katoptra</h1>
+      {{ with .Params.tagline }}<p class="tagline">{{ . | markdownify }}</p>{{ end }}
+    </header>
 
     {{ block "main" .  }}
       {{ partial "bio" . }}
