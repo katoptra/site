@@ -3,7 +3,8 @@
 [![license](https://img.shields.io/github/license/katoptra/site)](LICENSE)
 
 The landing page for [katoptra.org](https://katoptra.org/): a Hugo site that lists every
-public mirror with its upstream, cadence, repository, live status and last sync time.
+mirror with its upstream, cadence, repository, live status and last sync time: the public
+ones, and the private ones that copy the owner's own accounts.
 Deployed on Cloudflare Pages on push to `master`.
 
 ## How it works
@@ -12,7 +13,7 @@ Deployed on Cloudflare Pages on push to `master`.
    `task theme:update` into `themes/ijosh/`, pinned in `themes/ijosh/THEME_COMMIT`. Nothing
    under `themes/` is edited here; a change to the design system goes there first.
 2. **Data** is one entry per mirror in [`data/mirrors.toml`](data/mirrors.toml). The
-   homepage table and the ItemList JSON-LD render from it, so adding or retiring a mirror
+   homepage tables and the ItemList JSON-LD render from it, so adding or retiring a mirror
    is an edit there and nothing else.
 3. **Liveness** is [`assets/js/status.js`](assets/js/status.js): at page load it reads each
    mirror's healthchecks.io JSON badge and its GitHub Actions run list, fills the Status

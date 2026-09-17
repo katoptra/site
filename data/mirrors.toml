@@ -25,3 +25,21 @@ repo = "https://github.com/katoptra/tlnet"
 healthcheck = "https://healthchecks.io/b/2/f34567b9-d513-41a5-93d8-56fb69d25257.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org/tex-archive/systems/texlive/tlnet" }
 usage = "The tlnet subtree alone — the directory tlmgr installs and updates from — with every platform, doc and source. It tracks the current TeX Live release and moves to the next when upstream does."
+
+# Private mirrors copy the owner's own accounts into Proton Drive, so they have no
+# url: the table shows the name as plain text, and they stay out of the JSON-LD and
+# llms.txt's list of mirrors to use. The fields are the ones above, less usage.
+
+[[private]]
+name = "Dropbox"
+cadence = "nightly"
+repo = "https://github.com/katoptra/dropbox"
+healthcheck = "https://healthchecks.io/b/2/7ab971f5-d3bc-4bfe-9a63-72103114ae28.svg"
+upstream = { name = "dropbox.com", url = "https://www.dropbox.com" }
+
+[[private]]
+name = "GitHub"
+cadence = "nightly"
+repo = "https://github.com/katoptra/github"
+healthcheck = "https://healthchecks.io/b/2/875451ff-376b-4fb7-b7c1-40278e873faf.svg"
+upstream = { name = "github.com", url = "https://github.com" }

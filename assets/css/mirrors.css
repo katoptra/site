@@ -38,6 +38,22 @@
   padding: 0 0 8px 0;
 }
 
+/* ===== Section headings: the table header's type, one step up ===== */
+.mirror-heading {
+  font-family: "Graduate";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text);
+  margin: 28px 0 10px 0;
+}
+
+.mirror-heading + .split-bio p {
+  margin-bottom: 6px;
+}
+
 /* ===== Mirror table ===== */
 .mirror-table-wrap {
   overflow-x: auto;
@@ -48,6 +64,16 @@
   width: 100%;
   border-collapse: collapse;
 }
+
+/* Shared column widths, so the public and private tables line up column for
+   column. Auto layout keeps them a preference: a column too narrow for its
+   content grows rather than overlapping, and the tables drift apart only then. */
+.mirror-table th:nth-child(1) { width: 24%; }
+.mirror-table th:nth-child(2) { width: 13%; }
+.mirror-table th:nth-child(3) { width: 20%; }
+.mirror-table th:nth-child(4) { width: 11%; }
+.mirror-table th:nth-child(5) { width: 17%; }
+.mirror-table th:nth-child(6) { width: 15%; }
 
 .mirror-table th {
   font-family: "Graduate";
@@ -88,7 +114,7 @@
   transition-duration: 0.1s;
 }
 
-.mirror-table td a.mirror-name {
+.mirror-table td .mirror-name {
   font-family: "Montserrat";
   font-weight: 600;
   text-transform: uppercase;
@@ -227,7 +253,7 @@
     display: block;
     padding: 0 0 9px 0;
   }
-  .mirror-table td a.mirror-name {
+  .mirror-table td .mirror-name {
     font-size: 15px;
   }
 }

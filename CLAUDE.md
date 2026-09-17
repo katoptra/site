@@ -32,20 +32,24 @@ re-vendoring.
 ## What this repo owns
 
 - `data/mirrors.toml` — the mirror index. **Adding/retiring a mirror is an edit
-  here**, nothing else; the homepage table and the ItemList JSON-LD render from it.
+  here**, nothing else; the homepage tables and the ItemList JSON-LD render from it.
+  `[[mirrors]]` are the public ones; `[[private]]` copy the owner's own accounts,
+  have no `url` or `usage`, render in the second table, and stay out of the JSON-LD.
   Per mirror: display name, mirror URL, refresh cadence, pipeline repo, public
   healthchecks.io badge URL, upstream name + URL, and one sentence of `usage`,
   which reaches the page only as that mirror's description in the ItemList
   JSON-LD. Write real punctuation (—) in `usage`: data fields bypass the
   markdown typographer.
-- `content/_index.md` — the one-line `tagline` param rendered above the table,
-  the page's only prose outside the footer. It carries the service framing;
+- `content/_index.md` — the one-line `tagline` param rendered above the tables and
+  the `private` param under the Private mirrors heading, the page's only prose
+  outside the footer. It carries the service framing;
   the mirror names live in `data/mirrors.toml` and reach the page through the
   table, so nothing here or in `hugo.toml` names a mirror.
 - `layouts/_default/baseof.html` — replaces the theme's split layout with a
   single centered column (`.page-single`) headed by the `Katoptra` masthead
   `<h1>`.
-- `layouts/index.html` — the mirror table. Every `<td>` carries its column name
+- `layouts/index.html` — the two sections, each a heading over
+  `layouts/partials/mirror-table.html`. Every `<td>` carries its column name
   in `data-label`; under 640px `mirrors.css` hides the header row and reads those
   back, so the table becomes a stack of cards rather than something to scroll
   sideways.

@@ -17,6 +17,13 @@
 
 To leave a mirror: `tlmgr option repository ctan`.
 
+## Private mirrors
+
+Nightly copies of the owner's own Dropbox and GitHub accounts into Proton Drive, with
+nothing public to fetch. Their pipelines are open source and can be forked to mirror
+your own accounts: https://github.com/katoptra/dropbox and
+https://github.com/katoptra/github
+
 ## Source
 
 - Sync pipelines and site: https://github.com/katoptra
