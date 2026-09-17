@@ -12,15 +12,17 @@
       <span class="badge-up">{{ (resources.Get "icons/check.svg").Content | safeHTML }}</span>
       <span class="badge-down">{{ (resources.Get "icons/xmark.svg").Content | safeHTML }}</span>
     </span>
+    {{- if .url }}
+    <a class="mirror-title" href="{{ .url }}">
+      <span class="mirror-name">{{ .name }}</span>
+      <span class="mirror-host">{{ strings.TrimSuffix "/" (strings.TrimPrefix "https://" .url) }}</span>
+    </a>
+    {{- else }}
     <div class="mirror-title">
-      {{- if .url }}
-      <a class="mirror-name" href="{{ .url }}">{{ .name }}</a>
-      <a class="mirror-host" href="{{ .url }}">{{ strings.TrimSuffix "/" (strings.TrimPrefix "https://" .url) }}</a>
-      {{- else }}
       <span class="mirror-name">{{ .name }}</span>
       <span class="mirror-host">Into {{ .into }}</span>
-      {{- end }}
     </div>
+    {{- end }}
     <a class="mirror-age" rel="noopener" target="_blank" href="{{ .repo }}/actions/workflows/sync.yml"
        aria-label="{{ .name }} sync runs"
        data-runs-api="https://api.github.com/repos/{{ $repo }}/actions/workflows/sync.yml/runs?per_page=1&status=success">
