@@ -1,38 +1,25 @@
 {{ define "main" }}
-  <!-- Intro line -->
-  <div class="split-bio"><p>{{ .Params.tagline | markdownify }}</p></div>
+  {{- $public := hugo.Data.mirrors.mirrors }}
+  {{- $private := hugo.Data.mirrors.private }}
+  <!-- Public / Private switch: two radios drawn as one pill control, and the
+       checked one hides the other group's panel. Pure CSS, so it works without
+       JavaScript and never paints both panels while the page loads. -->
+  <div class="groups">
+    <input class="group-radio" type="radio" name="group" id="group-public" checked>
+    <input class="group-radio" type="radio" name="group" id="group-private">
+    <div class="group-switch">
+      <label for="group-public">Public <span class="group-count">{{ len $public }}</span></label>
+      <label for="group-private">Private <span class="group-count">{{ len $private }}</span></label>
+    </div>
 
-  <!-- Mirror index. Every td carries its column name in data-label; under 640px
-       the table becomes a stack of cards and CSS reads the label back in. -->
-  <div class="mirror-table-wrap">
-    <table class="mirror-table">
-      <thead>
-        <tr>
-          <th scope="col">Mirror</th>
-          <th scope="col">Refreshed</th>
-          <th scope="col">Repo</th>
-          <th scope="col">Status</th>
-          <th scope="col">Last synced</th>
-          <th scope="col">Upstream</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{ range hugo.Data.mirrors.mirrors }}
-        <tr>
-          <td><a class="mirror-name" href="{{ .url }}">{{ .name }}</a></td>
-          <td class="mirror-cadence" data-label="Refreshed">{{ .cadence }}</td>
-          <td data-label="Repo"><a rel="noopener" target="_blank" href="{{ .repo }}">{{ replace .repo "https://github.com/" "" }}</a></td>
-          <td data-label="Status"><a class="mirror-status" rel="noopener" target="_blank" href="{{ .repo }}/actions"
-                 data-badge="{{ .healthcheck }}">
-            <span class="status-fallback">status</span>
-            <span class="status-icon status-icon-up">{{ (resources.Get "icons/check.svg").Content | safeHTML }}</span>
-            <span class="status-icon status-icon-down">{{ (resources.Get "icons/xmark.svg").Content | safeHTML }}</span>
-          </a></td>
-          <td class="mirror-synced" data-label="Last synced" data-runs-api="https://api.github.com/repos/{{ replace .repo "https://github.com/" "" }}/actions/runs?per_page=1&status=success">&mdash;</td>
-          <td data-label="Upstream"><a rel="noopener" target="_blank" href="{{ .upstream.url }}">{{ .upstream.name }}</a></td>
-        </tr>
-        {{ end }}
-      </tbody>
-    </table>
+    <section class="group group-public" aria-labelledby="group-public-title">
+      <h2 class="visually-hidden" id="group-public-title">Public mirrors</h2>
+      {{- range $public }}{{ partial "mirror.html" . }}{{ end }}
+    </section>
+
+    <section class="group group-private" aria-labelledby="group-private-title">
+      <h2 class="visually-hidden" id="group-private-title">Private mirrors</h2>
+      {{- range $private }}{{ partial "mirror.html" . }}{{ end }}
+    </section>
   </div>
 {{ end }}

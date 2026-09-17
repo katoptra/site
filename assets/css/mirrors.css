@@ -1,6 +1,26 @@
 /* ===== Mirrors layer =====
    Loads after the theme's fonts/split/style in the bundle, so ties in
-   specificity resolve here. Everything colors through the theme tokens. */
+   specificity resolve here. Everything colors through the theme tokens; the
+   shapes (16px tiles on --pill-bg, 999px pills, 8px gaps) are ijosh.com's. */
+
+/* ===== Tokens the theme does not carry =====
+   Status is the only semantic color on the page, AA against both grounds. The
+   mark's tile is the favicon's charcoal on light; on dark it becomes a pill
+   tint, since the charcoal is the page itself. */
+:root {
+  --status-up: #1a7f37;
+  --status-down: #cf222e;
+  --mark-tile: #17191c;
+  --mark-stroke: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --status-up: #3fb950;
+    --status-down: #f85149;
+    --mark-tile: rgba(255, 255, 255, 0.1);
+    --mark-stroke: #f4f7fb;
+  }
+}
 
 /* ===== Page: one centered column ===== */
 .page-single {
@@ -12,6 +32,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 28px;
 }
 
 @media (max-width: 800px) {
@@ -21,213 +42,310 @@
   }
 }
 
-/* ===== Masthead ===== */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ===== Masthead: mark beside the wordmark and tagline ===== */
 .masthead {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px 20px;
+}
+
+.masthead-mark {
+  grid-row: span 2;
+  width: 64px;
+  height: 64px;
+}
+.masthead-mark rect {
+  fill: var(--mark-tile);
+}
+.masthead-mark path {
+  stroke: var(--mark-stroke);
+}
+
+.masthead-name {
+  align-self: end;
   font-family: "Graduate";
   font-weight: 400;
   text-transform: uppercase;
-  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-size: clamp(1.5rem, 2.6vw, 1.9rem);
   line-height: 1;
-  letter-spacing: 0.42em;
+  letter-spacing: 0.34em;
   color: var(--text);
-  margin: 0 0 20px 0;
+  margin: 0;
 }
 
-/* ===== Intro copy ===== */
-.split-bio {
-  padding: 0 0 8px 0;
-}
-
-/* ===== Mirror table ===== */
-.mirror-table-wrap {
-  overflow-x: auto;
-  margin: 8px 0 6px 0;
-}
-
-.mirror-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.mirror-table th {
-  font-family: "Graduate";
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--text-muted);
-  text-align: left;
-  white-space: nowrap;
-  padding: 6px 16px 12px 0;
-}
-
-.mirror-table td {
-  font-size: 14px;
-  line-height: 1.4;
-  letter-spacing: 0;
+/* .page-single raises these paragraph rules over the theme's
+   body.page-template-page-fullsingle-split p, which sets PT Serif on every p */
+.page-single .tagline {
+  align-self: start;
+  font-family: "Lora";
+  font-size: 16px;
+  line-height: 1.55;
   color: var(--text-body);
-  white-space: nowrap;
-  border-top: 1px solid var(--pill-bg);
-  padding: 13px 16px 13px 0;
+  margin: 0;
 }
 
-.mirror-table th:last-child,
-.mirror-table td:last-child {
-  padding-right: 0;
+@media (max-width: 500px) {
+  .masthead-mark {
+    width: 48px;
+    height: 48px;
+  }
 }
 
-.mirror-table td a {
-  color: var(--text-muted);
-  border-bottom: 1px dotted var(--text-muted);
-  transition-duration: 0.5s;
+/* ===== Links in running text: solid underline, accent on hover ===== */
+.tagline a,
+.split-credit p a,
+.mirror-links a span {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 3px;
+  transition: color 0.15s;
 }
-.mirror-table td a:hover {
+.tagline a:hover,
+.split-credit p a:hover,
+.mirror-links a:hover span {
   color: var(--accent);
-  border-bottom: 1px dotted var(--accent);
-  transition-duration: 0.1s;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
-.mirror-table td a.mirror-name {
+/* ===== Public / Private switch =====
+   The radios stay focusable and keyboard-operable (arrow keys move between
+   them); the labels are what shows. */
+.groups {
+  display: grid;
+  gap: 16px;
+}
+
+.group-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.group-switch {
+  justify-self: start;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--pill-bg);
+}
+
+.group-switch label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
   font-family: "Montserrat";
   font-weight: 600;
-  text-transform: uppercase;
   font-size: 14px;
-  letter-spacing: 0.06em;
-  color: var(--text);
-  border-bottom: none;
+  line-height: 1;
+  color: var(--text-body);
+  cursor: pointer;
 }
-.mirror-table td a.mirror-name:hover {
-  color: var(--accent);
-  border-bottom: none;
+.group-count {
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
-/* ===== Live status (filled by status.js; a glyph per state, no badge art) =====
-   The only semantic colors on the page — deliberately outside the theme tokens,
-   AA against both grounds. */
-:root {
-  --status-up: #1a7f37;
-  --status-down: #cf222e;
+#group-public:checked ~ .group-switch label[for="group-public"],
+#group-private:checked ~ .group-switch label[for="group-private"] {
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --status-up: #3fb950;
-    --status-down: #f85149;
+#group-public:focus-visible ~ .group-switch label[for="group-public"],
+#group-private:focus-visible ~ .group-switch label[for="group-private"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+#group-public:checked ~ .group-private,
+#group-private:checked ~ .group-public {
+  display: none;
+}
+
+/* ===== Mirror tiles ===== */
+.group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .group {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
-.mirror-status[data-state],
-.mirror-status[data-state]:hover {
-  border-bottom: none;
+.mirror {
+  display: grid;
+  align-content: start;
+  padding: 8px;
+  border-radius: 16px;
+  background: var(--pill-bg);
+  font-family: "Montserrat";
 }
-.mirror-status[data-state="up"],
-.mirror-status[data-state="up"]:hover {
-  color: var(--status-up);
+
+/* Head: badge, name and host, age. Its wash is the live state; neutral until
+   status.js has read the healthcheck. */
+.mirror-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px 12px 12px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--text) 4%, var(--bg));
+  transition: background 0.3s;
 }
-.mirror-status[data-state="down"],
-.mirror-status[data-state="down"]:hover {
+.mirror[data-state="up"] .mirror-head {
+  background: color-mix(in srgb, var(--status-up) 11%, var(--bg));
+}
+.mirror[data-state="down"] .mirror-head {
+  background: color-mix(in srgb, var(--status-down) 11%, var(--bg));
+}
+
+.mirror-badge {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--pill-bg);
+  color: var(--bg);
+}
+.mirror-badge svg {
+  display: block;
+  height: 16px;
+  width: auto;
+}
+.badge-up,
+.badge-down {
+  display: none;
+}
+.mirror[data-state="up"] .mirror-badge {
+  background: var(--status-up);
+}
+.mirror[data-state="down"] .mirror-badge {
+  background: var(--status-down);
+}
+.mirror[data-state="up"] .badge-up,
+.mirror[data-state="down"] .badge-down {
+  display: block;
+}
+
+.mirror-title {
+  display: grid;
+  min-width: 0;
+}
+.mirror-name {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.mirror-host {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.mirror a.mirror-name:hover,
+.mirror a.mirror-host:hover {
+  color: var(--accent);
+}
+
+/* Age: a link to the sync workflow's runs, deliberately without an underline. */
+.mirror-age {
+  display: grid;
+  justify-items: end;
+  text-align: right;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.mirror-age-value {
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.mirror-age-note {
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+.mirror[data-state="up"] .mirror-age-note {
+  color: color-mix(in srgb, var(--status-up) 70%, var(--text));
+}
+.mirror[data-state="down"] .mirror-age-value,
+.mirror[data-state="down"] .mirror-age-note {
   color: var(--status-down);
 }
-
-/* One span per state in the markup; the live state picks which one shows */
-.status-icon {
-  display: none;
-}
-.status-icon svg {
-  height: 13px;
-  vertical-align: -1px;
-}
-.mirror-status[data-state] .status-fallback {
-  display: none;
-}
-.mirror-status[data-state="up"] .status-icon-up,
-.mirror-status[data-state="down"] .status-icon-down {
-  display: inline-block;
-}
-
-.mirror-synced {
-  color: var(--text-muted);
-}
-
-/* ===== Footer ===== */
-.split-credit {
-  margin-top: 26px;
-  opacity: 0.75;
-}
-.split-credit p {
-  font-size: 13px;
-  line-height: 1.5;
-  margin-bottom: 6px;
-}
-.split-credit p a {
-  color: var(--text-muted);
-  border-bottom: 1px dotted var(--text-muted);
-  transition-duration: 0.5s;
-}
-.split-credit p a:hover {
+.mirror a.mirror-age:hover .mirror-age-value,
+.mirror a.mirror-age:hover .mirror-age-note {
   color: var(--accent);
-  border-bottom: 1px dotted var(--accent);
-  transition-duration: 0.1s;
 }
 
-/* ===== Mobile: the table becomes a stack of cards =====
-   Six columns cannot fit a phone, and the wrapper's overflow-x turned that into
-   a sideways scroll that hid half the row. Each row becomes a card instead: the
-   header row goes to assistive tech only, and every cell prints its own column
-   name from data-label. Above this width the real table is unchanged. */
-@media (max-width: 640px) {
-  .mirror-table-wrap {
-    overflow-x: visible;
+@media (max-width: 400px) {
+  .mirror-head {
+    gap: 10px;
   }
+  .mirror-age-value {
+    font-size: 22px;
+  }
+}
 
-  .mirror-table,
-  .mirror-table tbody,
-  .mirror-table tr,
-  .mirror-table td {
-    display: block;
-  }
+/* Links: the upstream on the left, the pipeline repository pushed right. */
+.mirror-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px 12px 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.mirror-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.mirror-links svg {
+  display: block;
+  height: 14px;
+  width: auto;
+  flex: none;
+  color: var(--text-muted);
+}
+.mirror-repo {
+  margin-left: auto;
+}
 
-  .mirror-table thead {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .mirror-table tr {
-    border-top: 1px solid var(--pill-bg);
-    padding: 15px 0 17px 0;
-  }
-
-  .mirror-table td {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    border-top: none;
-    padding: 3px 0;
-    white-space: normal;
-  }
-
-  .mirror-table td[data-label]::before {
-    content: attr(data-label);
-    flex: none;
-    font-family: "Graduate";
-    font-size: 11px;
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--text-muted);
-  }
-
-  /* The name is the card's heading, not a label/value pair */
-  .mirror-table td:first-child {
-    display: block;
-    padding: 0 0 9px 0;
-  }
-  .mirror-table td a.mirror-name {
-    font-size: 15px;
-  }
+/* ===== Footer: full strength, where the theme fades it to 40% ===== */
+.split-credit {
+  opacity: 1;
+}
+.page-single .split-credit p {
+  font-family: "Lora";
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 6px;
 }
