@@ -265,8 +265,9 @@
   color: var(--text-body);
   overflow-wrap: anywhere;
 }
-.mirror a.mirror-name:hover,
-.mirror a.mirror-host:hover {
+/* Name and host are one link, like the age, so hovering either lights both. */
+.mirror a.mirror-title:hover .mirror-name,
+.mirror a.mirror-title:hover .mirror-host {
   color: var(--accent);
 }
 
