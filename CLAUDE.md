@@ -40,9 +40,8 @@ re-vendoring.
   which reaches the page only as that mirror's description in the ItemList
   JSON-LD. Write real punctuation (—) in `usage`: data fields bypass the
   markdown typographer.
-- `content/_index.md` — the one-line `tagline` param rendered above the tables and
-  the `private` param under the Private mirrors heading, the page's only prose
-  outside the footer. It carries the service framing;
+- `content/_index.md` — the one-line `tagline` param rendered above the tables,
+  the page's only prose outside the footer. It carries the service framing;
   the mirror names live in `data/mirrors.toml` and reach the page through the
   table, so nothing here or in `hugo.toml` names a mirror.
 - `layouts/_default/baseof.html` — replaces the theme's split layout with a

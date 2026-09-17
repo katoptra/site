@@ -6,6 +6,5 @@
   {{ partial "mirror-table.html" hugo.Data.mirrors.mirrors }}
 
   <h2 class="mirror-heading">Private mirrors</h2>
-  <div class="split-bio"><p>{{ .Params.private | markdownify }}</p></div>
   {{ partial "mirror-table.html" hugo.Data.mirrors.private }}
 {{ end }}

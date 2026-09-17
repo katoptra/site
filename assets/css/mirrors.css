@@ -50,10 +50,6 @@
   margin: 28px 0 10px 0;
 }
 
-.mirror-heading + .split-bio p {
-  margin-bottom: 6px;
-}
-
 /* ===== Mirror table ===== */
 .mirror-table-wrap {
   overflow-x: auto;
