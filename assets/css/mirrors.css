@@ -101,10 +101,10 @@
   }
 }
 
-/* ===== Links inside the page: solid underline, accent on hover ===== */
+/* ===== Links in running text: solid underline, accent on hover ===== */
 .tagline a,
-.mirror a:not(.pill),
-.split-credit p a {
+.split-credit p a,
+.mirror-links a span {
   color: var(--text);
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -113,8 +113,8 @@
   transition: color 0.15s;
 }
 .tagline a:hover,
-.mirror a:not(.pill):hover,
-.split-credit p a:hover {
+.split-credit p a:hover,
+.mirror-links a:hover span {
   color: var(--accent);
   text-decoration: underline;
   text-decoration-color: currentColor;
@@ -193,98 +193,149 @@
 
 .mirror {
   display: grid;
-  gap: 10px;
   align-content: start;
-  padding: 18px 20px;
+  padding: 8px;
   border-radius: 16px;
   background: var(--pill-bg);
   font-family: "Montserrat";
 }
 
+/* Head: badge, name and host, age. Its wash is the live state; neutral until
+   status.js has read the healthcheck. */
 .mirror-head {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  padding: 12px 14px 12px 12px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--text) 4%, var(--bg));
+  transition: background 0.3s;
+}
+.mirror[data-state="up"] .mirror-head {
+  background: color-mix(in srgb, var(--status-up) 11%, var(--bg));
+}
+.mirror[data-state="down"] .mirror-head {
+  background: color-mix(in srgb, var(--status-down) 11%, var(--bg));
 }
 
+.mirror-badge {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--pill-bg);
+  color: var(--bg);
+}
+.mirror-badge svg {
+  display: block;
+  height: 16px;
+  width: auto;
+}
+.badge-up,
+.badge-down {
+  display: none;
+}
+.mirror[data-state="up"] .mirror-badge {
+  background: var(--status-up);
+}
+.mirror[data-state="down"] .mirror-badge {
+  background: var(--status-down);
+}
+.mirror[data-state="up"] .badge-up,
+.mirror[data-state="down"] .badge-down {
+  display: block;
+}
+
+.mirror-title {
+  display: grid;
+  min-width: 0;
+}
 .mirror-name {
-  font-family: "Montserrat";
   font-weight: 600;
   font-size: 18px;
   line-height: 1.3;
-  letter-spacing: 0;
-  text-transform: none;
   color: var(--text);
-  margin: 0;
+  overflow-wrap: anywhere;
 }
-.mirror .mirror-name a {
-  text-decoration: none;
+.mirror-host {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.mirror a.mirror-name:hover,
+.mirror a.mirror-host:hover {
+  color: var(--accent);
 }
 
-.page-single .mirror-facts {
-  font-family: "Montserrat";
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 14px;
-  font-size: 14px;
-  line-height: 1.45;
-  color: var(--text-body);
-  margin: 0;
+/* Age: a link to the sync workflow's runs, deliberately without an underline. */
+.mirror-age {
+  display: grid;
+  justify-items: end;
+  text-align: right;
+  line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
-.page-single .mirror-source {
+.mirror-age-value {
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.mirror-age-note {
+  font-size: 12px;
+  white-space: nowrap;
   color: var(--text-muted);
 }
-.mirror-synced:empty {
-  display: none;
+.mirror[data-state="up"] .mirror-age-note {
+  color: color-mix(in srgb, var(--status-up) 70%, var(--text));
 }
-
-/* ===== Status pill (filled by status.js) =====
-   One span per state in the markup; the live state picks which one shows. */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  flex: none;
-  padding: 4px 11px;
-  border-radius: 999px;
-  background: var(--bg);
-  font-family: "Montserrat";
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 1.35;
-  white-space: nowrap;
-  color: var(--text-body);
-}
-.dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.status-up,
-.status-down {
-  display: none;
-  align-items: center;
-  gap: 6px;
-}
-.mirror-status[data-state] .status-fallback {
-  display: none;
-}
-.mirror-status[data-state="up"] .status-up,
-.mirror-status[data-state="down"] .status-down {
-  display: inline-flex;
-}
-.mirror-status[data-state="up"],
-.mirror-status[data-state="up"]:hover {
-  color: var(--status-up);
-  background: color-mix(in srgb, var(--status-up) 13%, var(--bg));
-}
-.mirror-status[data-state="down"],
-.mirror-status[data-state="down"]:hover {
+.mirror[data-state="down"] .mirror-age-value,
+.mirror[data-state="down"] .mirror-age-note {
   color: var(--status-down);
-  background: color-mix(in srgb, var(--status-down) 13%, var(--bg));
+}
+.mirror a.mirror-age:hover .mirror-age-value,
+.mirror a.mirror-age:hover .mirror-age-note {
+  color: var(--accent);
+}
+
+@media (max-width: 400px) {
+  .mirror-head {
+    gap: 10px;
+  }
+  .mirror-age-value {
+    font-size: 22px;
+  }
+}
+
+/* Links: the upstream on the left, the pipeline repository pushed right. */
+.mirror-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px 12px 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.mirror-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.mirror-links svg {
+  display: block;
+  height: 14px;
+  width: auto;
+  flex: none;
+  color: var(--text-muted);
+}
+.mirror-repo {
+  margin-left: auto;
 }
 
 /* ===== Footer: full strength, where the theme fades it to 40% ===== */

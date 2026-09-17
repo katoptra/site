@@ -13,7 +13,7 @@ as a Hugo theme. All tokens (`--bg`, `--text`, `--accent`, ...), fonts, icons,
 and the CSS reset/theme (`fonts.css`, `split.css`, `style.css`) come from the
 theme. Deliberate forks: `static/_headers`, `static/llms.txt`,
 `static/site.webmanifest`, `static/favicon.svg` and `static/favicon.ico` here
-shadow the theme's copies — `_headers` because the live status pills need extra
+shadow the theme's copies — `_headers` because the live tile status and age need extra
 CSP `connect-src` entries (healthchecks.io, api.github.com), the manifest and
 llms.txt because the theme's versions carry ijosh.com's bio and branding, the
 favicons because this site is katoptra's K drawn in the theme's own stroke
@@ -59,13 +59,14 @@ re-vendoring.
   JSON-LD; the Person schema stays on ijosh.com), the Open Graph and Twitter
   card tags, the CSS bundle (the theme's three files **plus**
   `assets/css/mirrors.css`), and the `assets/js/status.js` module.
-- `assets/js/status.js` — fills each tile's status pill and synced time at page load
-  from healthchecks.io's JSON badges and the GitHub Actions API, so both are
-  live at the moment the visitor opens the page. On fetch failure the pill
-  keeps its "Status" fallback and the synced time stays empty and hidden.
+- `assets/js/status.js` — at page load, sets each tile's `data-state` from its
+  healthchecks.io JSON badge (which tints the head and picks the check or cross
+  badge) and fills the age from the `sync.yml` workflow's last successful run on
+  the GitHub Actions API, so both are live when the visitor opens the page. On
+  fetch failure the head stays neutral and the age stays a dash.
   Self-check: `node assets/js/status.check.mjs` (part of `task check`).
 - `static/_headers` — the theme's headers plus the two CSP `connect-src`
-  entries the live status pills and synced times need.
+  entries the live tile status and age need.
 - `static/llms.txt` and `static/site.webmanifest` — this site's crawler and
   install surface (the theme's copies describe ijosh.com).
 - `layouts/partials/footer.html` — how the mirrors are synced and served, the
@@ -98,12 +99,16 @@ are absent, or if `public/images/og.png` is missing or empty.
 
 ## Gotchas
 
-- No third-party artwork (theme invariant). The status pill fetches the
-  healthchecks.io **JSON** badge and reads Up or Down (colored by the
-  `--status-*` tokens in `mirrors.css`) rather than embedding the badge SVG;
-  the pill links to the repo's Actions page, and the badge SVG URL rides
-  verbatim in `data-badge` (the script derives `.json` from it), which is what
-  `task check` greps for.
+- No third-party artwork (theme invariant). Every icon is a Font Awesome Free
+  file, in `assets/icons/` or the theme's, including each upstream's icon
+  (`upstream.icon` in `data/mirrors.toml`; CTAN has no brand icon there, so it
+  gets `box-archive`, not ctan.org's favicon). The tile fetches the
+  healthchecks.io **JSON** badge and draws its own badge (colored by the
+  `--status-*` tokens in `mirrors.css`) rather than embedding the badge SVG.
+  The badge SVG URL rides verbatim in `data-badge` on the tile (the script
+  derives `.json` from it), which is what `task check` greps for.
+- The tile's age links to the repo's `sync.yml` workflow runs and carries no
+  underline on purpose; the upstream and repository links below it do.
 - The Cloudflare beacon fires only if `params.cloudflareBeaconToken` is set in
   `hugo.toml` (currently unset).
 - Cloudflare Pages settings (dashboard, not repo): build `hugo --minify --gc`,

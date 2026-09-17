@@ -17,8 +17,9 @@ Deployed on Cloudflare Pages on push to `master`.
    homepage tiles and the ItemList JSON-LD render from it, so adding or retiring a mirror
    is an edit there and nothing else.
 3. **Liveness** is [`assets/js/status.js`](assets/js/status.js): at page load it reads each
-   mirror's healthchecks.io JSON badge and its GitHub Actions run list, fills each tile's
-   status pill and synced time, and on a fetch failure leaves the pill reading "Status". Every
+   mirror's healthchecks.io JSON badge and its sync workflow's runs on GitHub Actions, tints
+   each tile's head green or red and fills in the time since its last sync, and on a fetch
+   failure leaves the head neutral and the time a dash. Every
    mirror's pipeline pings a healthcheck at the end of each run, which is what the badge
    reports; [katoptra/lib](https://github.com/katoptra/lib#monitoring) has the rest.
 4. **Deploy** is `hugo --minify --gc` on push to `master`, by Cloudflare Pages.
