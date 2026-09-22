@@ -27,3 +27,9 @@ https://github.com/katoptra/github
 ## Source
 
 - Sync pipelines and site: https://github.com/katoptra
+
+## Brand
+
+- The mark, in SVG and PNG, and the palette as CSS: https://katoptra.org/brand/
+  (katoptra-mark.svg, katoptra-mark-dark.svg, katoptra-mark-224.png,
+  katoptra-mark-dark-224.png, katoptra-avatar.png, tokens.css)

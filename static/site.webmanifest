@@ -4,9 +4,10 @@
   "description": "Fast, verified mirrors of popular open-source software, served on Cloudflare's global network.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#17191c",
-  "theme_color": "#17191c",
+  "background_color": "#121218",
+  "theme_color": "#121218",
   "icons": [
-    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" }
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
+    { "src": "/brand/katoptra-avatar.png", "type": "image/png", "sizes": "1024x1024", "purpose": "any maskable" }
   ]
 }

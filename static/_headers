@@ -18,3 +18,7 @@
 
 /images/*
   Cache-Control: public, max-age=604800
+
+# The mark and tokens, referenced by URL from the katoptra READMEs
+/brand/*
+  Cache-Control: public, max-age=604800
