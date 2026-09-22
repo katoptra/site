@@ -30,7 +30,12 @@ tasks:
           "                            ${d}deploys happen on push to master, not from here${r}" \
           "" \
           "${c}checks -- offline, no credentials needed${r}" \
-          "  task check                Build, fail if any data/mirrors.toml link is missing from the page, run the JS self-check" \
+          "  task check                Build, fail if any data/mirrors.toml link is missing from the page, run the JS self-check," \
+          "                            ${d}and fail if the brand files differ from a rebuild${r}" \
+          "" \
+          "${c}brand -- the mark, favicons, social card and tokens, from brand/build.py${r}" \
+          "  task brand                Rebuild every brand file under static/ and assets/css/tokens.css" \
+          "  task brand:fonts          Re-fetch Gabarito from google/fonts and re-subset it (network)" \
           "" \
           "${c}theme -- the design system lives in the ijosh.com repo${r}" \
           "  task theme:update         Re-vendor ijosh.com master into themes/ijosh" \
@@ -52,8 +57,9 @@ tasks:
       - hugo --minify --gc
 
   check:
-    desc: Build, verify every URL in data/mirrors.toml renders into the page, check the social card, run the JS self-check
+    desc: Build, verify every URL in data/mirrors.toml renders into the page, check the social card, run the JS self-check, check the brand files
     cmds:
+      - uv run brand/build.py --check
       - hugo --minify --gc
       - node assets/js/status.check.mjs
       - |
@@ -70,7 +76,7 @@ tasks:
         if [ -s public/images/og.png ]; then
           echo "check: social card present ($(wc -c < public/images/og.png | tr -d ' ') bytes)"
         else
-          echo "MISSING public/images/og.png -- run brand/render_og_image.py"; fail=1
+          echo "MISSING public/images/og.png -- run task brand"; fail=1
         fi
         exit "$fail"
       # The JSON-LD is hand-templated inside a script block, where Go's
@@ -104,6 +110,16 @@ tasks:
         }
         console.log(`check: JSON-LD parses (${types.join(", ")})`);
         JS
+
+  brand:
+    desc: Rebuild the mark, favicons, social card and tokens from brand/build.py
+    cmds:
+      - uv run brand/build.py
+
+  brand:fonts:
+    desc: Re-fetch Gabarito from google/fonts at the pinned commit and re-subset it into static/fonts
+    cmds:
+      - uv run brand/fonts.py
 
   theme:update:
     desc: Re-vendor the ijosh design system (layouts/assets/static) from ijosh.com master
