@@ -3,7 +3,6 @@ baseURL = "https://katoptra.org/"
 locale = "en-US"
 title = "Verified Open-Source Software Mirrors - katoptra.org"
 theme = "ijosh"
-enableRobotsTXT = true
 disableKinds = ["section", "taxonomy", "RSS"]
 
 # Copyright

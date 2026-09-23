@@ -83,9 +83,9 @@ it to latin; its license is beside them.
 
 Fork [katoptra/site](https://github.com/katoptra/site), swap the entries in
 `data/mirrors.toml` for your mirrors, point `baseURL` in `hugo.toml` at your domain, and
-rewrite the identity-bearing files: `static/llms.txt`, `static/site.webmanifest`, the
-footer, and `brand/build.py` for a mark of your own. It builds to a static site; host it
-anywhere.
+rewrite the identity-bearing files: `static/llms.txt`, `static/site.webmanifest`,
+`static/robots.txt`, `static/.well-known/security.txt`, the footer, and `brand/build.py`
+for a mark of your own. It builds to a static site; host it anywhere.
 
 ## Operating it
 
