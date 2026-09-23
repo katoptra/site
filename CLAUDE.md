@@ -2,7 +2,7 @@
 
 Landing page for **katoptra.org** — a Hugo static site indexing the software
 mirrors run at katoptra.org (ctan.katoptra.org, tlnet.katoptra.org, ...). Deployed on
-Cloudflare Pages on push to `master`; develop on any other branch.
+Cloudflare Pages on push to `main`; develop on any other branch.
 
 ## The one invariant: the design system is not here
 

@@ -1,5 +1,5 @@
 # mirrors — the landing page for katoptra.org, a Hugo site deployed by
-# Cloudflare Pages on push to master. The design system is not local: layouts,
+# Cloudflare Pages on push to main. The design system is not local: layouts,
 # tokens, and fonts are vendored from the ijosh.com repo into themes/ijosh by
 # `task theme:update` (pinned by themes/ijosh/THEME_COMMIT); this repo only
 # overrides what a mirrors index needs.
@@ -27,7 +27,7 @@ tasks:
           "${c}build -- offline, changes nothing live${r}" \
           "  task serve                Build and serve with drafts + watch" \
           "  task build                Production build, matches Cloudflare Pages" \
-          "                            ${d}deploys happen on push to master, not from here${r}" \
+          "                            ${d}deploys happen on push to main, not from here${r}" \
           "" \
           "${c}checks -- offline, no credentials needed${r}" \
           "  task check                Build, fail if any data/mirrors.toml link is missing from the page, run the JS self-check," \
