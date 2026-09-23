@@ -18,7 +18,7 @@
 A Hugo site that lists every mirror with its upstream, cadence, repository, live status
 and last sync time, as tiles under a Public / Private switch: the public mirrors, and the
 private ones that copy the owner's own accounts. Deployed on Cloudflare Pages on push to
-`master`, which is also what publishes the brand files below.
+`main`, which is also what publishes the brand files below.
 
 ## How it works
 
@@ -35,7 +35,7 @@ private ones that copy the owner's own accounts. Deployed on Cloudflare Pages on
    failure leaves the head neutral and the time a dash. Every
    mirror's pipeline pings a healthcheck at the end of each run, which is what the badge
    reports; [katoptra/lib](https://github.com/katoptra/lib#monitoring) has the rest.
-4. **Deploy** is `hugo --minify --gc` on push to `master`, by Cloudflare Pages.
+4. **Deploy** is `hugo --minify --gc` on push to `main`, by Cloudflare Pages.
 
 ## The brand
 
