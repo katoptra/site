@@ -27,6 +27,15 @@ export function stateFor(badge) {
   return badge.status === "down" ? "down" : "up";
 }
 
+// The newest successful run in a page of the unfiltered run list. The API's
+// status=success filter is a search query, and GitHub answers it for anonymous
+// callers from a lagging index: the same URL returns runs hours or days old.
+// ponytail: only the page the tile fetches is searched (per_page in mirror.html),
+// so a streak of failures longer than that reads as a dash; raise per_page if so.
+export function lastSuccess(d) {
+  return d.workflow_runs?.find((run) => run.conclusion === "success");
+}
+
 const json = (url) =>
   fetch(url).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))));
 
@@ -44,7 +53,7 @@ if (typeof document !== "undefined") {
   for (const link of document.querySelectorAll("[data-runs-api]")) {
     json(link.dataset.runsApi)
       .then((d) => {
-        const run = d.workflow_runs && d.workflow_runs[0];
+        const run = lastSuccess(d);
         if (!run) return;
         const when = relTime(run.run_started_at);
         link.querySelector(".mirror-age-value").textContent = shortTime(run.run_started_at);
