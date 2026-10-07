@@ -127,12 +127,16 @@ are absent, or if `public/images/og.png` is missing or empty.
 
 - No third-party artwork (theme invariant). Every icon is a Font Awesome Free
   file, in `assets/icons/` or the theme's, including each upstream's icon
-  (`upstream.icon` in `data/mirrors.toml`). The one exception is
+  (`upstream.icon` in `data/mirrors.toml`). The exceptions are
   `assets/icons/ctan.svg`, since Font Awesome has no CTAN icon: ctan.org's
   favicon redrawn in one color in Font Awesome's format by
   `brand/render_ctan_icon.py`, so it matches the icons beside it. Edit the
   script and rerun `uv run --with shapely brand/render_ctan_icon.py`; never
-  hand-edit the SVG. The tile fetches the
+  hand-edit the SVG. The second is `assets/icons/gnu.svg`, on the GNU and
+  Savannah tiles: gnu.org's Bold GNU Head (Aurelio A. Heckert, CC BY-SA 2.0),
+  kept as `brand/heckert_gnu.svg` and redrawn the same way by
+  `uv run --with svgelements --with shapely brand/render_gnu_icon.py`; the
+  derived SVG stays CC BY-SA 2.0. The tile fetches the
   healthchecks.io **JSON** badge and draws its own badge (colored by the
   `--status-*` tokens in `mirrors.css`) rather than embedding the badge SVG.
   The badge SVG URL rides verbatim in `data-badge` on the tile (the script

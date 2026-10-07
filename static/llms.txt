@@ -2,9 +2,10 @@
 
 > Public mirrors of open-source software archives. Each mirror syncs from its
 > upstream on a fixed schedule through an open pipeline, is verified against the
-> upstream's own signatures and checksums, and is served on Cloudflare's global
-> network. Paths and bytes are unchanged from upstream, so a mirror here drops in
-> wherever that archive's URL is accepted. Run by Josh Vaughen (https://ijosh.com).
+> upstream's own signatures and checksums where upstream signs its tree, and is
+> served on Cloudflare's global network. Paths and bytes are unchanged from
+> upstream, so a mirror here drops in wherever that archive's URL is accepted. Run
+> by Josh Vaughen (https://ijosh.com).
 
 ## Mirrors
 
@@ -14,8 +15,13 @@
 - TeX Live (tlnet): https://tlnet.katoptra.org/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet, refreshed daily)
   The tlnet subtree alone, every platform. Point tlmgr at it:
   `tlmgr option repository https://tlnet.katoptra.org/systems/texlive/tlnet/`
+- GNU: https://gnu.katoptra.org/ (upstream: https://ftp.gnu.org/gnu/, refreshed twice daily)
+  Every path of ftp.gnu.org/gnu at the root. Swap the host in any GNU download URL:
+  `https://gnu.katoptra.org/emacs/`
+- Savannah (nongnu): https://nongnu.katoptra.org/ (upstream: https://download.savannah.nongnu.org/releases/, refreshed twice daily)
+  Savannah's nongnu release tree at the root: `https://nongnu.katoptra.org/freetype/`
 
-To leave a mirror: `tlmgr option repository ctan`.
+To leave a TeX mirror: `tlmgr option repository ctan`.
 
 ## Private mirrors
 

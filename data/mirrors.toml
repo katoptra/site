@@ -30,6 +30,24 @@ healthcheck = "https://healthchecks.io/b/2/f34567b9-d513-41a5-93d8-56fb69d25257.
 upstream = { name = "ctan.org", url = "https://ctan.org/tex-archive/systems/texlive/tlnet", icon = "ctan" }
 usage = "The tlnet subtree alone — the directory tlmgr installs and updates from — with every platform, doc and source. It tracks the current TeX Live release and moves to the next when upstream does."
 
+[[mirrors]]
+name = "GNU"
+url = "https://gnu.katoptra.org/"
+cadence = "twice daily"
+repo = "https://github.com/katoptra/gnu"
+healthcheck = "https://healthchecks.io/b/2/5b1c7694-c3aa-4db7-9813-0b898669564d.svg"
+upstream = { name = "gnu.org", url = "https://ftp.gnu.org/gnu/", icon = "gnu" }
+usage = "Every path of ftp.gnu.org/gnu at the root — release tarballs, their signatures and the GNU keyring — so the host drops in anywhere a GNU mirror URL is accepted."
+
+[[mirrors]]
+name = "Savannah (nongnu)"
+url = "https://nongnu.katoptra.org/"
+cadence = "twice daily"
+repo = "https://github.com/katoptra/nongnu"
+healthcheck = "https://healthchecks.io/b/2/1690a027-fc78-4459-a66b-c0d3d5078980.svg"
+upstream = { name = "savannah.nongnu.org", url = "https://download.savannah.nongnu.org/releases/", icon = "gnu" }
+usage = "Savannah's release tree for the non-GNU projects it hosts, every path at the root, with a page for every directory."
+
 # Private mirrors copy the owner's own accounts, so they have no url: the tile shows
 # the name as plain text and "Into <into>" where a public mirror shows its host, and
 # they stay out of the JSON-LD and llms.txt's list of mirrors to use. The fields are
