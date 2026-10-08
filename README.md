@@ -23,9 +23,9 @@ which copy the owner's accounts. Each tile shows these items:
 - The cadence
 - The repository
 - The status
-- The time from the last sync.
+- The age of the last sync.
 
-The page gets the status and the time from the last sync when it loads. Cloudflare Pages
+The page gets the status and the age of the last sync when it loads. Cloudflare Pages
 deploys the site at each push to `main`, and it also publishes the files in
 [The brand](#the-brand).
 
@@ -41,9 +41,9 @@ deploys the site at each push to `main`, and it also publishes the files in
    remove a mirror, you edit that file and no other file.
 3. **Status.** When the page loads, [`assets/js/status.js`](assets/js/status.js) reads
    the healthchecks.io JSON badge of each mirror and the runs of its sync workflow on GitHub
-   Actions. The script makes the head of each tile green or red, and it shows the time from
+   Actions. The script makes the head of each tile green or red, and it shows the age of
    the last sync. If the script cannot fetch a source, the head stays neutral and the
-   time stays a dash. The pipeline of each mirror pings a healthcheck at the end of each
+   age stays a dash. The pipeline of each mirror pings a healthcheck at the end of each
    run, and the badge shows the result
    ([katoptra/lib](https://github.com/katoptra/lib#monitoring) gives more data).
 4. **Deploy.** At each push to `main`, Cloudflare Pages runs `hugo --minify --gc`.

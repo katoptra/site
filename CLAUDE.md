@@ -12,9 +12,9 @@ Read that section before you write.
 ## The one invariant: the design system is not here
 
 The [ijosh.com repository](https://github.com/jshvn/ijosh.com) is the design system.
-`task theme:update` **vendors** its `layouts/`, `assets/` and `static/` directories into
-`themes/ijosh/`, and Hugo uses them as a theme. `themes/ijosh/` is a committed directory.
-It is not a submodule and not a Hugo Module.
+`task theme:update` **vendors** the `layouts/`, `assets/` and `static/` directories of that
+repository into `themes/ijosh/`, and Hugo uses them as a theme. `themes/ijosh/` is a
+committed directory. It is not a submodule and not a Hugo Module.
 
 The theme supplies the CSS reset and the shapes (`fonts.css`, `split.css` and
 `style.css`). The theme does **not** supply the identity. The mark, the palette and the
@@ -104,7 +104,7 @@ the same change here manually.
 This layout has the Public / Private switch and one panel of tiles for each group.
 `layouts/partials/mirror.html` makes each tile. The switch is two radios that show as one
 pill control. `mirrors.css` shows only the panel of the checked group. Thus, the switch has
-no JavaScript. Each row has two tiles, or one tile at a width of 640px or less.
+no JavaScript. The grid has two columns, or one column at a width of 640px or less.
 
 ### `layouts/partials/head.html`
 
@@ -225,7 +225,7 @@ Do these steps for each layout or CSS change, and each time that you add a mirro
 5. Click the Private tab.
 6. Do steps 3 and 4 again.
 
-`task check` is the functional test. First, it gives an error if the brand files are
+`task check` is the functional gate. First, it gives an error if the brand files are
 different from the files that `brand/build.py` makes. Then it builds the site, and it gives
 an error if:
 
@@ -242,7 +242,7 @@ an error if:
 - `assets/icons/ctan.svg`: Font Awesome has no CTAN icon. `brand/render_ctan_icon.py` makes
   a copy of the favicon of ctan.org, in one color and in the format of Font Awesome. Thus,
   it agrees with the icons adjacent to it. Do not edit the SVG manually, because the script
-  overwrites a manual edit. Edit the script. Then run
+  overwrites a manual change. Edit the script. Then run
   `uv run --with shapely brand/render_ctan_icon.py` again.
 - `assets/icons/gnu.svg`, on the GNU and Savannah tiles: the Bold GNU Head of gnu.org
   (Aurelio A. Heckert, CC BY-SA 2.0). The repository keeps that file as
