@@ -139,7 +139,7 @@ This file has the headers of the theme, and it adds these items:
 - Two CSP `connect-src` entries, for healthchecks.io and api.github.com. These hosts supply
   the tile status and the age.
 - A `/js/*` rule, the same as the rule for `/css/*`: the fingerprinted `status.js` is
-  immutable for one year.
+  `immutable` for one year.
 - A `/brand/*` rule: the mark and the tokens have a cache time of one week.
 
 ### `static/llms.txt` and `static/site.webmanifest`
@@ -231,9 +231,10 @@ Do these steps for each layout or CSS change, and each time that you add a mirro
 5. Click the Private tab.
 6. Do steps 3 and 4 again.
 
-`task check` is the functional gate. First, it gives an error if the brand files are
-different from the files that `brand/build.py` makes. Then it builds the site, and it gives
-an error if:
+`task check` is the functional test. Run it before you open a pull request.
+
+First, `task check` gives an error if the brand files are different from the files that
+`brand/build.py` makes. Then it builds the site, and it gives an error if:
 
 - A URL in `data/mirrors.toml` is not on the rendered page
 - The Open Graph tags are not there
