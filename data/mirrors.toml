@@ -1,16 +1,23 @@
-# One entry per actively maintained mirror; the homepage tiles render this list
-# in order. Fields: name (display), url (mirror root), cadence (refresh schedule),
-# repo (sync pipeline), healthcheck (public healthchecks.io badge for the sync),
-# upstream {name, url, icon}, and usage -- one sentence describing the mirror, which
-# reaches the page only as its description in the ItemList JSON-LD.
+# One entry for each mirror in operation. The homepage tiles show the entries in this
+# sequence. The fields are:
+#   name         the display name
+#   url          the root of the mirror
+#   cadence      the refresh schedule
+#   repo         the sync pipeline
+#   healthcheck  the public healthchecks.io badge for the sync
+#   upstream     {name, url, icon}
+#   usage        a short description of the mirror. It gets to the page only as the
+#                description of the mirror in the ItemList JSON-LD.
 #
-# upstream.icon names an icon file in assets/icons/ or the theme's (without .svg):
-# Font Awesome Free, or ctan (drawn by brand/render_ctan_icon.py). The build fails
-# if it is missing.
+# upstream.icon is the name of an icon file in assets/icons/ or in the icons of the theme,
+# without .svg. The icon is from Font Awesome Free, or it is ctan (made by
+# brand/render_ctan_icon.py) or gnu (made by brand/render_gnu_icon.py). If the file is
+# missing, the build stops with an error.
 #
-# healthcheck must be the single-check two-state badge URL (/b/2/<uuid>.svg).
-# The page maps any status other than "down" to a green check, so a three-state
-# or project-wide badge here would render a stalled sync as healthy.
+# healthcheck must be the URL of the two-state badge for one check (/b/2/<uuid>.svg).
+# The page shows a green check for each status that is not "down". Thus, with a
+# three-state badge or a project badge, the page can show a green check for a stalled
+# sync.
 
 [[mirrors]]
 name = "CTAN"
@@ -48,10 +55,11 @@ healthcheck = "https://healthchecks.io/b/2/1690a027-fc78-4459-a66b-c0d3d5078980.
 upstream = { name = "savannah.nongnu.org", url = "https://download.savannah.nongnu.org/releases/", icon = "gnu" }
 usage = "The mirror serves all the paths of download.savannah.nongnu.org/releases at its root. These are the release files of more than 1,000 free software projects that Savannah hosts and that are not part of GNU. Examples are FreeType, acl and attr, dmidecode, lzip, nmh, quilt and TinyCC. In a Savannah download URL, nongnu.katoptra.org can replace download.savannah.nongnu.org/releases."
 
-# Private mirrors copy the owner's own accounts, so they have no url: the tile shows
-# the name as plain text and "Into <into>" where a public mirror shows its host, and
-# they stay out of the JSON-LD and llms.txt's list of mirrors to use. The fields are
-# the ones above, less url and usage, plus into (where the copy lands).
+# Private mirrors copy the owner's accounts. Thus, they have no url. The tile shows the
+# name as text without a link, and it shows "Into <into>" where a public mirror shows
+# its host. Private mirrors stay out of the JSON-LD, and out of the list of mirrors to
+# use in llms.txt. Their fields are the fields of a public mirror, without url and
+# usage, and with into (where the copy goes).
 
 [[private]]
 name = "Dropbox"

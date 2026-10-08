@@ -1,13 +1,17 @@
-# GNU icon for the upstream link on the GNU and Savannah tiles: the Bold GNU Head (Aurelio
-# A. Heckert, copyright 2003 Free Software Foundation,
+# The GNU icon for the upstream link on the GNU and Savannah tiles. It is the Bold GNU
+# Head (Aurelio A. Heckert, copyright 2003 Free Software Foundation,
 # https://www.gnu.org/graphics/heckert_gnu.html, GFDL 1.3, Free Art License or CC BY-SA
-# 2.0), gnu.org's own vector of its mark, kept beside this script as brand/heckert_gnu.svg
-# and redrawn in Font Awesome's format -- 512 units tall, one path, currentColor -- so it
-# takes the same size and grey as the icons beside it. The drawing is one even-odd path;
-# its curves are flattened into polygons and simplified, as the CTAN icon's are. The
-# output is CC BY-SA 2.0, as the source is.
-# Run: uv run --with svgelements --with shapely brand/render_gnu_icon.py [OUT]
-#      (default assets/icons/gnu.svg)
+# 2.0). This vector of the mark comes from gnu.org, and the repository keeps it adjacent
+# to this script as brand/heckert_gnu.svg. This script makes a copy of it in the format
+# of Font Awesome (512 units tall, one path, currentColor). Thus, the icon has the same
+# dimension and gray as the icons adjacent to it.
+#
+# The drawing is one even-odd path. The script flattens its curves into polygons and
+# simplifies them, with the same method as the CTAN icon. The output has the same
+# license as the source: CC BY-SA 2.0.
+#
+# To run it: uv run --with svgelements --with shapely brand/render_gnu_icon.py [OUT]
+#      (the default OUT is assets/icons/gnu.svg)
 import sys
 from functools import reduce
 from shapely.geometry import MultiPolygon, Polygon
@@ -19,14 +23,14 @@ paths = [e for e in SVG.parse(SRC, reify=True).elements() if isinstance(e, Path)
 assert len(paths) == 1, f"expected one path in {SRC}, found {len(paths)}"
 head = paths[0]
 
-# Fit to Font Awesome's frame: 512 units tall, glyph from 16 to 496.
+# Scale to the frame of Font Awesome: 512 units tall, with the glyph from 16 to 496.
 minx, miny, maxx, maxy = head.bbox()
 k = 480 / (maxy - miny)
 head = head * Matrix(f"translate({-minx}, {-miny})") * Matrix(f"scale({k})") * Matrix("translate(16, 16)")
 head.reify()
 width = round((maxx - minx) * k + 32)
 
-# Each subpath is a ring; even-odd filling is their symmetric difference.
+# Each subpath is a ring. The even-odd fill is the symmetric difference of the rings.
 rings = []
 for sub in head.as_subpaths():
     pts = []

@@ -1,9 +1,11 @@
-{{- /* One mirror's tile, given an entry from data/mirrors.toml. A mirror with no url
-       has nothing to browse: its name is plain text and the tile names where it
-       copies to instead of a hostname. status.js sets data-state on the tile from
-       the healthcheck, which tints the head and picks the badge's icon, and fills
-       the age from the sync workflow's last successful run; until then the head is
-       neutral and the age reads as a dash. */ -}}
+{{- /* The tile of one mirror, from one entry in data/mirrors.toml. A mirror with no
+       url has no files to browse. Its name is text without a link, and the tile shows
+       where the mirror copies to, not a hostname.
+
+       status.js sets data-state on the tile from the healthcheck. That value sets the
+       color of the head and selects the icon of the badge. status.js also sets the age
+       from the last sync workflow run with the conclusion success. Until then, the head
+       is neutral and the age shows a dash. */ -}}
 {{- $repo := strings.TrimPrefix "https://github.com/" .repo }}
 {{- $icon := printf "icons/%s.svg" .upstream.icon }}
 <article class="mirror" data-badge="{{ .healthcheck }}">

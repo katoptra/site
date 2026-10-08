@@ -2,18 +2,20 @@
 # requires-python = ">=3.11"
 # dependencies = ["pillow==12.3.0", "fonttools[woff]==4.65.0"]
 # ///
-# The katoptra mark and everything cut from it. One geometry, drawn here and nowhere
-# else: two chevrons meeting at a hairline mirror plane, on a rounded tile. This
-# script writes the SVGs, the PNGs, the favicons, the social card and the token sheet
-# under static/, so a change to the mark is a change to MARK below and a rebuild.
+# The katoptra mark, and all the files that come from it. This script has the one
+# geometry of the mark, and no other file makes the mark. The mark is two chevrons that
+# point to a hairline mirror plane, on a rounded tile. The script writes the SVGs, the
+# PNGs, the favicons, the social card and the token sheet in static/. Thus, to change the
+# mark, change MARK in this script and make the files again.
 #
-#   uv run brand/build.py          write every file
-#   uv run brand/build.py --check  rebuild in memory and fail if any file differs
+#   uv run brand/build.py          write all the files
+#   uv run brand/build.py --check  make the files in memory, and give an error if a file is different
 #
-# Pillow has no SVG renderer, so the raster files are drawn from the same numbers:
-# line segments with a disc at each vertex for the round caps and joins, at a
-# supersample, then downscaled. Versions are pinned above because the check compares
-# bytes and a resampler change would fail it.
+# Pillow has no SVG renderer. Thus, the script makes the raster files from the same
+# numbers. It makes line segments with a disc at each vertex for the rounded caps and
+# joins. It makes them at a supersample, then it downscales them. The header pins the
+# versions, because the check compares bytes, and a different resampler can cause an
+# error in the check.
 import argparse
 import io
 import sys
@@ -26,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 STATIC = ROOT / "static"
 BRAND = STATIC / "brand"
 
-# ---- the palette, light then dark; the mark takes the tile and inks of its ground ----
+# ---- the palette, light then dark. The mark gets the tile and inks of its ground. ----
 LIGHT = {
     "bg": "#f6f5f2", "text": "#1c1c28", "text-body": "#4b4b5a", "text-muted": "#7a7a8a",
     "accent": "#4f5cff", "pill-bg": "rgba(28, 28, 40, 0.1)",
@@ -40,10 +42,10 @@ DARK = {
 
 # ---- the mark, in a 100-unit box ----
 MARK = {
-    "radius": 22,                                  # tile corner, as a share of the box
+    "radius": 22,                                  # the tile corner, as a part of the box
     "line": ((50, 24), (50, 76)),                  # the mirror plane, width 2, white at 45%
     "line_width": 2, "line_alpha": 0.45,
-    "left": ((22, 30), (41, 50), (22, 70)),        # upstream, in the first ink
+    "left": ((22, 30), (41, 50), (22, 70)),        # the upstream, in the first ink
     "right": ((78, 30), (59, 50), (78, 70)),       # the copy, in the second ink
     "stroke": 9,
 }
@@ -56,7 +58,10 @@ def hex_rgb(h: str) -> tuple[int, int, int]:
 
 
 def blend(a: str, b: str, t: float) -> tuple[int, int, int]:
-    """a with t of b mixed in; how the translucent hairline lands on an opaque tile."""
+    """a, with the fraction t of b mixed in.
+
+    This is the color of the translucent hairline on an opaque tile.
+    """
     return tuple(round(x + (y - x) * t) for x, y in zip(hex_rgb(a), hex_rgb(b)))
 
 
@@ -78,7 +83,7 @@ def svg(p: dict, rounded: bool = True) -> str:
 
 
 def draw_mark(d: ImageDraw.ImageDraw, ox: float, oy: float, s: float, p: dict, rounded: bool = True) -> None:
-    """The mark with its top-left corner at (ox, oy), s pixels per unit."""
+    """The mark, with its top-left corner at (ox, oy) and s pixels for each unit."""
     m = MARK
     pt = lambda xy: (ox + xy[0] * s, oy + xy[1] * s)
 
@@ -86,7 +91,7 @@ def draw_mark(d: ImageDraw.ImageDraw, ox: float, oy: float, s: float, p: dict, r
         w = width * s
         for a, b in zip(pts, pts[1:]):
             d.line([pt(a), pt(b)], fill=fill, width=round(w))
-        for v in pts:                        # round caps at the ends, a round join between
+        for v in pts:                        # rounded caps at the ends, and a rounded join between
             x, y = pt(v)
             d.ellipse([x - w / 2, y - w / 2, x + w / 2, y + w / 2], fill=fill)
 
@@ -107,7 +112,7 @@ def mark_png(size: int, p: dict, rounded: bool = True, ss: int = 4) -> Image.Ima
 
 
 def font(name: str, size: float) -> ImageFont.FreeTypeFont:
-    """Pillow needs sfnt; the site ships woff2, so strip the compression in memory."""
+    """Pillow must have sfnt, and the site has woff2. Thus, remove the compression in memory."""
     buf = io.BytesIO()
     f = TTFont(STATIC / "fonts" / name)
     f.flavor = None
@@ -117,7 +122,10 @@ def font(name: str, size: float) -> ImageFont.FreeTypeFont:
 
 
 def tracked(d, text, fnt, cx, top, tracking, fill):
-    """Pillow has no letter-spacing; the tagline is spaced, so place per glyph."""
+    """Pillow has no letter-spacing, and the tagline has spaced letters.
+
+    Thus, put the glyphs one at a time.
+    """
     widths = [d.textlength(ch, font=fnt) for ch in text]
     x = cx - (sum(widths) + tracking * (len(text) - 1)) / 2
     for ch, cw in zip(text, widths):
@@ -126,7 +134,7 @@ def tracked(d, text, fnt, cx, top, tracking, fill):
 
 
 def og_png() -> Image.Image:
-    """The 1200 x 630 unfurl card: the mark over the name and the tagline, on the dark ground."""
+    """The 1200 x 630 unfurl card: the mark above the name and the tagline, on the dark ground."""
     W, H, SS = 1200, 630, 2
     p = DARK
     img = Image.new("RGB", (W * SS, H * SS), hex_rgb(p["bg"]))
@@ -142,13 +150,14 @@ def og_png() -> Image.Image:
 
 
 def tokens_css() -> str:
-    """The palette as custom properties, in the theme's own three-state shape."""
+    """The palette as custom properties, in the three-state shape of the theme."""
     decl = lambda p: "".join(f"  --{k}: {v};\n" for k, v in p.items())
     return (
-        "/* The katoptra palette. Generated by brand/build.py from LIGHT and DARK there;\n"
-        "   do not edit. Served at /brand/tokens.css and bundled into the site's own CSS,\n"
-        "   where it overrides the theme's tokens. Set data-theme=\"light\" or \"dark\" on\n"
-        "   <html> to override the system preference. */\n"
+        "/* The katoptra palette. brand/build.py makes this file from LIGHT and DARK.\n"
+        "   Do not edit it: brand/build.py overwrites it. The site serves it at\n"
+        "   /brand/tokens.css, and it is also in the CSS bundle of the site, where it\n"
+        "   overrides the tokens of the theme. To override the system preference, set\n"
+        "   data-theme=\"light\" or \"dark\" on <html>. */\n"
         ":root {\n  color-scheme: light;\n" + decl(LIGHT) + "}\n\n"
         "@media (prefers-color-scheme: dark) {\n  :root:not([data-theme=\"light\"]) {\n"
         "    color-scheme: dark;\n" + decl(DARK).replace("  --", "    --") + "  }\n}\n\n"
@@ -163,7 +172,10 @@ def png_bytes(img: Image.Image) -> bytes:
 
 
 def ico_bytes() -> bytes:
-    """16, 32 and 48, each drawn at its own size rather than downscaled from one."""
+    """16, 32 and 48 pixels.
+
+    The function makes each image at its dimension, not as a smaller copy of one image.
+    """
     frames = [mark_png(n, LIGHT, ss=8) for n in (48, 32, 16)]
     buf = io.BytesIO()
     frames[0].save(buf, "ICO", sizes=[f.size for f in frames], append_images=frames[1:])

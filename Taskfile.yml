@@ -1,8 +1,8 @@
-# mirrors — the landing page for katoptra.org, a Hugo site deployed by
-# Cloudflare Pages on push to main. The design system is not local: layouts,
-# tokens, and fonts are vendored from the ijosh.com repo into themes/ijosh by
-# `task theme:update` (pinned by themes/ijosh/THEME_COMMIT); this repo only
-# overrides what a mirrors index needs.
+# mirrors: the landing page for katoptra.org. It is a Hugo site, and Cloudflare Pages
+# deploys it at each push to main. The design system is not in this repository.
+# `task theme:update` vendors the layouts, tokens and fonts from the ijosh.com repo into
+# themes/ijosh, and themes/ijosh/THEME_COMMIT pins them. This repository overrides only
+# the parts that a mirrors index must have.
 
 version: "3"
 
@@ -15,8 +15,9 @@ tasks:
   default:
     desc: Print the menu
     silent: true
-    # ponytail: hand-maintained listing -- go-task can neither group nor annotate,
-    # so a new task means a line below. `task --list` stays the generated view.
+    # ponytail: we keep this listing manually, because go-task cannot show tasks in groups
+    # or with notes. Thus, each new task must have a line in the listing. `task --list`
+    # stays the view that go-task makes.
     cmds:
       - |
         b=$(printf '\033[1m'); c=$(printf '\033[1;36m'); d=$(printf '\033[2m'); r=$(printf '\033[0m')
@@ -68,8 +69,8 @@ tasks:
           grep -qF "$url" public/index.html || { echo "MISSING $url"; fail=1; }
         done
         [ "$fail" -eq 0 ] && echo "check: all mirror links present in public/index.html"
-        # The unfurl card is a generated file plus its tags -- either half alone
-        # ships a broken preview, so assert both.
+        # The unfurl card is a file that brand/build.py makes, and its tags. One half
+        # without the other gives a broken preview. Thus, the check asserts the two halves.
         for tag in 'og:image' 'twitter:card' 'og:image:width'; do
           grep -qF "$tag" public/index.html || { echo "MISSING meta $tag"; fail=1; }
         done
@@ -78,12 +79,13 @@ tasks:
         else
           echo "MISSING public/images/og.png -- run task brand"; fail=1
         fi
-        # The theme ships its own robots.txt naming ijosh.com's sitemap; only
-        # the static/ shadow keeps it off this site.
+        # The theme has a robots.txt that names the sitemap of ijosh.com. Only the
+        # static/ shadow keeps that file off this site.
         grep -qxF 'Sitemap: https://katoptra.org/sitemap.xml' public/robots.txt \
           || { echo "WRONG public/robots.txt sitemap: $(grep Sitemap public/robots.txt)"; fail=1; }
-        # Same for security.txt, and RFC 9116 makes a lapsed Expires a file to
-        # distrust, so a date in the past fails too.
+        # The static/ shadow does the same for security.txt. RFC 9116 tells a client
+        # not to use the file after its Expires date. Thus, an expired date in Expires
+        # also causes a failure.
         sec=public/.well-known/security.txt
         grep -qxF 'Canonical: https://katoptra.org/.well-known/security.txt' "$sec" \
           || { echo "WRONG $sec canonical: $(grep Canonical "$sec")"; fail=1; }
@@ -91,9 +93,9 @@ tasks:
         [[ "$exp" > "$(date -u +%Y-%m-%dT%H:%M:%S)" ]] \
           || { echo "EXPIRED $sec ($exp) -- move Expires forward, under a year out"; fail=1; }
         exit "$fail"
-      # The JSON-LD is hand-templated inside a script block, where Go's
-      # contextual escaping is easy to fight and lose to; parse it rather than
-      # eyeball it.
+      # The JSON-LD is a template that we write manually in a script block. In that
+      # block, Go's contextual escaping can easily make incorrect output. Thus, the
+      # check parses the JSON-LD, because a look at the output is not sufficient.
       - |
         node <<'JS'
         const fs = require("node:fs");
