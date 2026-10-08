@@ -37,7 +37,8 @@ after re-vendoring.
 ## What this repo owns
 
 - `data/mirrors.toml` — the mirror index. **Adding/retiring a mirror is an edit
-  here**, nothing else; the homepage tiles and the ItemList JSON-LD render from it.
+  here**, nothing else; the homepage tiles, the ItemList JSON-LD and the public
+  mirrors' names in the meta description (hugo.toml's `%s`) render from it.
   `[[mirrors]]` are the public ones; `[[private]]` copy the owner's own accounts,
   have no `url` or `usage` but an `into` (where the copy lands), render under the
   Private tab, and stay out of the JSON-LD.

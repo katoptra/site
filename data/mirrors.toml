@@ -37,7 +37,7 @@ cadence = "twice daily"
 repo = "https://github.com/katoptra/gnu"
 healthcheck = "https://healthchecks.io/b/2/5b1c7694-c3aa-4db7-9813-0b898669564d.svg"
 upstream = { name = "gnu.org", url = "https://ftp.gnu.org/gnu/", icon = "gnu" }
-usage = "Every path of ftp.gnu.org/gnu at the root — release tarballs, their signatures and the GNU keyring — so the host drops in anywhere a GNU mirror URL is accepted."
+usage = "Every path of ftp.gnu.org/gnu at the root — the release tarballs and .sig signatures of over 300 GNU packages, from GCC, glibc and Binutils to Emacs, Bash, Coreutils and Guix, with the GNU keyring to verify them — so the host drops in anywhere an ftp.gnu.org or ftpmirror.gnu.org URL is accepted. Alpha releases (alpha.gnu.org) are not included."
 
 [[mirrors]]
 name = "Savannah (nongnu)"
@@ -46,7 +46,7 @@ cadence = "twice daily"
 repo = "https://github.com/katoptra/nongnu"
 healthcheck = "https://healthchecks.io/b/2/1690a027-fc78-4459-a66b-c0d3d5078980.svg"
 upstream = { name = "savannah.nongnu.org", url = "https://download.savannah.nongnu.org/releases/", icon = "gnu" }
-usage = "Savannah's release tree for the non-GNU projects it hosts, every path at the root, with a page for every directory."
+usage = "Every path of download.savannah.nongnu.org/releases at the root — the release files of over 1,000 free software projects that Savannah hosts outside GNU, among them FreeType, acl and attr, dmidecode, lzip, nmh, quilt and TinyCC — so a Savannah download URL works with only the host swapped."
 
 # Private mirrors copy the owner's own accounts, so they have no url: the tile shows
 # the name as plain text and "Into <into>" where a public mirror shows its host, and
