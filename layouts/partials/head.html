@@ -3,14 +3,16 @@
 <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#121218" media="(prefers-color-scheme: dark)" />
 
-<!-- SEO -->
+<!-- SEO. The description names every public mirror, so a search for one finds its name
+     in the snippet; the names come from data/mirrors.toml into hugo.toml's %s. -->
+{{- $names := slice }}
+{{- range hugo.Data.mirrors.mirrors }}{{ $names = $names | append .name }}{{ end }}
+{{- $description := printf .Site.Params.description (delimit $names ", " " and ") }}
 <title>{{ .Site.Title }}</title>
 {{ with .Site.Params.author }}
   <meta name="author" content="{{ . }}" />
 {{ end }}
-{{ with .Site.Params.description }}
-  <meta name="description" content="{{ . }}" />
-{{ end }}
+<meta name="description" content="{{ $description }}" />
 
 <!-- Favicons: the katoptra mark, written to static/ by brand/build.py, shadowing the theme's J at the same root paths -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -25,10 +27,8 @@
 <meta property="og:site_name" content="katoptra.org"/>
 <meta property="og:title" content="{{ .Site.Title }}" />
 <meta name="twitter:title" content="{{ .Site.Title }}" />
-{{ with .Site.Params.description }}
-  <meta property="og:description" content="{{ . }}" />
-  <meta name="twitter:description" content="{{ . }}" />
-{{ end }}
+<meta property="og:description" content="{{ $description }}" />
+<meta name="twitter:description" content="{{ $description }}" />
 <meta property="og:url" content="{{ .Site.BaseURL }}" />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US">
@@ -48,7 +48,7 @@
   "@id": "{{ .Site.BaseURL }}#website",
   "url": "{{ .Site.BaseURL }}",
   "name": "katoptra.org",
-  "description": "{{ .Site.Params.description }}",
+  "description": "{{ $description }}",
   "publisher": {
     "@type": "Person",
     "@id": "https://ijosh.com/#person",

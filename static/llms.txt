@@ -16,10 +16,17 @@
   The tlnet subtree alone, every platform. Point tlmgr at it:
   `tlmgr option repository https://tlnet.katoptra.org/systems/texlive/tlnet/`
 - GNU: https://gnu.katoptra.org/ (upstream: https://ftp.gnu.org/gnu/, refreshed twice daily)
-  Every path of ftp.gnu.org/gnu at the root. Swap the host in any GNU download URL:
-  `https://gnu.katoptra.org/emacs/`
+  Every path of ftp.gnu.org/gnu at the root: the release tarballs and .sig signatures
+  of over 300 GNU packages (gcc, glibc, binutils, emacs, bash, coreutils, guix, ...)
+  and gnu-keyring.gpg to verify them. Not alpha.gnu.org. Swap the host in any
+  ftp.gnu.org/gnu or ftpmirror.gnu.org URL: `https://gnu.katoptra.org/emacs/`
+  Freshness: `https://gnu.katoptra.org/mirror-updated-timestamp.txt` (upstream's Unix time).
 - Savannah (nongnu): https://nongnu.katoptra.org/ (upstream: https://download.savannah.nongnu.org/releases/, refreshed twice daily)
-  Savannah's nongnu release tree at the root: `https://nongnu.katoptra.org/freetype/`
+  Every path of download.savannah.nongnu.org/releases (the same tree as
+  download.savannah.gnu.org/releases) at the root: the release files of over 1,000
+  projects Savannah hosts outside GNU (freetype, acl, attr, dmidecode, lzip, nmh,
+  quilt, tinycc, ...). Swap the host: `https://nongnu.katoptra.org/freetype/`
+  Freshness: `https://nongnu.katoptra.org/00_TIME.txt` (upstream's Unix time).
 
 To leave a TeX mirror: `tlmgr option repository ctan`.
 
