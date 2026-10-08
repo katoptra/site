@@ -19,7 +19,7 @@ cadence = "hourly"
 repo = "https://github.com/katoptra/ctan"
 healthcheck = "https://healthchecks.io/b/2/f4ad55cc-4b2d-4cce-b133-aba5381d9e71.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org", icon = "ctan" }
-usage = "Every CTAN path is served at the root, so the host drops in anywhere a CTAN mirror URL is accepted. TeX Live and TinyTeX both reach it through tlmgr."
+usage = "The mirror serves all the paths of CTAN at its root. Thus, its URL can replace a CTAN mirror URL. TeX Live and TinyTeX use it through tlmgr."
 
 [[mirrors]]
 name = "TeX Live (tlnet)"
@@ -28,25 +28,25 @@ cadence = "daily"
 repo = "https://github.com/katoptra/tlnet"
 healthcheck = "https://healthchecks.io/b/2/f34567b9-d513-41a5-93d8-56fb69d25257.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org/tex-archive/systems/texlive/tlnet", icon = "ctan" }
-usage = "The tlnet subtree alone — the directory tlmgr installs and updates from — with every platform, doc and source. It tracks the current TeX Live release and moves to the next when upstream does."
+usage = "The mirror serves only the tlnet subtree: the directory that tlmgr installs and updates from. It has all the platforms, docs and sources. It always has the TeX Live release that upstream has, and it moves to the next release when upstream moves."
 
 [[mirrors]]
 name = "GNU"
 url = "https://gnu.katoptra.org/"
-cadence = "twice daily"
+cadence = "twice a day"
 repo = "https://github.com/katoptra/gnu"
 healthcheck = "https://healthchecks.io/b/2/5b1c7694-c3aa-4db7-9813-0b898669564d.svg"
 upstream = { name = "gnu.org", url = "https://ftp.gnu.org/gnu/", icon = "gnu" }
-usage = "Every path of ftp.gnu.org/gnu at the root — the release tarballs and .sig signatures of over 300 GNU packages, from GCC, glibc and Binutils to Emacs, Bash, Coreutils and Guix, with the GNU keyring to verify them — so the host drops in anywhere an ftp.gnu.org or ftpmirror.gnu.org URL is accepted. Alpha releases (alpha.gnu.org) are not included."
+usage = "The mirror serves all the paths of ftp.gnu.org/gnu at its root. These are the release tarballs and .sig signatures of more than 300 GNU packages, from GCC, glibc and Binutils to Emacs, Bash, Coreutils and Guix. The GNU keyring to verify them is also at the root. In a URL, gnu.katoptra.org can replace ftp.gnu.org/gnu or ftpmirror.gnu.org. The mirror does not include the alpha releases (alpha.gnu.org)."
 
 [[mirrors]]
 name = "Savannah (nongnu)"
 url = "https://nongnu.katoptra.org/"
-cadence = "twice daily"
+cadence = "twice a day"
 repo = "https://github.com/katoptra/nongnu"
 healthcheck = "https://healthchecks.io/b/2/1690a027-fc78-4459-a66b-c0d3d5078980.svg"
 upstream = { name = "savannah.nongnu.org", url = "https://download.savannah.nongnu.org/releases/", icon = "gnu" }
-usage = "Every path of download.savannah.nongnu.org/releases at the root — the release files of over 1,000 free software projects that Savannah hosts outside GNU, among them FreeType, acl and attr, dmidecode, lzip, nmh, quilt and TinyCC — so a Savannah download URL works with only the host swapped."
+usage = "The mirror serves all the paths of download.savannah.nongnu.org/releases at its root. These are the release files of more than 1,000 free software projects that Savannah hosts and that are not part of GNU. Examples are FreeType, acl and attr, dmidecode, lzip, nmh, quilt and TinyCC. In a Savannah download URL, nongnu.katoptra.org can replace download.savannah.nongnu.org/releases."
 
 # Private mirrors copy the owner's own accounts, so they have no url: the tile shows
 # the name as plain text and "Into <into>" where a public mirror shows its host, and
@@ -63,7 +63,7 @@ upstream = { name = "dropbox.com", url = "https://www.dropbox.com", icon = "drop
 
 [[private]]
 name = "GitHub"
-cadence = "nightly"
+cadence = "daily"
 into = "Proton Drive"
 repo = "https://github.com/katoptra/github"
 healthcheck = "https://healthchecks.io/b/2/875451ff-376b-4fb7-b7c1-40278e873faf.svg"

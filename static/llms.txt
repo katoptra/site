@@ -1,45 +1,53 @@
 # katoptra.org
 
-> Public mirrors of open-source software archives. Each mirror syncs from its
-> upstream on a fixed schedule through an open pipeline, is verified against the
-> upstream's own signatures and checksums where upstream signs its tree, and is
-> served on Cloudflare's global network. Paths and bytes are unchanged from
-> upstream, so a mirror here drops in wherever that archive's URL is accepted. Run
-> by Josh Vaughen (https://ijosh.com).
+> katoptra.org has public mirrors of open-source software archives. Each mirror syncs from
+> its upstream at scheduled times through an open pipeline, and Cloudflare's global network
+> serves it. Where upstream signs its tree, the pipeline verifies the mirror against the
+> upstream's signatures and checksums. Each mirror keeps the paths and the bytes of its
+> upstream. Thus, the URL of a mirror here can replace the URL of its archive. Josh Vaughen
+> (https://ijosh.com) operates the mirrors.
 
 ## Mirrors
 
 - CTAN: https://ctan.katoptra.org/ (upstream: https://ctan.org, refreshed hourly)
-  Every CTAN path at the root. Point tlmgr at it:
+  It serves all the paths of CTAN at its root. Set the tlmgr repository to it:
   `tlmgr option repository https://ctan.katoptra.org/systems/texlive/tlnet/`
+  Freshness: `https://ctan.katoptra.org/timestamp` (upstream's clock, year-month-day-hour-minute UTC).
 - TeX Live (tlnet): https://tlnet.katoptra.org/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet, refreshed daily)
-  The tlnet subtree alone, every platform. Point tlmgr at it:
+  It serves only the tlnet subtree, with all platforms. Set the tlmgr repository to it:
   `tlmgr option repository https://tlnet.katoptra.org/systems/texlive/tlnet/`
-- GNU: https://gnu.katoptra.org/ (upstream: https://ftp.gnu.org/gnu/, refreshed twice daily)
-  Every path of ftp.gnu.org/gnu at the root: the release tarballs and .sig signatures
-  of over 300 GNU packages (gcc, glibc, binutils, emacs, bash, coreutils, guix, ...)
-  and gnu-keyring.gpg to verify them. Not alpha.gnu.org. Swap the host in any
-  ftp.gnu.org/gnu or ftpmirror.gnu.org URL: `https://gnu.katoptra.org/emacs/`
+  Freshness: `https://tlnet.katoptra.org/timestamp` (upstream's clock, year-month-day-hour-minute UTC).
+- GNU: https://gnu.katoptra.org/ (upstream: https://ftp.gnu.org/gnu/, refreshed twice a day)
+  It serves all the paths of ftp.gnu.org/gnu at its root. These are the release tarballs
+  and .sig signatures of more than 300 GNU packages (for example gcc, glibc, binutils,
+  emacs, bash, coreutils and guix). The root also has gnu-keyring.gpg to verify them. It
+  does not include alpha.gnu.org. Replace `https://ftp.gnu.org/gnu/` or
+  `https://ftpmirror.gnu.org/` with `https://gnu.katoptra.org/`, for example
+  `https://gnu.katoptra.org/emacs/`.
   Freshness: `https://gnu.katoptra.org/mirror-updated-timestamp.txt` (upstream's Unix time).
-- Savannah (nongnu): https://nongnu.katoptra.org/ (upstream: https://download.savannah.nongnu.org/releases/, refreshed twice daily)
-  Every path of download.savannah.nongnu.org/releases (the same tree as
-  download.savannah.gnu.org/releases) at the root: the release files of over 1,000
-  projects Savannah hosts outside GNU (freetype, acl, attr, dmidecode, lzip, nmh,
-  quilt, tinycc, ...). Swap the host: `https://nongnu.katoptra.org/freetype/`
+- Savannah (nongnu): https://nongnu.katoptra.org/ (upstream: https://download.savannah.nongnu.org/releases/, refreshed twice a day)
+  It serves all the paths of download.savannah.nongnu.org/releases at its root. This is the
+  same tree as download.savannah.gnu.org/releases: the release files of more than 1,000
+  non-GNU projects on Savannah (for example freetype, acl, attr, dmidecode, lzip, nmh, quilt
+  and tinycc). Replace `https://download.savannah.nongnu.org/releases/` with
+  `https://nongnu.katoptra.org/`, for example `https://nongnu.katoptra.org/freetype/`.
   Freshness: `https://nongnu.katoptra.org/00_TIME.txt` (upstream's Unix time).
 
-To leave a TeX mirror: `tlmgr option repository ctan`.
+To go back to the CTAN mirror rotation from a TeX mirror here: `tlmgr option repository ctan`.
 
 ## Private mirrors
 
-Nightly copies of the owner's own Dropbox and GitHub accounts into Proton Drive, with
-nothing public to fetch. Their pipelines are open source and can be forked to mirror
-your own accounts: https://github.com/katoptra/dropbox and
-https://github.com/katoptra/github
+Two private mirrors copy the owner's accounts into Proton Drive. They have nothing public to
+fetch.
+
+- Dropbox, nightly: https://github.com/katoptra/dropbox
+- GitHub, daily: https://github.com/katoptra/github
+
+Their pipelines are open source. You can fork them to mirror your accounts.
 
 ## Source
 
-- Sync pipelines and site: https://github.com/katoptra
+- The sync pipelines and this site: https://github.com/katoptra
 
 ## Brand
 

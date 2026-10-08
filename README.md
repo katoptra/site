@@ -9,58 +9,78 @@
 
 <h1 align="center">site</h1>
 
-<p align="center">The landing page for katoptra.org, and the mark every katoptra repository wears.</p>
+<p align="center">The landing page for katoptra.org, and the mark of each katoptra repository.</p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/github/license/katoptra/site" alt="license"></a>
 </p>
 
-A Hugo site that lists every mirror with its upstream, cadence, repository, live status
-and last sync time, as tiles under a Public / Private switch: the public mirrors, and the
-private ones that copy the owner's own accounts. Deployed on Cloudflare Pages on push to
-`main`, which is also what publishes the brand files below.
+This repository is a Hugo site. It shows each mirror as a tile, below a Public / Private
+switch. The Public group has the public mirrors. The Private group has the private mirrors,
+which copy the owner's accounts. Each tile shows these items:
+
+- The upstream
+- The cadence
+- The repository
+- The status
+- The time since the last sync.
+
+The page gets the status and the time since the last sync when it loads. Cloudflare Pages
+deploys the site at each push to `main`, and this deploy also publishes the files in
+[The brand](#the-brand).
 
 ## How it works
 
-1. **Design** is vendored from [ijosh.com](https://github.com/jshvn/ijosh.com) by
-   `task theme:update` into `themes/ijosh/`, pinned in `themes/ijosh/THEME_COMMIT`. Nothing
-   under `themes/` is edited here; the theme supplies the reset and the shapes, and the
-   katoptra palette and face in [The brand](#the-brand) override its tokens.
-2. **Data** is one entry per mirror in [`data/mirrors.toml`](data/mirrors.toml). The
-   homepage tiles and the ItemList JSON-LD render from it, so adding or retiring a mirror
-   is an edit there and nothing else.
-3. **Liveness** is [`assets/js/status.js`](assets/js/status.js): at page load it reads each
-   mirror's healthchecks.io JSON badge and its sync workflow's runs on GitHub Actions, tints
-   each tile's head green or red and fills in the time since its last sync, and on a fetch
-   failure leaves the head neutral and the time a dash. Every
-   mirror's pipeline pings a healthcheck at the end of each run, which is what the badge
-   reports; [katoptra/lib](https://github.com/katoptra/lib#monitoring) has the rest.
-4. **Deploy** is `hugo --minify --gc` on push to `main`, by Cloudflare Pages.
+1. **Design.** `task theme:update` vendors the design from
+   [ijosh.com](https://github.com/jshvn/ijosh.com) into `themes/ijosh/`, and it pins the
+   design in `themes/ijosh/THEME_COMMIT`. This repository does not edit a file in
+   `themes/`. The theme supplies the reset and the shapes. The katoptra palette and face in
+   [The brand](#the-brand) override its tokens.
+2. **Data.** [`data/mirrors.toml`](data/mirrors.toml) has one entry for each mirror. The
+   homepage tiles and the ItemList JSON-LD come from it. Thus, to add or remove a mirror,
+   you edit that file and no other file.
+3. **Status.** At page load, [`assets/js/status.js`](assets/js/status.js) reads the
+   healthchecks.io JSON badge of each mirror and the runs of its sync workflow on GitHub
+   Actions. The script makes the head of each tile green or red, and it shows the time
+   since the last sync. If the script cannot fetch a source, the head stays neutral and the
+   time stays a dash. The pipeline of each mirror pings a healthcheck at the end of each
+   run, and the badge shows the result
+   ([katoptra/lib](https://github.com/katoptra/lib#monitoring) gives more data).
+4. **Deploy.** At each push to `main`, Cloudflare Pages runs `hugo --minify --gc`.
 
 ## The brand
 
-The mark is two chevrons meeting at a hairline: the upstream on the left in one ink, the
-copy on the right in another, and the mirror plane between them. It sits on a rounded tile
-that stays dark in both themes, so one file serves a light page and a dark one. The face
-is [Gabarito](https://fonts.google.com/specimen/Gabarito), whose rounded terminals match
-the tile's corners and the chevrons' caps. The palette is a warm off-white and a
-near-black ground, a grey text ramp, and one blue-violet for links.
+The mark is two chevrons that point to a hairline:
 
-[`brand/build.py`](brand/build.py) is the source of truth: the geometry, both palettes,
-and every file cut from them. Everything it writes is committed and served from
-`katoptra.org`, so a README anywhere references the URL and never keeps a copy.
+- The upstream, on the left, in one ink
+- The copy, on the right, in a second ink
+- The mirror plane, which is the hairline between them.
+
+The mark is on a rounded tile that stays dark in the light theme and in the dark theme.
+Thus, one file is correct for a light page and for a dark page. The face is
+[Gabarito](https://fonts.google.com/specimen/Gabarito). Its rounded terminals agree with the
+corners of the tile and with the caps of the chevrons. The palette has these colors:
+
+- A warm off-white ground and a near-black ground
+- A gray ramp for text
+- One blue-violet for links.
+
+[`brand/build.py`](brand/build.py) is the source of truth. It has the geometry and the two
+palettes, and it makes each brand file from them. Each file that it writes is in git, and
+`katoptra.org` serves it. Thus, a README in a different repository refers to the URL, and it
+does not keep a copy.
 
 | File | Served at | Use |
 |---|---|---|
-| `katoptra-mark.svg`, `katoptra-mark-dark.svg` | `/brand/` | The mark on its tile, for a light or a dark page |
-| `katoptra-mark-224.png`, `katoptra-mark-dark-224.png` | `/brand/` | The same at 224px, for READMEs at 112 wide |
-| `katoptra-mark-1024.png`, `katoptra-mark-dark-1024.png` | `/brand/` | The same at 1024px, for anything larger |
-| `katoptra-avatar.svg`, `katoptra-avatar.png` | `/brand/` | The mark on a full-bleed square, for the GitHub org avatar and any surface that rounds its own corners |
+| `katoptra-mark.svg`, `katoptra-mark-dark.svg` | `/brand/` | The mark on its tile, for a light page or a dark page |
+| `katoptra-mark-224.png`, `katoptra-mark-dark-224.png` | `/brand/` | The same at 224px, for READMEs at a width of 112 |
+| `katoptra-mark-1024.png`, `katoptra-mark-dark-1024.png` | `/brand/` | The same at 1024px, for larger images |
+| `katoptra-avatar.svg`, `katoptra-avatar.png` | `/brand/` | The mark on a full-bleed square, for the GitHub org avatar and for each surface that applies a corner radius |
 | `tokens.css` | `/brand/` | The palette as custom properties, light and dark |
-| `favicon.svg`, `favicon.ico`, `apple-touch-icon.png` | `/` | The site's icons |
+| `favicon.svg`, `favicon.ico`, `apple-touch-icon.png` | `/` | The icons of the site |
 | `images/og.png` | `/images/` | The 1200x630 unfurl card |
 
-Every katoptra README opens with the mark linked to the organization:
+Each katoptra README starts with the mark, as a link to the organization:
 
 ```html
 <p align="center">
@@ -73,19 +93,37 @@ Every katoptra README opens with the mark linked to the organization:
 </p>
 ```
 
-To change the mark or a color, edit `MARK`, `LIGHT` or `DARK` in `brand/build.py` and run
-`task brand`; `task check` fails if the committed files differ from a rebuild, so the
-artwork cannot drift from the script. The font files under `static/fonts/` come from
-`task brand:fonts`, which fetches Gabarito from google/fonts at a pinned commit and subsets
-it to latin; its license is beside them.
+To change the mark or a color:
+
+1. Edit `MARK`, `LIGHT` or `DARK` in `brand/build.py`.
+2. Run `task brand`.
+
+If the committed files are different from the files that the script makes, `task check`
+gives an error. Thus, the artwork always agrees with the script.
+
+The font files in `static/fonts/` come from `task brand:fonts`. This task fetches Gabarito
+from google/fonts at a pinned commit, and it subsets the font to latin. The license of the
+font is in the same directory.
 
 ## Want your own?
 
-Fork [katoptra/site](https://github.com/katoptra/site), swap the entries in
-`data/mirrors.toml` for your mirrors, point `baseURL` in `hugo.toml` at your domain, and
-rewrite the identity-bearing files: `static/llms.txt`, `static/site.webmanifest`,
-`static/robots.txt`, `static/.well-known/security.txt`, the footer, and `brand/build.py`
-for a mark of your own. It builds to a static site; host it anywhere.
+These files identify this site:
+
+- `static/llms.txt`
+- `static/site.webmanifest`
+- `static/robots.txt`
+- `static/.well-known/security.txt`
+- The footer
+- `brand/build.py`, which makes the mark.
+
+To make a site for your mirrors:
+
+1. Fork [katoptra/site](https://github.com/katoptra/site).
+2. Replace the entries in `data/mirrors.toml` with your mirrors.
+3. Set `baseURL` in `hugo.toml` to your domain.
+4. Write new versions of the files in that list, with your mark in `brand/build.py`.
+5. Put the site on a web host that you select. Hugo builds it to a static site, which all
+   web hosts can serve.
 
 ## Operating it
 
@@ -98,9 +136,10 @@ task brand:fonts   # re-fetch and re-subset Gabarito (network)
 task theme:update  # re-vendor ijosh.com master and print the diff of each shadowed file
 ```
 
-Verify a layout change by rendering, in light and dark, at desktop width and about 390px:
-the page fits a 1440x900 viewport without internal scroll, and at 390px nothing overflows
-sideways.
+For a layout change, look at the rendered page in the light and the dark color scheme, at
+desktop width and at approximately 390px. Make sure that the full page shows in a 1440x900
+viewport without an internal scroll. Make sure that no element overflows horizontally at
+390px.
 
 Pull requests are welcome.
 

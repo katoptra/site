@@ -19,7 +19,7 @@ copyright = "&copy;2026 Josh Vaughen"
   # Metadata for search engines and social sharing. %s in the description is the public
   # mirrors' names, filled from data/mirrors.toml by layouts/partials/head.html.
   author = "Josh Vaughen"
-  description = "Verified mirrors of %s, synced on a schedule by open pipelines and served on Cloudflare's global network."
+  description = "Verified mirrors of %s. Open pipelines sync them on a schedule, and Cloudflare's global network serves them."
 
   # Cloudflare Web Analytics beacon token (public; omit to disable the beacon)
   # cloudflareBeaconToken = ""
