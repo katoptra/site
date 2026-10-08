@@ -1,7 +1,7 @@
 /* The parts of each mirror tile that this script sets when the page loads:
    - the health status, from the JSON badge of healthchecks.io
-   - the time from the last run of the sync workflow with the conclusion success, from
-     the GitHub Actions API.
+   - the age of the last run of the sync workflow with the conclusion success, from the
+     GitHub Actions API.
    If a fetch gives an error, the tile keeps its fallback: a neutral head, and a dash for
    the age. */
 
