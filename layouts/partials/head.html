@@ -3,9 +3,9 @@
 <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#121218" media="(prefers-color-scheme: dark)" />
 
-<!-- SEO. The description names each public mirror. Thus, a search for a mirror finds
-     its name in the snippet. The names go from data/mirrors.toml into the %s of
-     hugo.toml. -->
+<!-- SEO. The description has the name of each public mirror. Thus, a search for a
+     mirror finds its name in the snippet. The names go from data/mirrors.toml into the %s
+     of hugo.toml. -->
 {{- $names := slice }}
 {{- range hugo.Data.mirrors.mirrors }}{{ $names = $names | append .name }}{{ end }}
 {{- $description := printf .Site.Params.description (delimit $names ", " " and ") }}
@@ -100,7 +100,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/fonts/gabarito-700-latin.woff2" crossorigin />
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
 
-<!-- The health status and the last sync time of each tile. status.js fetches them at page load. -->
+<!-- The health status and the last sync time of each tile. status.js fetches them when the page loads. -->
 {{- $js := resources.Get "js/status.js" | resources.Minify | resources.Fingerprint -}}
 <script type="module" src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
 

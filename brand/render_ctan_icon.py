@@ -1,8 +1,8 @@
 # The CTAN icon for the upstream link on the CTAN and tlnet tiles. It is a copy of the
-# favicon of ctan.org. The favicon is a card at 45 degrees with the letters CTAN cut out
-# of it, and the L of a second card behind it. This script makes the copy in one color
-# and in the format of Font Awesome (512 units tall, one path, currentColor). Thus, the
-# icon has the same dimension and gray as the icons adjacent to it.
+# favicon of ctan.org. The favicon is a card at 45 degrees, with the letters CTAN as
+# holes in it. The L of a second card is behind it. This script makes the copy in one
+# color and in the format of Font Awesome (512 units tall, one path, currentColor). Thus,
+# the icon has the same dimensions and the same gray color as the icons adjacent to it.
 #
 # To run it: uv run --with shapely brand/render_ctan_icon.py [OUT]  (the default OUT is assets/icons/ctan.svg)
 import sys

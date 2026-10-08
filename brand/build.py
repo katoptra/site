@@ -2,9 +2,9 @@
 # requires-python = ">=3.11"
 # dependencies = ["pillow==12.3.0", "fonttools[woff]==4.65.0"]
 # ///
-# The katoptra mark, and all the files that come from it. This script has the one
-# geometry of the mark, and no other file makes the mark. The mark is two chevrons that
-# point to a hairline mirror plane, on a rounded tile. The script writes the SVGs, the
+# The katoptra mark, and all the files that this script makes from it. This script has
+# the one geometry of the mark, and no other file makes the mark. The mark is two chevrons
+# that point to a hairline mirror plane, on a rounded tile. The script writes the SVGs, the
 # PNGs, the favicons, the social card and the token sheet in static/. Thus, to change the
 # mark, change MARK in this script and make the files again.
 #
@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 STATIC = ROOT / "static"
 BRAND = STATIC / "brand"
 
-# ---- the palette, light then dark. The mark gets the tile and inks of its ground. ----
+# ---- the palette, light then dark. The mark gets the tile and inks of its background. ----
 LIGHT = {
     "bg": "#f6f5f2", "text": "#1c1c28", "text-body": "#4b4b5a", "text-muted": "#7a7a8a",
     "accent": "#4f5cff", "pill-bg": "rgba(28, 28, 40, 0.1)",
@@ -134,7 +134,7 @@ def tracked(d, text, fnt, cx, top, tracking, fill):
 
 
 def og_png() -> Image.Image:
-    """The 1200 x 630 unfurl card: the mark above the name and the tagline, on the dark ground."""
+    """The 1200 x 630 unfurl card: the mark above the name and the tagline, on the dark background."""
     W, H, SS = 1200, 630, 2
     p = DARK
     img = Image.new("RGB", (W * SS, H * SS), hex_rgb(p["bg"]))
@@ -155,8 +155,8 @@ def tokens_css() -> str:
     return (
         "/* The katoptra palette. brand/build.py makes this file from LIGHT and DARK.\n"
         "   Do not edit it: brand/build.py overwrites it. The site serves it at\n"
-        "   /brand/tokens.css, and it is also in the CSS bundle of the site, where it\n"
-        "   overrides the tokens of the theme. To override the system preference, set\n"
+        "   /brand/tokens.css. It is also in the CSS bundle of the site, where it overrides\n"
+        "   the tokens of the theme. To override the system preference, set\n"
         "   data-theme=\"light\" or \"dark\" on <html>. */\n"
         ":root {\n  color-scheme: light;\n" + decl(LIGHT) + "}\n\n"
         "@media (prefers-color-scheme: dark) {\n  :root:not([data-theme=\"light\"]) {\n"
@@ -174,7 +174,7 @@ def png_bytes(img: Image.Image) -> bytes:
 def ico_bytes() -> bytes:
     """16, 32 and 48 pixels.
 
-    The function makes each image at its dimension, not as a smaller copy of one image.
+    The function makes each image from the geometry, not as a smaller copy of one image.
     """
     frames = [mark_png(n, LIGHT, ss=8) for n in (48, 32, 16)]
     buf = io.BytesIO()

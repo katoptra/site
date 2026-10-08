@@ -16,8 +16,8 @@ copyright = "&copy;2026 Josh Vaughen"
 
 [params]
 
-  # Metadata for search engines and for links on social sites. The %s in the description
-  # is the names of the public mirrors. layouts/partials/head.html puts them there from
+  # Metadata for search engines and for link previews. The names of the public mirrors go
+  # into the %s in the description. layouts/partials/head.html puts them there from
   # data/mirrors.toml.
   author = "Josh Vaughen"
   description = "Verified mirrors of %s. Open pipelines sync them on a schedule, and Cloudflare's global network serves them."

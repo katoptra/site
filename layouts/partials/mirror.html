@@ -4,8 +4,8 @@
 
        status.js sets data-state on the tile from the healthcheck. That value sets the
        color of the head and selects the icon of the badge. status.js also sets the age
-       from the last sync workflow run with the conclusion success. Until then, the head
-       is neutral and the age shows a dash. */ -}}
+       from the last run of the sync workflow with the conclusion success. Until then, the
+       head is neutral and the age shows a dash. */ -}}
 {{- $repo := strings.TrimPrefix "https://github.com/" .repo }}
 {{- $icon := printf "icons/%s.svg" .upstream.icon }}
 <article class="mirror" data-badge="{{ .healthcheck }}">

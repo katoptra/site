@@ -1,9 +1,9 @@
 /* ===== Mirrors layer =====
-   This file comes after the theme's fonts/split/style and the katoptra tokens in the
+   This file follows the theme's fonts/split/style and the katoptra tokens in the
    bundle. Thus, when two rules have the same specificity, the browser uses the rule
    here. The palette is assets/css/tokens.css, which brand/build.py makes. The
    shapes (16px tiles on --pill-bg, 999px pills and 8px gaps) are ijosh.com's. The one
-   face is Gabarito. The site hosts it adjacent to the fonts of the theme, and
+   font is Gabarito. The site hosts it adjacent to the fonts of the theme, and
    brand/fonts.py subsets it. */
 
 @font-face {
@@ -23,7 +23,7 @@
 
 /* ===== Tokens that are not in the palette =====
    The status colors are the only semantic colors on the page. Their contrast is AA on
-   the light ground and on the dark ground. */
+   the light background and on the dark background. */
 :root {
   --status-up: #1a7f37;
   --status-down: #cf222e;
@@ -336,7 +336,7 @@ body.page-template-page-fullsingle-split {
   }
 }
 
-/* Links: the upstream on the left, and the pipeline repository on the right. */
+/* Links: the upstream on the left side, and the pipeline repository on the right side. */
 .mirror-links {
   display: flex;
   flex-wrap: wrap;

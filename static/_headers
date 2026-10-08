@@ -6,7 +6,7 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com https://healthchecks.io https://api.github.com; frame-ancestors 'none'; form-action 'self'
 
-# Content-addressed assets (fingerprinted by Hugo) — safe to cache forever
+# Content-addressed assets. Hugo fingerprints them. Thus, a cache can safely keep them with no time limit.
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
@@ -19,6 +19,6 @@
 /images/*
   Cache-Control: public, max-age=604800
 
-# The mark and the tokens. The katoptra READMEs refer to them through their URLs.
+# The mark and the tokens. The katoptra READMEs refer to them with their URLs.
 /brand/*
   Cache-Control: public, max-age=604800

@@ -6,18 +6,18 @@
 #   repo         the sync pipeline
 #   healthcheck  the public healthchecks.io badge for the sync
 #   upstream     {name, url, icon}
-#   usage        a short description of the mirror. It gets to the page only as the
+#   usage        a short description of the mirror. The page uses it only as the
 #                description of the mirror in the ItemList JSON-LD.
 #
 # upstream.icon is the name of an icon file in assets/icons/ or in the icons of the theme,
-# without .svg. The icon is from Font Awesome Free, or it is ctan (made by
-# brand/render_ctan_icon.py) or gnu (made by brand/render_gnu_icon.py). If the file is
-# missing, the build stops with an error.
+# without .svg. The icon is from Font Awesome Free, or it is ctan
+# (brand/render_ctan_icon.py makes it) or gnu (brand/render_gnu_icon.py makes it). If the
+# file is missing, the build stops with an error.
 #
 # healthcheck must be the URL of the two-state badge for one check (/b/2/<uuid>.svg).
 # The page shows a green check for each status that is not "down". Thus, with a
-# three-state badge or a project badge, the page can show a green check for a stalled
-# sync.
+# three-state badge or a project badge, the page can show a green check for a sync that
+# stopped.
 
 [[mirrors]]
 name = "CTAN"

@@ -1,10 +1,10 @@
 # The GNU icon for the upstream link on the GNU and Savannah tiles. It is the Bold GNU
 # Head (Aurelio A. Heckert, copyright 2003 Free Software Foundation,
 # https://www.gnu.org/graphics/heckert_gnu.html, GFDL 1.3, Free Art License or CC BY-SA
-# 2.0). This vector of the mark comes from gnu.org, and the repository keeps it adjacent
-# to this script as brand/heckert_gnu.svg. This script makes a copy of it in the format
-# of Font Awesome (512 units tall, one path, currentColor). Thus, the icon has the same
-# dimension and gray as the icons adjacent to it.
+# 2.0). The source file is a vector of the mark from gnu.org, and the repository keeps
+# it adjacent to this script as brand/heckert_gnu.svg. This script makes a copy of it in
+# the format of Font Awesome (512 units tall, one path, currentColor). Thus, the icon has
+# the same dimensions and the same gray color as the icons adjacent to it.
 #
 # The drawing is one even-odd path. The script flattens its curves into polygons and
 # simplifies them, with the same method as the CTAN icon. The output has the same
