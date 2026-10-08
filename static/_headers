@@ -6,10 +6,15 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com https://healthchecks.io https://api.github.com; frame-ancestors 'none'; form-action 'self'
 
-# Content-addressed assets. Hugo fingerprints them. Thus, a cache can safely keep them with no time limit.
+# The font files from static/fonts/ (gabarito-*-latin.woff2). Hugo does not fingerprint
+# them, and their names have no content hash. But this rule sets them as immutable for one
+# year. Give a changed font a new file name. With the same name, a cache can keep the
+# previous font for a maximum of one year.
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Content-addressed assets: Hugo fingerprints the CSS and JS files, and their names have a
+# content hash. Thus, a cache can keep them with no time limit.
 /css/*
   Cache-Control: public, max-age=31536000, immutable
 
