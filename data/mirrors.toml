@@ -26,7 +26,7 @@ cadence = "hourly"
 repo = "https://github.com/katoptra/ctan"
 healthcheck = "https://healthchecks.io/b/2/f4ad55cc-4b2d-4cce-b133-aba5381d9e71.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org", icon = "ctan" }
-usage = "The mirror serves all the paths of CTAN at its root. Thus, its URL can replace a CTAN mirror URL. TeX Live and TinyTeX use it through tlmgr."
+usage = "The mirror serves all the paths of CTAN at its root. Thus, its URL can replace a CTAN mirror URL. TeX Live and TinyTeX use it with tlmgr."
 
 [[mirrors]]
 name = "TeX Live (tlnet)"
@@ -35,7 +35,7 @@ cadence = "daily"
 repo = "https://github.com/katoptra/tlnet"
 healthcheck = "https://healthchecks.io/b/2/f34567b9-d513-41a5-93d8-56fb69d25257.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org/tex-archive/systems/texlive/tlnet", icon = "ctan" }
-usage = "The mirror serves only the tlnet subtree: the directory that tlmgr installs and updates from. It has all the platforms, docs and sources. It always has the TeX Live release that upstream has, and it moves to the next release when upstream moves."
+usage = "The mirror serves only the tlnet subtree: the directory that tlmgr installs and updates from. It has all the platforms, docs and sources. It has the TeX Live release that upstream has, and it moves to the next release when upstream moves."
 
 [[mirrors]]
 name = "GNU"
