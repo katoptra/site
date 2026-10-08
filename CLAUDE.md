@@ -27,7 +27,8 @@ This site keeps these forks of theme files in `static/`. Each fork shadows the t
 copy. The list gives the cause for each fork:
 
 - `static/_headers`: it adds the CSP `connect-src` entries for healthchecks.io and
-  api.github.com, which supply the tile status and the age.
+  api.github.com, which supply the tile status and the age. It also adds cache rules for
+  `/js/*` and `/brand/*`.
 - `static/site.webmanifest`, `static/llms.txt`, `static/robots.txt` and
   `static/.well-known/security.txt`: the theme's copies contain the bio, the brand, the
   sitemap URL and the security contact of ijosh.com.
@@ -133,8 +134,13 @@ cannot fetch a value, the head stays neutral and the age stays a dash. The self-
 
 ### `static/_headers`
 
-This file has the headers of the theme and the two CSP `connect-src` entries that the tile
-status and the age use.
+This file has the headers of the theme, and it adds these items:
+
+- Two CSP `connect-src` entries, for healthchecks.io and api.github.com. These hosts supply
+  the tile status and the age.
+- A `/js/*` rule, the same as the rule for `/css/*`: the fingerprinted `status.js` is
+  immutable for one year.
+- A `/brand/*` rule: the mark and the tokens have a cache time of one week.
 
 ### `static/llms.txt` and `static/site.webmanifest`
 
