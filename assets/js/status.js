@@ -1,7 +1,9 @@
-/* Live parts of each mirror tile, filled at page load: health status from
-   healthchecks.io's JSON badge, and time since the sync workflow's last
-   successful run from the GitHub Actions API. On any fetch failure the tile keeps
-   its fallback: a neutral head, and a dash for the age. */
+/* The parts of each mirror tile that this script sets when the page loads:
+   - the health status, from the JSON badge of healthchecks.io
+   - the age of the last run of the sync workflow with the conclusion success, from the
+     GitHub Actions API.
+   If a fetch gives an error, the tile keeps its fallback: a neutral head, and a dash for
+   the age. */
 
 export function relTime(iso, now = Date.now()) {
   const m = Math.round((now - Date.parse(iso)) / 60000);
@@ -13,7 +15,7 @@ export function relTime(iso, now = Date.now()) {
   return d + (d === 1 ? " day ago" : " days ago");
 }
 
-// The tile's large age: relTime's rounding, one letter for the unit.
+// The large age on the tile: the same rounding as relTime, with one letter for the unit.
 export function shortTime(iso, now = Date.now()) {
   const m = Math.round((now - Date.parse(iso)) / 60000);
   if (m < 1) return "now";
@@ -27,11 +29,13 @@ export function stateFor(badge) {
   return badge.status === "down" ? "down" : "up";
 }
 
-// The newest successful run in a page of the unfiltered run list. The API's
-// status=success filter is a search query, and GitHub answers it for anonymous
-// callers from a lagging index: the same URL returns runs hours or days old.
-// ponytail: only the page the tile fetches is searched (per_page in mirror.html),
-// so a streak of failures longer than that reads as a dash; raise per_page if so.
+// The newest run with the conclusion success, in one page of the unfiltered run list.
+// The status=success filter of the API is a search query. For anonymous callers,
+// GitHub gets the result from an index that is not up to date. Thus, the same URL can
+// give runs with an age of hours or days.
+// ponytail: the function looks only in the page that the tile fetches (per_page in
+// mirror.html). If no run in that page has the conclusion success, the age shows a
+// dash. If that occurs, increase per_page.
 export function lastSuccess(d) {
   return d.workflow_runs?.find((run) => run.conclusion === "success");
 }

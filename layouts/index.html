@@ -1,9 +1,10 @@
 {{ define "main" }}
   {{- $public := hugo.Data.mirrors.mirrors }}
   {{- $private := hugo.Data.mirrors.private }}
-  <!-- Public / Private switch: two radios drawn as one pill control, and the
-       checked one hides the other group's panel. Pure CSS, so it works without
-       JavaScript and never paints both panels while the page loads. -->
+  <!-- Public / Private switch: two radios that show as one pill control. The checked
+       radio hides the panel of the other group. The switch is only CSS. Thus, it
+       operates without JavaScript, and the page does not paint the two panels together
+       while it loads. -->
   <div class="groups">
     <input class="group-radio" type="radio" name="group" id="group-public" checked>
     <input class="group-radio" type="radio" name="group" id="group-private">

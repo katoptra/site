@@ -1,8 +1,10 @@
-# CTAN icon for the upstream link on the CTAN and tlnet tiles: ctan.org's favicon
-# (a card tilted 45 degrees with CTAN knocked out of it, and the L of a second card
-# behind it) redrawn in one color in Font Awesome's format -- 512 units tall, one
-# path, currentColor -- so it takes the same size and grey as the icons beside it.
-# Run: uv run --with shapely brand/render_ctan_icon.py [OUT]  (default assets/icons/ctan.svg)
+# The CTAN icon for the upstream link on the CTAN and tlnet tiles. It is a copy of the
+# favicon of ctan.org. The favicon is a card at 45 degrees, with the letters CTAN as
+# holes in it. The L of a second card is behind it. This script makes the copy in one
+# color and in the format of Font Awesome (512 units tall, one path, currentColor). Thus,
+# the icon has the same dimensions and the same gray color as the icons adjacent to it.
+#
+# To run it: uv run --with shapely brand/render_ctan_icon.py [OUT]  (the default OUT is assets/icons/ctan.svg)
 import sys
 from shapely.geometry import LineString, MultiPolygon, Polygon, box
 from shapely.geometry.polygon import orient
@@ -10,9 +12,9 @@ from shapely.ops import unary_union
 from shapely import affinity
 import math
 
-W, H, R = 360, 270, 14          # card, in the text's frame (y down)
+W, H, R = 360, 270, 14          # the card, in the frame of the text (y goes down)
 CAP, S, LW, GAP = 124, 23, 68, 12  # cap height, stroke, letter width, letter gap
-BAND, BAND_GAP = 30, 26          # the back card's strip and its gap from the front card
+BAND, BAND_GAP = 30, 26          # the strip of the back card, and its gap from the front card
 
 card = box(-W / 2 + R, -H / 2 + R, W / 2 - R, H / 2 - R).buffer(R, quad_segs=8)
 
@@ -45,7 +47,7 @@ back = affinity.translate(card, off, off).difference(card.buffer(BAND_GAP, quad_
 
 shape = affinity.rotate(unary_union([front, back]), -45, origin=(0, 0))
 
-# Fit to Font Awesome's frame: 512 units tall, glyph from 16 to 496.
+# Scale to the frame of Font Awesome: 512 units tall, with the glyph from 16 to 496.
 minx, miny, maxx, maxy = shape.bounds
 k = 480 / (maxy - miny)
 shape = affinity.translate(affinity.scale(shape, k, k, origin=(0, 0)), 0, 0)

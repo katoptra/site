@@ -6,10 +6,16 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com https://healthchecks.io https://api.github.com; frame-ancestors 'none'; form-action 'self'
 
-# Content-addressed assets (fingerprinted by Hugo) — safe to cache forever
+# This rule is for the files in /fonts/: Gabarito and its OFL from static/fonts/, and the
+# fonts of the theme. Hugo does not fingerprint these files, and their names have no
+# content hash. But the rule sets them as immutable for one year. Give a changed font a new
+# file name. With the same name, a cache can keep the previous font for a maximum of one
+# year.
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Hugo fingerprints the CSS and JS files, and their names have a content hash. A changed
+# file gets a new name. Thus, it is safe to set these files as immutable for one year.
 /css/*
   Cache-Control: public, max-age=31536000, immutable
 
@@ -19,6 +25,6 @@
 /images/*
   Cache-Control: public, max-age=604800
 
-# The mark and tokens, referenced by URL from the katoptra READMEs
+# The mark and the tokens. The katoptra READMEs refer to them with their URLs.
 /brand/*
   Cache-Control: public, max-age=604800

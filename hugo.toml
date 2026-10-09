@@ -1,4 +1,4 @@
-# Site settings
+# Site configuration
 baseURL = "https://katoptra.org/"
 locale = "en-US"
 title = "Verified Open-Source Software Mirrors - katoptra.org"
@@ -16,10 +16,12 @@ copyright = "&copy;2026 Josh Vaughen"
 
 [params]
 
-  # Metadata for search engines and social sharing. %s in the description is the public
-  # mirrors' names, filled from data/mirrors.toml by layouts/partials/head.html.
+  # Metadata for search engines and for link previews. The names of the public mirrors go
+  # into the %s in the description. layouts/partials/head.html puts them there from
+  # data/mirrors.toml.
   author = "Josh Vaughen"
-  description = "Verified mirrors of %s, synced on a schedule by open pipelines and served on Cloudflare's global network."
+  description = "Verified mirrors of %s. Open pipelines sync them on a schedule, and Cloudflare's global network serves them."
 
-  # Cloudflare Web Analytics beacon token (public; omit to disable the beacon)
+  # The token of the Cloudflare Web Analytics beacon. The token is public. If you do not
+  # set it, the page does not load the beacon.
   # cloudflareBeaconToken = ""

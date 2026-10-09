@@ -2,10 +2,11 @@
 # requires-python = ">=3.11"
 # dependencies = ["fonttools[woff]==4.65.0"]
 # ///
-# Gabarito, the site's one face, from google/fonts at a pinned commit: the variable
-# TTF becomes two static instances, 400 and 700, subset to latin and written as
-# woff2 beside its license in static/fonts/. Needs the network; brand/build.py does
-# not, it reads what this wrote. Run: uv run brand/fonts.py
+# Gabarito, the one font of the site, from google/fonts at a pinned commit. The script
+# makes two static instances (400 and 700) from the variable TTF and subsets them to
+# latin. Then it writes them as woff2 to static/fonts/, adjacent to the license. This
+# script must have network access. brand/build.py does not connect to the network: it
+# reads the files that this script writes. To run it: uv run brand/fonts.py
 import io
 import urllib.request
 from pathlib import Path
