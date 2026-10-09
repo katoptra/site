@@ -105,7 +105,8 @@ the same change here manually.
 This layout has the Public / Private switch and one panel of tiles for each group.
 `layouts/partials/mirror.html` makes each tile. The switch is two radios that show as one
 pill control. `mirrors.css` shows only the panel of the checked group. Thus, the switch has
-no JavaScript. The grid has two columns, or one column at a width of 640px or less.
+no JavaScript. The grid has two columns when each tile can be 380px wide, or else one column
+(refer to `mirrors.css`).
 
 ### `layouts/partials/head.html`
 
