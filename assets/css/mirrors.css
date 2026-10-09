@@ -202,16 +202,16 @@ body.page-template-page-fullsingle-split {
 }
 
 /* ===== Mirror tiles ===== */
+/* The grid has two columns only when each tile is 380px or wider. Below that width, the
+   name or the host of a tile wraps, and the tiles in a row get heads of different heights.
+   The column of the page (840px at most) holds no more than two columns.
+   ponytail: 380px is the widest head of the tiles in 2026-10 (Savannah (nongnu), 370px)
+   plus a margin. Ceiling: a longer name or host wraps again in two columns. Upgrade path:
+   a container query on .mirror that puts the age below the title. */
 .group {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
   gap: 8px;
-}
-
-@media (max-width: 640px) {
-  .group {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 .mirror {
