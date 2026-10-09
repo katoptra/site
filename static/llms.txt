@@ -20,11 +20,18 @@
 - GNU: https://gnu.katoptra.org/ (upstream: https://ftp.gnu.org/gnu/, sync: twice a day)
   It serves all the paths of ftp.gnu.org/gnu at its root. These are the release tarballs
   and .sig signatures of more than 300 GNU packages (for example gcc, glibc, binutils,
-  emacs, bash, coreutils and guix). The root also has gnu-keyring.gpg to verify them. It
-  does not include alpha.gnu.org. Replace `https://ftp.gnu.org/gnu/` or
+  emacs, bash, coreutils and guix). The root also has gnu-keyring.gpg to verify them. The
+  alpha releases are on the GNU alpha mirror below. Replace `https://ftp.gnu.org/gnu/` or
   `https://ftpmirror.gnu.org/` with `https://gnu.katoptra.org/`, for example
   `https://gnu.katoptra.org/emacs/`.
   Freshness: `https://gnu.katoptra.org/mirror-updated-timestamp.txt` (upstream's Unix time).
+- GNU alpha: https://gnu-alpha.katoptra.org/ (upstream: https://alpha.gnu.org/gnu/, sync: twice a day)
+  It serves all the paths of alpha.gnu.org/gnu at its root: the alpha and beta releases of
+  GNU packages and their .sig signatures (for example the pretests of emacs, automake and
+  gettext, and the release candidates of guix). The keyring to verify them is
+  https://gnu.katoptra.org/gnu-keyring.gpg. Replace `https://alpha.gnu.org/gnu/` with
+  `https://gnu-alpha.katoptra.org/`, for example `https://gnu-alpha.katoptra.org/automake/`.
+  Freshness: `https://gnu-alpha.katoptra.org/mirror-updated-timestamp.txt` (upstream's Unix time).
 - Savannah (nongnu): https://nongnu.katoptra.org/ (upstream: https://download.savannah.nongnu.org/releases/, sync: twice a day)
   It serves all the paths of download.savannah.nongnu.org/releases at its root. This is the
   same tree as download.savannah.gnu.org/releases: the release files of more than 1,000

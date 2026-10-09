@@ -53,8 +53,8 @@ When the theme changes one of these files, make the same change here manually. A
 
 ### `data/mirrors.toml`
 
-This file is the mirror index. **To add or remove a mirror, edit this file and no other
-file.** This file supplies the data for:
+This file is the mirror index. **To add or remove a mirror, edit this file and
+`static/llms.txt`, and no other file.** This file supplies the data for:
 
 - The homepage tiles
 - The ItemList JSON-LD
@@ -146,6 +146,9 @@ This file has the headers of the theme, and it adds these items:
 
 Crawlers read `static/llms.txt`. A browser reads `static/site.webmanifest` when a person
 installs the site. The theme's copies of these two files are about ijosh.com.
+
+`static/llms.txt` also has a list of the public mirrors, with the use of each mirror. When
+you add or remove a mirror, change this list and `data/mirrors.toml` together.
 
 ### `layouts/partials/footer.html`
 

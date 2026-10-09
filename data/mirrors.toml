@@ -44,7 +44,16 @@ cadence = "twice a day"
 repo = "https://github.com/katoptra/gnu"
 healthcheck = "https://healthchecks.io/b/2/5b1c7694-c3aa-4db7-9813-0b898669564d.svg"
 upstream = { name = "gnu.org", url = "https://ftp.gnu.org/gnu/", icon = "gnu" }
-usage = "The mirror serves all the paths of ftp.gnu.org/gnu at its root. These are the release tarballs and .sig signatures of more than 300 GNU packages, from GCC, glibc and Binutils to Emacs, Bash, Coreutils and Guix. The GNU keyring to verify them is also at the root. In a URL, gnu.katoptra.org can replace ftp.gnu.org/gnu or ftpmirror.gnu.org. The mirror does not include the alpha releases (alpha.gnu.org)."
+usage = "The mirror serves all the paths of ftp.gnu.org/gnu at its root. These are the release tarballs and .sig signatures of more than 300 GNU packages, from GCC, glibc and Binutils to Emacs, Bash, Coreutils and Guix. The GNU keyring to verify them is also at the root. In a URL, gnu.katoptra.org can replace ftp.gnu.org/gnu or ftpmirror.gnu.org. The alpha releases (alpha.gnu.org) are on gnu-alpha.katoptra.org."
+
+[[mirrors]]
+name = "GNU alpha"
+url = "https://gnu-alpha.katoptra.org/"
+cadence = "twice a day"
+repo = "https://github.com/katoptra/gnu-alpha"
+healthcheck = "https://healthchecks.io/b/2/755c0183-53ad-43d5-8f9d-061594bc23e4.svg"
+upstream = { name = "alpha.gnu.org", url = "https://alpha.gnu.org/gnu/", icon = "gnu" }
+usage = "The mirror serves all the paths of alpha.gnu.org/gnu at its root. These are the alpha and beta releases of GNU packages and their .sig signatures, for example the pretests of Emacs, Automake and Gettext, and the release candidates of Guix. The GNU keyring to verify them is at the root of gnu.katoptra.org. In a URL, gnu-alpha.katoptra.org can replace alpha.gnu.org/gnu."
 
 [[mirrors]]
 name = "Savannah (nongnu)"
