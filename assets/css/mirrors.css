@@ -1,25 +1,8 @@
-/* ===== Mirrors layer =====
-   This file follows the theme's fonts/split/style and the katoptra tokens in the
-   bundle. Thus, when two rules have the same specificity, the browser uses the rule
-   here. The palette is assets/css/tokens.css, which brand/build.py makes. The
-   shapes (16px tiles on --pill-bg, 999px pills and 8px gaps) are ijosh.com's. The one
-   font is Gabarito. The site hosts it adjacent to the fonts of the theme, and
-   brand/fonts.py subsets it. */
-
-@font-face {
-  font-family: "Gabarito";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(/fonts/gabarito-400-latin.woff2) format("woff2");
-}
-@font-face {
-  font-family: "Gabarito";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url(/fonts/gabarito-700-latin.woff2) format("woff2");
-}
+/* ===== The mirror index =====
+   The Public / Private switch and the tiles. This file is after the base of the theme in
+   the bundle (params.css of hugo.toml names it). Thus, when two rules have the same
+   specificity, the browser uses the rule here. The palette is the tokens.css of the
+   theme. */
 
 /* ===== Tokens that are not in the palette =====
    The status colors are the only semantic colors on the page. Their contrast is AA on
@@ -33,114 +16,6 @@
     --status-up: #3fb950;
     --status-down: #f85149;
   }
-}
-
-body.page-template-page-fullsingle-split {
-  font-family: "Gabarito", sans-serif;
-}
-
-/* ===== Page: one centered column ===== */
-.page-single {
-  box-sizing: border-box;
-  max-width: 920px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 64px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 28px;
-}
-
-@media (max-width: 800px) {
-  .page-single {
-    min-height: 0;
-    padding: 40px 20px;
-  }
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-/* ===== Masthead: the mark, adjacent to the wordmark and the tagline ===== */
-.masthead {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 8px 20px;
-}
-
-.masthead-mark {
-  grid-row: span 2;
-  width: 64px;
-  height: 64px;
-}
-.masthead-mark rect {
-  fill: var(--mark-tile);
-}
-.masthead-mark .mark-line {
-  stroke: var(--mark-line);
-}
-.masthead-mark .mark-ink {
-  stroke: var(--mark-ink);
-}
-.masthead-mark .mark-ink2 {
-  stroke: var(--mark-ink2);
-}
-
-.masthead-name {
-  align-self: end;
-  font-family: "Gabarito", sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  line-height: 1;
-  letter-spacing: -0.01em;
-  color: var(--text);
-  margin: 0;
-}
-
-/* The theme sets PT Serif on each p with body.page-template-page-fullsingle-split p.
-   The .page-single prefix gives these paragraph rules more specificity than that
-   selector. */
-.page-single .tagline {
-  align-self: start;
-  font-family: "Gabarito", sans-serif;
-  font-size: 16px;
-  line-height: 1.55;
-  color: var(--text-body);
-  margin: 0;
-}
-
-@media (max-width: 500px) {
-  .masthead-mark {
-    width: 48px;
-    height: 48px;
-  }
-}
-
-/* ===== Links in body text: a solid underline, and the accent color on hover ===== */
-.tagline a,
-.split-credit p a,
-.mirror-links a span {
-  color: var(--text);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
-  text-underline-offset: 3px;
-  transition: color 0.15s;
-}
-.tagline a:hover,
-.split-credit p a:hover,
-.mirror-links a:hover span {
-  color: var(--accent);
-  text-decoration: underline;
-  text-decoration-color: currentColor;
 }
 
 /* ===== Public / Private switch =====
@@ -172,7 +47,6 @@ body.page-template-page-fullsingle-split {
   gap: 8px;
   padding: 9px 16px;
   border-radius: 999px;
-  font-family: "Gabarito", sans-serif;
   font-weight: 700;
   font-size: 14px;
   line-height: 1;
@@ -220,7 +94,6 @@ body.page-template-page-fullsingle-split {
   padding: 8px;
   border-radius: 16px;
   background: var(--pill-bg);
-  font-family: "Gabarito", sans-serif;
 }
 
 /* Head: the badge, the name and host, and the age. Its background color shows the
@@ -362,23 +235,4 @@ body.page-template-page-fullsingle-split {
 }
 .mirror-repo {
   margin-left: auto;
-}
-
-/* ===== Footer: full opacity. The theme sets it to 40%. ===== */
-.split-credit {
-  opacity: 1;
-}
-.page-single .split-credit p {
-  font-family: "Gabarito", sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-  text-wrap: pretty;
-}
-/* The solid J mark from brand.ijosh.com, at icon size. The brand rules center it on the cap
-   band of the text. It has a margin and no space, because the link underlines a space. */
-.credit-mark img {
-  vertical-align: -3px;
-  margin-right: 3px;
 }

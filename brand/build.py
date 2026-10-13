@@ -5,8 +5,8 @@
 # The katoptra mark, and all the files that this script makes from it. This script has
 # the one geometry of the mark, and no other file makes the mark. The mark is two chevrons
 # that point to a hairline mirror plane, on a rounded tile. The script writes the SVGs, the
-# PNGs, the favicons, the social card and the token sheet in static/. Thus, to change the
-# mark, change MARK in this script and make the files again.
+# PNGs, the favicons, the social card and the token sheet in themes/katoptra/. Thus, to
+# change the mark, change MARK in this script and make the files again.
 #
 #   uv run brand/build.py          write all the files
 #   uv run brand/build.py --check  make the files in memory, and give an error if a file is different
@@ -25,7 +25,8 @@ from fontTools.ttLib import TTFont
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
-STATIC = ROOT / "static"
+THEME = ROOT / "themes" / "katoptra"
+STATIC = THEME / "static"
 BRAND = STATIC / "brand"
 
 # ---- the palette, light then dark. The mark gets the tile and inks of its background. ----
@@ -150,14 +151,14 @@ def og_png() -> Image.Image:
 
 
 def tokens_css() -> str:
-    """The palette as custom properties, in the three-state shape of the theme."""
+    """The palette as custom properties: light, dark by preference, and dark by data-theme."""
     decl = lambda p: "".join(f"  --{k}: {v};\n" for k, v in p.items())
     return (
         "/* The katoptra palette. brand/build.py makes this file from LIGHT and DARK.\n"
         "   Do not edit it: brand/build.py overwrites it. The site serves it at\n"
-        "   /brand/tokens.css. It is also in the CSS bundle of the site, where it overrides\n"
-        "   the tokens of the theme. To override the system preference, set\n"
-        "   data-theme=\"light\" or \"dark\" on <html>. */\n"
+        "   /brand/tokens.css. It is also the first file in the CSS bundle of the site.\n"
+        "   To override the system preference, set data-theme=\"light\" or \"dark\" on\n"
+        "   <html>. */\n"
         ":root {\n  color-scheme: light;\n" + decl(LIGHT) + "}\n\n"
         "@media (prefers-color-scheme: dark) {\n  :root:not([data-theme=\"light\"]) {\n"
         "    color-scheme: dark;\n" + decl(DARK).replace("  --", "    --") + "  }\n}\n\n"
@@ -189,7 +190,7 @@ def outputs() -> dict[Path, bytes]:
         BRAND / "katoptra-avatar.svg": svg(LIGHT, rounded=False).encode(),
         BRAND / "katoptra-avatar.png": png_bytes(mark_png(1024, LIGHT, rounded=False, ss=2)),
         BRAND / "tokens.css": tokens_css().encode(),
-        ROOT / "assets" / "css" / "tokens.css": tokens_css().encode(),
+        THEME / "assets" / "css" / "tokens.css": tokens_css().encode(),
         STATIC / "favicon.svg": svg(LIGHT).encode(),
         STATIC / "favicon.ico": ico_bytes(),
         STATIC / "apple-touch-icon.png": png_bytes(mark_png(180, LIGHT, rounded=False)),

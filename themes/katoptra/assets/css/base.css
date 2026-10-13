@@ -1,0 +1,189 @@
+/* ===== The katoptra shell =====
+   The reset, the page column, the masthead, the text links and the footer. The palette is
+   tokens.css, which brand/build.py makes. It is before this file in the bundle. The one
+   font is Gabarito, and brand/fonts.py subsets it. A site puts its own rules in a file
+   that params.css of hugo.toml names. That file is after this file in the bundle. */
+
+@font-face {
+  font-family: "Gabarito";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/gabarito-400-latin.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Gabarito";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/gabarito-700-latin.woff2) format("woff2");
+}
+
+/* ===== Reset ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  background-color: var(--bg);
+}
+
+body {
+  background-color: var(--bg);
+  font-family: "Gabarito", sans-serif;
+  font-size: 21px;
+  line-height: 33px;
+  letter-spacing: -0.2px;
+  color: var(--text-muted);
+}
+
+p {
+  letter-spacing: 0.01em;
+}
+
+a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* The page fades in when it loads. */
+body {
+  transition: opacity 0.8s ease;
+}
+@starting-style {
+  body {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Page: one centered column ===== */
+.page {
+  max-width: 920px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 64px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+}
+
+@media (max-width: 800px) {
+  .page {
+    min-height: 0;
+    padding: 40px 20px;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ===== Masthead: the mark, adjacent to the wordmark and the tagline ===== */
+.masthead {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px 20px;
+}
+
+.masthead-mark {
+  grid-row: span 2;
+  width: 64px;
+  height: 64px;
+}
+.masthead-mark rect {
+  fill: var(--mark-tile);
+}
+.masthead-mark .mark-line {
+  stroke: var(--mark-line);
+}
+.masthead-mark .mark-ink {
+  stroke: var(--mark-ink);
+}
+.masthead-mark .mark-ink2 {
+  stroke: var(--mark-ink2);
+}
+
+.masthead-name {
+  align-self: end;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+/* A page with no tagline: the name is centered on the mark. */
+.masthead-name:last-child {
+  grid-row: span 2;
+  align-self: center;
+}
+
+.tagline,
+.notice {
+  align-self: start;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text-body);
+}
+
+@media (max-width: 500px) {
+  .masthead-mark {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* ===== Links in text: a solid underline, and the accent color on hover. A site gives
+   the .link class to a link text that is not in a paragraph. ===== */
+p a,
+.link {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+p a:hover,
+a:hover .link {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+/* ===== Footer ===== */
+.site-footer p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-wrap: pretty;
+}
+/* The solid J mark from brand.ijosh.com, at icon size. The brand rules center it on the cap
+   band of the text. It has a margin and no space, because the link underlines a space. */
+.credit-mark img {
+  vertical-align: -3px;
+  margin-right: 3px;
+}

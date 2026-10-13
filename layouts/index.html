@@ -1,3 +1,37 @@
+{{ define "head" }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "{{ .Site.BaseURL }}#mirrors",
+  "name": "Software mirrors at katoptra.org",
+  "itemListElement": [
+    {{- range $i, $m := hugo.Data.mirrors.mirrors }}
+    {{- if $i }},{{ end }}
+    {
+      "@type": "ListItem",
+      "position": {{ add $i 1 }},
+      "url": "{{ $m.url }}",
+      "item": {
+        "@type": "WebSite",
+        "@id": "{{ $m.url }}",
+        "url": "{{ $m.url }}",
+        "name": "{{ $m.name }} mirror",
+        "description": "{{ $m.usage }}",
+        "isBasedOn": "{{ $m.upstream.url }}",
+        "isAccessibleForFree": true
+      }
+    }
+    {{- end }}
+  ]
+}
+</script>
+
+<!-- The health status and the last sync time of each tile. status.js fetches them when the page loads. -->
+{{- $js := resources.Get "js/status.js" | resources.Minify | resources.Fingerprint -}}
+<script type="module" src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+{{ end }}
+
 {{ define "main" }}
   {{- $public := hugo.Data.mirrors.mirrors }}
   {{- $private := hugo.Data.mirrors.private }}

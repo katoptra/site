@@ -31,11 +31,10 @@ deploys the site at each push to `main`, and it also publishes the files in
 
 ## How it works
 
-1. **Design.** `task theme:update` vendors the design from
-   [ijosh.com](https://github.com/jshvn/ijosh.com) into `themes/ijosh/`, and it pins the
-   design in `themes/ijosh/THEME_COMMIT`. This repository does not edit a file in
-   `themes/`. The theme supplies the reset and the shapes. The katoptra palette and font in
-   [The brand](#the-brand) override its tokens.
+1. **Shell.** [`themes/katoptra/`](themes/katoptra) is the shell of a katoptra page: the
+   masthead, the footer, the head, the 404 page, the base CSS and the files in
+   [The brand](#the-brand). The site root has the mirror index: the tiles, the switch,
+   the status script and the data.
 2. **Data.** [`data/mirrors.toml`](data/mirrors.toml) has one entry for each mirror. It
    supplies the data for the homepage tiles and the ItemList JSON-LD. Thus, to add or
    remove a mirror, you edit that file and no other file.
@@ -102,7 +101,7 @@ To change the mark or a color:
 If the committed files are different from the files that the script makes, `task check`
 gives an error. Thus, the artwork always agrees with the script.
 
-`task brand:fonts` makes the font files in `static/fonts/`. It fetches Gabarito from
+`task brand:fonts` makes the font files in `themes/katoptra/static/fonts/`. It fetches Gabarito from
 google/fonts at a pinned commit, and it subsets the font to latin. The license of the
 font is in the same directory.
 
@@ -111,10 +110,10 @@ font is in the same directory.
 These files identify this site:
 
 - `static/llms.txt`
-- `static/site.webmanifest`
+- `themes/katoptra/static/site.webmanifest`
 - `static/robots.txt`
 - `static/.well-known/security.txt`
-- The footer
+- The footer, in `themes/katoptra/layouts/partials/footer.html`
 - `brand/build.py`, which makes the mark.
 
 To make a site for your mirrors:
@@ -136,7 +135,6 @@ task serve         # local dev server with drafts and watch
 task check         # brand files match a rebuild; build; fail if any mirrors.toml URL is missing from the page, the social card is absent, or the JSON-LD does not parse
 task brand         # rebuild every brand file from brand/build.py
 task brand:fonts   # re-fetch and re-subset Gabarito (network)
-task theme:update  # re-vendor ijosh.com master and print the diff of each shadowed file
 ```
 
 For a layout change, look at the rendered page in the light and the dark color scheme. Do

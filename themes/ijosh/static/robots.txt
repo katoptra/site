@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://ijosh.com/sitemap.xml

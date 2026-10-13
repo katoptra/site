@@ -9,8 +9,7 @@
 #   usage        a short description of the mirror. The page uses it only as the
 #                description of the mirror in the ItemList JSON-LD.
 #
-# upstream.icon is the name of an icon file in assets/icons/ or in the icons of the theme,
-# without .svg. The icon is from Font Awesome Free, or it is ctan
+# upstream.icon is the name of an icon file in assets/icons/, without .svg. The icon is from Font Awesome Free, or it is ctan
 # (brand/render_ctan_icon.py makes it) or gnu (brand/render_gnu_icon.py makes it). If the
 # file is missing, the build stops with an error.
 #

@@ -35,9 +35,9 @@
   <div class="mirror-links">
     <a rel="noopener" target="_blank" href="{{ .upstream.url }}">
       {{- with resources.Get $icon }}{{ .Content | safeHTML }}{{ else }}{{ errorf "mirror %q: no %s for upstream.icon" $.name $icon }}{{ end -}}
-      <span>{{ .upstream.name }}</span></a>
+      <span class="link">{{ .upstream.name }}</span></a>
     <a class="mirror-repo" rel="noopener" target="_blank" href="{{ .repo }}">
       {{- (resources.Get "icons/github.svg").Content | safeHTML -}}
-      <span>{{ $repo }}</span></a>
+      <span class="link">{{ $repo }}</span></a>
   </div>
 </article>

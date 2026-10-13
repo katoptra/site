@@ -1,8 +1,8 @@
 /* The katoptra palette. brand/build.py makes this file from LIGHT and DARK.
    Do not edit it: brand/build.py overwrites it. The site serves it at
-   /brand/tokens.css. It is also in the CSS bundle of the site, where it overrides
-   the tokens of the theme. To override the system preference, set
-   data-theme="light" or "dark" on <html>. */
+   /brand/tokens.css. It is also the first file in the CSS bundle of the site.
+   To override the system preference, set data-theme="light" or "dark" on
+   <html>. */
 :root {
   color-scheme: light;
   --bg: #f6f5f2;
