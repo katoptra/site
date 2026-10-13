@@ -153,8 +153,9 @@ you add or remove a mirror, change this list and `data/mirrors.toml` together.
 
 ### `layouts/partials/footer.html`
 
-The footer tells how a pipeline syncs each mirror and how Cloudflare serves the public
-mirrors. It also has the open-source note and the MIT and attribution line.
+The footer tells how the pipelines build the mirrors and how Cloudflare serves the public
+bytes. It also has the attribution line, with the J mark of ijosh.com. The inline SVG copies
+`themes/ijosh/static/favicon.svg`. When that mark changes, make the same change here manually.
 
 ### `static/robots.txt`
 
