@@ -374,4 +374,11 @@ body.page-template-page-fullsingle-split {
   line-height: 1.6;
   color: var(--text-muted);
   margin-bottom: 6px;
+  text-wrap: pretty;
+}
+/* The solid J mark from brand.ijosh.com, at icon size. The brand rules center it on the cap
+   band of the text. It has a margin and no space, because the link underlines a space. */
+.credit-mark img {
+  vertical-align: -3px;
+  margin-right: 3px;
 }

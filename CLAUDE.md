@@ -27,7 +27,8 @@ This site keeps these forks of theme files in `static/`. Each fork shadows the t
 copy. The list gives the cause for each fork:
 
 - `static/_headers`: it adds the CSP `connect-src` entries for healthchecks.io and
-  api.github.com, which supply the tile status and the age. It also adds cache rules for
+  api.github.com, which supply the tile status and the age, and the CSP `img-src` entry for
+  brand.ijosh.com, which supplies the footer mark. It also adds cache rules for
   `/js/*` and `/brand/*`.
 - `static/site.webmanifest`, `static/llms.txt`, `static/robots.txt` and
   `static/.well-known/security.txt`: the theme's copies contain the bio, the brand, the
@@ -139,6 +140,7 @@ This file has the headers of the theme, and it adds these items:
 
 - Two CSP `connect-src` entries, for healthchecks.io and api.github.com. These hosts supply
   the tile status and the age.
+- One CSP `img-src` entry, for brand.ijosh.com. This host supplies the footer mark.
 - A `/js/*` rule, the same as the rule for `/css/*`: the fingerprinted `status.js` is
   `immutable` for one year.
 - A `/brand/*` rule: the mark and the tokens have a cache time of one week.
@@ -153,8 +155,10 @@ you add or remove a mirror, change this list and `data/mirrors.toml` together.
 
 ### `layouts/partials/footer.html`
 
-The footer tells how a pipeline syncs each mirror and how Cloudflare serves the public
-mirrors. It also has the open-source note and the MIT and attribution line.
+The footer tells how the pipelines build the mirrors and how Cloudflare serves the public
+bytes. It also has the attribution line, with the solid J mark. The page loads the mark from
+brand.ijosh.com and keeps no copy of it. The rules in
+[jshvn/brand](https://github.com/jshvn/brand) tell which form to use at this size.
 
 ### `static/robots.txt`
 
