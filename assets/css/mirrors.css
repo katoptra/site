@@ -376,13 +376,9 @@ body.page-template-page-fullsingle-split {
   margin-bottom: 6px;
   text-wrap: pretty;
 }
-/* The J mark of ijosh.com, from themes/ijosh/static/favicon.svg. It uses the tile and line
-   tokens of the masthead mark. It has a margin and no space, because the link underlines a space. */
-.credit-mark {
-  width: 1.15em;
-  height: 1.15em;
-  vertical-align: -0.25em;
-  margin-right: 0.35em;
-  fill: var(--mark-tile);
-  stroke: var(--mark-line);
+/* The solid J mark from brand.ijosh.com, at icon size. The brand rules center it on the cap
+   band of the text. It has a margin and no space, because the link underlines a space. */
+.credit-mark img {
+  vertical-align: -3px;
+  margin-right: 3px;
 }
