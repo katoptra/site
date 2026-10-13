@@ -2,7 +2,7 @@
 baseURL = "https://katoptra.org/"
 locale = "en-US"
 title = "Verified Open-Source Software Mirrors - katoptra.org"
-theme = "ijosh"
+theme = "katoptra"
 disableKinds = ["section", "taxonomy", "RSS"]
 
 # Copyright
@@ -25,3 +25,6 @@ copyright = "&copy;2026 Josh Vaughen"
   # The token of the Cloudflare Web Analytics beacon. The token is public. If you do not
   # set it, the page does not load the beacon.
   # cloudflareBeaconToken = ""
+
+  # The CSS of this site, after the tokens and the base of the theme in the bundle.
+  css = ["css/mirrors.css"]

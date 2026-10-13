@@ -9,46 +9,38 @@ Writing: obey ASD-STE100 and the rules in the
 [Writing section of the org CONTRIBUTING](https://github.com/katoptra/.github/blob/main/CONTRIBUTING.md#writing).
 Read that section before you write.
 
-## The one invariant: the design system is not here
+## The theme and the site
 
-The [ijosh.com repository](https://github.com/jshvn/ijosh.com) is the design system.
-`task theme:update` **vendors** the `layouts/`, `assets/` and `static/` directories of that
-repository into `themes/ijosh/`, and Hugo uses them as a theme. `themes/ijosh/` is a
-committed directory. It is not a submodule and not a Hugo Module.
+`themes/katoptra/` is the shell of a katoptra page. Hugo uses it as a theme. It has these
+parts:
 
-The theme supplies the CSS reset and the shapes (`fonts.css`, `split.css` and
-`style.css`). The theme does **not** supply the identity. The mark, the palette and the
-font are katoptra's. `brand/build.py` makes the mark and the palette (refer to
-[its section](#brandbuildpy)), and `brand/fonts.py` gets the font. In the CSS bundle,
-`assets/css/tokens.css` overrides the tokens of the theme (`--bg`, `--text`, `--accent` and
-the others).
+- The layouts: `_default/baseof.html` (the masthead and the footer around the `main`
+  block), `404.html`, and the `head`, `footer` and `description` partials
+- `assets/css/base.css`: the reset, the page column, the masthead, the text links and the
+  footer
+- `assets/css/tokens.css`: the palette, which `brand/build.py` makes
+- `static/`: the font, the mark, the favicons, the unfurl card and `site.webmanifest`.
+  `brand/build.py` and `brand/fonts.py` make all of these files except the manifest.
 
-This site keeps these forks of theme files in `static/`. Each fork shadows the theme's
-copy. The list gives the cause for each fork:
+The site root has the mirror index:
 
-- `static/_headers`: it adds the CSP `connect-src` entries for healthchecks.io and
-  api.github.com, which supply the tile status and the age, and the CSP `img-src` entry for
-  brand.ijosh.com, which supplies the footer mark. It also adds cache rules for
-  `/js/*` and `/brand/*`.
-- `static/site.webmanifest`, `static/llms.txt`, `static/robots.txt` and
-  `static/.well-known/security.txt`: the theme's copies contain the bio, the brand, the
-  sitemap URL and the security contact of ijosh.com.
-- `static/favicon.svg` and `static/favicon.ico`: they show the katoptra mark, not the J of
-  ijosh.com.
+- `layouts/index.html` and `layouts/partials/mirror.html`
+- `layouts/partials/description.html`, which overrides the partial of the theme
+- `assets/css/mirrors.css`, `assets/js/status.js` and the icons in `assets/icons/`
+- `data/mirrors.toml` and `content/_index.md`
+- `static/`: `_headers`, `llms.txt`, `robots.txt` and `.well-known/security.txt`.
 
-When the theme changes one of these files, make the same change here manually. After
-`task theme:update` vendors the theme again, it prints the diff of each shadowed pair.
+Obey these rules:
 
-- **Do not edit a file in `themes/ijosh/`.** `task theme:update` overwrites all of that
-  directory. It vendors the `master` branch of ijosh.com again, and it pins the source
-  commit in `themes/ijosh/THEME_COMMIT`. Make a visual change for the design system of the
-  two sites in the ijosh.com repository first. Then get it here with `task theme:update`.
-- Put a change for this site only in `assets/css/mirrors.css` or in a layout override.
-  `mirrors.css` is the last file in the CSS bundle. Thus, when two rules have the same
-  specificity, the browser uses the rule in `mirrors.css`. The theme sets PT Serif on
-  `body.page-template-page-fullsingle-split p`, and a selector with one class has less
-  specificity than that selector. Thus, each paragraph rule in `mirrors.css` starts with
-  `.page-single`.
+- Put a rule for each katoptra page in `base.css`. Put a rule for the mirror index only in
+  `mirrors.css`.
+- The CSS bundle has `tokens.css`, then `base.css`, then each file that `params.css` of
+  `hugo.toml` names. Thus, when two rules have the same specificity, the browser uses the
+  rule in `mirrors.css`.
+- A page adds tags to the head with a `head` block. `index.html` uses it for the ItemList
+  JSON-LD and for `status.js`.
+- `base.css` sets the link style on `p a` and on `.link`. Give the `.link` class to the
+  text of a link that is not in a paragraph.
 
 ## The files
 
@@ -60,6 +52,7 @@ This file is the mirror index. **To add or remove a mirror, edit this file and
 - The homepage tiles
 - The ItemList JSON-LD
 - The names of the public mirrors in the meta description (the `%s` in `hugo.toml`).
+  `layouts/partials/description.html` puts them there.
 
 The file has two types of entry:
 
@@ -89,36 +82,35 @@ the footer are the only paragraphs of text on the page. The tagline gives a shor
 description of the service. The mirror names are in `data/mirrors.toml`, and the tiles put
 them on the page. Thus, this file and `hugo.toml` contain no mirror name.
 
-### `layouts/_default/baseof.html`
+### `themes/katoptra/layouts/_default/baseof.html`
 
-This layout uses one centered column (`.page-single`), not the split layout of the theme.
-The masthead is at the top of the column:
+This layout uses one centered column (`.page`). The masthead is at the top of the column:
 
 - The mark, inline. Its tile and inks get their colors from the tokens.
 - The `Katoptra` `<h1>`
 - The tagline.
 
 The inline SVG copies the geometry in `brand/build.py`. When you change `MARK` there, make
-the same change here manually.
+the same change here manually. On a page with no tagline, for example the 404 page, the
+name is centered on the mark.
 
 ### `layouts/index.html`
 
 This layout has the Public / Private switch and one panel of tiles for each group.
 `layouts/partials/mirror.html` makes each tile. The switch is two radios that show as one
 pill control. `mirrors.css` shows only the panel of the checked group. Thus, the switch has
-no JavaScript. The grid has two columns when each tile can be 380px wide, or else one column
+no JavaScript. The `head` block of this layout adds the ItemList JSON-LD and `status.js`.
+The grid has two columns when each tile can be 380px wide, or else one column
 (refer to `mirrors.css`).
 
-### `layouts/partials/head.html`
+### `themes/katoptra/layouts/partials/head.html`
 
 This partial has these parts:
 
-- The SEO for the mirrors: the WebSite and ItemList JSON-LD. The Person schema stays on
-  ijosh.com.
+- The SEO: the meta description from the `description` partial, and the WebSite JSON-LD.
+  The Person schema stays on ijosh.com.
 - The Open Graph and Twitter card tags
-- The CSS bundle: the three files of the theme, then `assets/css/tokens.css`, then
-  `assets/css/mirrors.css`
-- The `assets/js/status.js` script, as a module.
+- The CSS bundle: `tokens.css`, then `base.css`, then each file in `params.css`.
 
 ### `assets/js/status.js`
 
@@ -136,7 +128,7 @@ cannot fetch a value, the head stays neutral and the age stays a dash. The self-
 
 ### `static/_headers`
 
-This file has the headers of the theme, and it adds these items:
+This file has the security headers and the cache rules. These items need a cause:
 
 - Two CSP `connect-src` entries, for healthchecks.io and api.github.com. These hosts supply
   the tile status and the age.
@@ -145,15 +137,15 @@ This file has the headers of the theme, and it adds these items:
   `immutable` for one year.
 - A `/brand/*` rule: the mark and the tokens have a cache time of one week.
 
-### `static/llms.txt` and `static/site.webmanifest`
+### `static/llms.txt` and `themes/katoptra/static/site.webmanifest`
 
-Crawlers read `static/llms.txt`. A browser reads `static/site.webmanifest` when a person
-installs the site. The theme's copies of these two files are about ijosh.com.
+Crawlers read `static/llms.txt`. A browser reads `site.webmanifest` when a person installs
+the site.
 
 `static/llms.txt` also has a list of the public mirrors, with the use of each mirror. When
 you add or remove a mirror, change this list and `data/mirrors.toml` together.
 
-### `layouts/partials/footer.html`
+### `themes/katoptra/layouts/partials/footer.html`
 
 The footer tells how the pipelines build the mirrors and how Cloudflare serves the public
 bytes. It also has the attribution line, with the solid J mark. The page loads the mark from
@@ -162,10 +154,7 @@ brand.ijosh.com and keeps no copy of it. The rules in
 
 ### `static/robots.txt`
 
-This file points crawlers to the `sitemap.xml` of this host. It is a static shadow, not a
-`layouts/` template. Hugo copies `static/` after it renders the pages. Thus, the static copy
-of the theme overwrites a rendered robots.txt. If the built file has the URL of a different
-sitemap, `task check` gives an error.
+This file points crawlers to the `sitemap.xml` of this host.
 
 ### `static/.well-known/security.txt`
 
@@ -183,7 +172,8 @@ and from the ItemList JSON-LD.
 ### `brand/build.py`
 
 This script is **the brand**. One geometry (`MARK`) and two palettes (`LIGHT` and `DARK`)
-are at its top. The script makes all the other brand files from them:
+are at its top. The script makes all the other brand files from them, in
+`themes/katoptra/`:
 
 - The mark SVGs and PNGs, and the full-bleed avatar, in `static/brand/`
 - The palette as `static/brand/tokens.css` and as its copy `assets/css/tokens.css`. The two
@@ -212,14 +202,14 @@ the mark does not show in those READMEs.
 
 This script gets Gabarito, the one font of the site, from google/fonts at a pinned commit.
 It makes two static instances (400 and 700) and subsets them to latin. Then it writes them
-as woff2 to `static/fonts/`, adjacent to the OFL of the font. The script must have network
-access.
+as woff2 to `themes/katoptra/static/fonts/`, adjacent to the OFL of the font. The script
+must have network access.
 
 `build.py` reads the files that this script writes. For the OG card, `build.py` removes
-the compression of the woff2 in memory. The `@font-face` rules are in `mirrors.css`, and
+the compression of the woff2 in memory. The `@font-face` rules are in `base.css`, and
 `head.html` preloads the 700.
 
-### `static/brand/`
+### `themes/katoptra/static/brand/`
 
 The site serves this directory at `/brand/*`, with a cache time of one week (`_headers`
 sets it). The GitHub org avatar is `katoptra-avatar.png`. The owner uploads it manually, in
@@ -238,6 +228,7 @@ Do these steps for each layout or CSS change, and each time that you add a mirro
 4. Make sure that no element overflows horizontally at 390px.
 5. Click the Private tab.
 6. Do steps 3 and 4 again.
+7. For a change in `themes/katoptra/`, open `/404.html`, and do steps 2 to 4 again.
 
 `task check` is the functional test. Run it before you open a pull request.
 
@@ -250,9 +241,8 @@ First, `task check` gives an error if the brand files are different from the fil
 
 ## Must knows
 
-- Do not use third-party artwork. This is an invariant of the theme. Each icon is a Font
-  Awesome Free file, in `assets/icons/` or in the icons of the theme. This includes the
-  icon of each upstream (`upstream.icon` in `data/mirrors.toml`). The next two icons are the
+- Do not use third-party artwork. Each icon is a Font Awesome Free file in
+  `assets/icons/`. This includes the icon of each upstream (`upstream.icon` in `data/mirrors.toml`). The next two icons are the
   only icons that Font Awesome does not supply.
 - `assets/icons/ctan.svg`: Font Awesome has no CTAN icon. `brand/render_ctan_icon.py` makes
   a copy of the favicon of ctan.org, in one color and in the format of Font Awesome. Thus,
@@ -276,7 +266,3 @@ First, `task check` gives an error if the brand files are different from the fil
 - The Cloudflare Pages configuration is in the dashboard, not in the repository. The build
   command is `hugo --minify --gc`, and the output directory is `public`. The dashboard also
   sets `HUGO_VERSION=0.163.3` (extended).
-- The theme's `fonts.css` declares Graduate, Lora, Montserrat and PT Serif. The page uses
-  none of them. A browser fetches a font only when it renders text in that font. Thus, the
-  browser does not download these fonts. Do not set a part of the page in one of them: the
-  page has one font.

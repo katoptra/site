@@ -1,15 +1,12 @@
 # mirrors: the landing page for katoptra.org. It is a Hugo site, and Cloudflare Pages
-# deploys it at each push to main. The design system is not in this repository.
-# `task theme:update` vendors the layouts, tokens and fonts from the ijosh.com repository
-# into themes/ijosh, and themes/ijosh/THEME_COMMIT pins them. This repository overrides
-# only the parts that a mirrors index must have.
+# deploys it at each push to main. themes/katoptra is the shell of a katoptra page, and the
+# site root has the mirror index.
 
 version: "3"
 
 vars:
   GIT_DIR:
     sh: pwd
-  THEME_REPO: https://github.com/jshvn/ijosh.com
 
 tasks:
   default:
@@ -35,12 +32,8 @@ tasks:
           "                            ${d}and fail if the brand files differ from a rebuild${r}" \
           "" \
           "${c}brand -- the mark, favicons, social card and tokens, from brand/build.py${r}" \
-          "  task brand                Rebuild every brand file under static/ and assets/css/tokens.css" \
+          "  task brand                Rebuild every brand file under themes/katoptra/" \
           "  task brand:fonts          Re-fetch Gabarito from google/fonts and re-subset it (network)" \
-          "" \
-          "${c}theme -- the design system lives in the ijosh.com repo${r}" \
-          "  task theme:update         Re-vendor ijosh.com master into themes/ijosh" \
-          "                            ${d}pins the commit in themes/ijosh/THEME_COMMIT; eyeball the page after${r}" \
           "" \
           "${c}clean${r}" \
           "  task clean                Remove generated and auxiliary files" \
@@ -80,16 +73,9 @@ tasks:
         else
           echo "MISSING public/images/og.png -- run task brand"; fail=1
         fi
-        # The theme has a robots.txt with the sitemap URL of ijosh.com. Only the static/
-        # shadow keeps that file off this site.
-        grep -qxF 'Sitemap: https://katoptra.org/sitemap.xml' public/robots.txt \
-          || { echo "WRONG public/robots.txt sitemap: $(grep Sitemap public/robots.txt)"; fail=1; }
-        # The static/ shadow does the same for security.txt. RFC 9116 tells a client
-        # not to use the file after its Expires date. Thus, an expired date in Expires
-        # also causes a failure.
+        # RFC 9116 tells a client not to use security.txt after its Expires date. Thus,
+        # an expired date in Expires causes a failure.
         sec=public/.well-known/security.txt
-        grep -qxF 'Canonical: https://katoptra.org/.well-known/security.txt' "$sec" \
-          || { echo "WRONG $sec canonical: $(grep Canonical "$sec")"; fail=1; }
         exp=$(sed -n 's/^Expires: //p' "$sec")
         [[ "$exp" > "$(date -u +%Y-%m-%dT%H:%M:%S)" ]] \
           || { echo "EXPIRED $sec ($exp) -- move Expires forward, under a year out"; fail=1; }
@@ -135,24 +121,6 @@ tasks:
     desc: Re-fetch Gabarito from google/fonts at the pinned commit and re-subset it into static/fonts
     cmds:
       - uv run brand/fonts.py
-
-  theme:update:
-    desc: Re-vendor the ijosh design system (layouts/assets/static) from ijosh.com master
-    cmds:
-      - |
-        tmp=$(mktemp -d)
-        git clone --quiet --depth 1 {{.THEME_REPO}} "$tmp"
-        rm -rf {{.GIT_DIR}}/themes/ijosh
-        mkdir -p {{.GIT_DIR}}/themes/ijosh
-        cp -R "$tmp"/layouts "$tmp"/assets "$tmp"/static {{.GIT_DIR}}/themes/ijosh/
-        git -C "$tmp" rev-parse HEAD > {{.GIT_DIR}}/themes/ijosh/THEME_COMMIT
-        rm -rf "$tmp"
-        echo "themes/ijosh now at $(cat {{.GIT_DIR}}/themes/ijosh/THEME_COMMIT)"
-        echo "-- local shadows vs the theme's copies (re-apply theme changes by hand) --"
-        for f in _headers llms.txt site.webmanifest robots.txt favicon.ico .well-known/security.txt; do
-          [ -f {{.GIT_DIR}}/static/$f ] || continue
-          diff -u {{.GIT_DIR}}/themes/ijosh/static/$f {{.GIT_DIR}}/static/$f || true
-        done
 
   clean:
     desc: Remove generated and auxiliary files
