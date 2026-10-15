@@ -1,9 +1,8 @@
 # CLAUDE.md
 
 This repository is the landing page for **katoptra.org**: a Hugo static site with an index
-of the software mirrors at katoptra.org (ctan.katoptra.org, tlnet.katoptra.org and the
-others). Cloudflare Pages deploys it at each push to `main`. Do your work on a different
-branch.
+of the software mirrors at katoptra.org (for example ctan.katoptra.org). Cloudflare Pages
+deploys it at each push to `main`. Do your work on a different branch.
 
 Writing: obey ASD-STE100 and the rules in the
 [Writing section of the org CONTRIBUTING](https://github.com/katoptra/.github/blob/main/CONTRIBUTING.md#writing).
