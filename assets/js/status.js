@@ -4,7 +4,7 @@
      GitHub Actions API
    - the runs bar (one segment for each of the last 10 runs), the next-sync bar, and the
      words under the two bars, from the same page of runs.
-   If a fetch gives an error, the tile keeps its fallback: a neutral head, a dash for the
+   If a fetch gives an error, the tile keeps its fallback: a neutral tile, a dash for the
    age and the words, and gray bars. */
 
 // A time span in words: "34 min", "1 hour", "8 hours", "3 days".

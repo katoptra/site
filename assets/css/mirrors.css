@@ -7,7 +7,7 @@
 /* ===== Tokens that are not in the palette =====
    The status colors are the only semantic colors on the page. Their contrast is AA on
    the light background and on the dark background. The blue of the official check has a
-   contrast of 3:1 or more on each color of a tile head, in the two themes. */
+   contrast of 3:1 or more on each color of a tile, in the two themes. */
 :root {
   --status-up: #1a7f37;
   --status-down: #cf222e;
@@ -80,44 +80,41 @@
 }
 
 /* ===== Mirror tiles ===== */
-/* The grid has two columns only when each tile is 380px or wider. If a tile is too
-   narrow, its name or its host wraps, and the tiles in a row get heads of different
-   heights. The column of the page (840px at most) holds no more than two columns.
-   ponytail: in 2026-10, the widest tile is 349px (a head of 333px). The words under the
-   sync bars set that width. 380px gives a margin for longer words or a longer name.
-   Ceiling: words or a name that are wider than the margin wrap again in two columns.
-   Upgrade path: a container query on .mirror that puts the age below the title. */
+/* The grid has two columns only when each tile is 408px or wider. If a tile is too
+   narrow, its name or the words under its sync bars wrap, and the tiles in a row get
+   different heights. The column of the page (840px at most) holds no more than two
+   columns.
+   ponytail: in 2026-10, the longest words under the next-sync bar ("late by 23 hours")
+   need a tile of 405px, and 408px holds them. Ceiling: longer words or a longer name wrap
+   again in two columns. Upgrade path: a container query on .mirror that puts the age below
+   the title. */
 .group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 408px), 1fr));
   gap: 8px;
 }
 
+/* A tile is one surface. It is neutral while the sync is on schedule, and red when the
+   sync is late. Color shows only where it tells something: the next-sync bar, a failed
+   run, and a late tile. */
 .mirror {
   display: grid;
   align-content: start;
-  padding: 8px;
   border-radius: 16px;
-  background: var(--pill-bg);
+  background: color-mix(in srgb, var(--text) 5%, var(--bg));
+  transition: background 0.3s;
+}
+.mirror[data-state="down"] {
+  background: color-mix(in srgb, var(--status-down) 11%, var(--bg));
 }
 
-/* Head: the name and host, the age, and the two sync bars below them. Its background color
-   shows the status. The head stays neutral until status.js reads the healthcheck. */
+/* Head: the name and host, the age, and the two sync bars below them. */
 .mirror-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px 12px;
-  padding: 12px 14px 10px 16px;
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--text) 4%, var(--bg));
-  transition: background 0.3s;
-}
-.mirror[data-state="up"] .mirror-head {
-  background: color-mix(in srgb, var(--status-up) 11%, var(--bg));
-}
-.mirror[data-state="down"] .mirror-head {
-  background: color-mix(in srgb, var(--status-down) 11%, var(--bg));
+  gap: 14px 12px;
+  padding: 16px 18px 12px;
 }
 
 .mirror-title {
@@ -133,15 +130,15 @@
 }
 .mirror-name {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1.3;
   color: var(--text);
   overflow-wrap: anywhere;
 }
 .mirror-host {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.4;
-  color: var(--text-body);
+  color: var(--text-muted);
   overflow-wrap: anywhere;
 }
 /* The name is the link to the mirror, and its ::after covers the name and the host. Thus,
@@ -191,17 +188,14 @@
 }
 .mirror-age-value {
   font-weight: 700;
-  font-size: 26px;
+  font-size: 28px;
   letter-spacing: -0.01em;
   color: var(--text);
 }
 .mirror-age-note {
-  font-size: 12px;
+  font-size: 11.5px;
   white-space: nowrap;
   color: var(--text-muted);
-}
-.mirror[data-state="up"] .mirror-age-note {
-  color: color-mix(in srgb, var(--status-up) 70%, var(--text));
 }
 .mirror[data-state="down"] .mirror-age-value,
 .mirror[data-state="down"] .mirror-age-note {
@@ -215,8 +209,9 @@
 /* Sync: two bars, each with words under it. The runs bar has one segment for each of the
    last 10 runs. The next-sync bar fills in the time between two syncs. status.js sets
    the class of each run segment, the --fill of the next-sync bar and the words. The color
-   of the next-sync bar shows the status. While a run is in progress, its segment and the
-   next-sync bar are gray. Each word starts at the left edge of its bar. */
+   of the next-sync bar shows the status. A good run is gray, and a failed run is red. A
+   run in progress is a hollow segment, and the next-sync bar is gray while it runs. Each
+   word starts at the left edge of its bar. */
 .mirror-sync {
   grid-column: 1 / -1;
   display: grid;
@@ -233,31 +228,35 @@
 .sync-runs {
   display: flex;
   gap: 3px;
-  height: 6px;
+  height: 8px;
 }
 .sync-runs i,
 .sync-fill {
-  border-radius: 3px;
+  border-radius: 4px;
   background: color-mix(in srgb, var(--text) 10%, transparent);
 }
 .sync-runs i {
   flex: 1;
 }
 .sync-runs i.ok {
-  background: color-mix(in srgb, var(--status-up) 38%, transparent);
+  background: color-mix(in srgb, var(--text) 24%, transparent);
 }
 .sync-runs i.fail {
   background: var(--status-down);
 }
+.sync-runs i.run {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--text-muted);
+}
 .sync-fill {
-  height: 6px;
+  height: 8px;
   overflow: hidden;
 }
 .sync-fill b {
   display: block;
   width: var(--fill, 0%);
   height: 100%;
-  border-radius: 3px;
+  border-radius: 4px;
   background: var(--text-muted);
 }
 .mirror[data-state="up"] .sync-fill b {
@@ -270,16 +269,25 @@
   background: var(--text-muted);
 }
 .sync-label {
-  font-size: 12px;
+  font-size: 11.5px;
   line-height: 1.3;
   color: var(--text-muted);
 }
 .sync-label b {
+  font-size: 12.5px;
   color: var(--text);
 }
 .sync-label b.bad,
 .mirror[data-state="down"] .sync-next {
   color: var(--status-down);
+}
+
+/* On a phone, the two bars split the width in half. Thus, "late by 2 hours" fits on one
+   line under the next-sync bar. */
+@media (max-width: 480px) {
+  .mirror-sync {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 400px) {
@@ -291,15 +299,18 @@
   }
 }
 
-/* Links: the upstream on the left side, and the pipeline repository on the right side. */
+/* Links: the upstream on the left side, and the pipeline repository on the right side. A
+   hairline separates them from the head. */
 .mirror-links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 8px 16px;
-  padding: 12px 12px 6px;
-  font-size: 14px;
+  margin: 0 18px;
+  padding: 10px 0 12px;
+  border-top: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  font-size: 13px;
   line-height: 1.4;
 }
 .mirror-links a {

@@ -2,11 +2,11 @@
        url has no files to browse. Its name is text without a link, and the tile shows
        where the mirror copies to, not a hostname.
 
-       status.js sets data-state on the tile from the healthcheck. That value sets the
-       color of the head and of the next-sync bar. status.js also sets the age from the
-       last run of the sync workflow with the conclusion success, the runs bar from the
-       last 10 runs, and the words under the two bars. Until then, the head is neutral, the
-       age and the words show a dash, and the bars are gray.
+       status.js sets data-state on the tile from the healthcheck. A late sync makes the
+       tile red, and the value also sets the color of the next-sync bar. status.js also
+       sets the age from the last run of the sync workflow with the conclusion success, the
+       runs bar from the last 10 runs, and the words under the two bars. Until then, the
+       tile is neutral, the age and the words show a dash, and the bars are gray.
 
        The name is the link to the mirror. Its ::after covers the name and the host. Thus,
        a click on the host also opens the mirror. The blue check is on top of that area,

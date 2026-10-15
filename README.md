@@ -40,10 +40,10 @@ deploys the site at each push to `main`, and it also publishes the files in
    remove a mirror, you edit that file and no other file.
 3. **Status.** When the page loads, [`assets/js/status.js`](assets/js/status.js) reads
    the healthchecks.io JSON badge of each mirror and the runs of its sync workflow on GitHub
-   Actions. The script makes the head of each tile green or red, and it shows the age of
+   Actions. The script makes a tile red when its sync is late, and it shows the age of
    the last sync. It also fills two bars and the words under them: the runs bar has one
    segment for each of the last 10 runs, and the next-sync bar fills until the next sync.
-   If the script cannot fetch a source, the head stays neutral, the age and the words
+   If the script cannot fetch a source, the tile stays neutral, the age and the words
    stay a dash, and the bars stay gray. The pipeline of each mirror pings a healthcheck at
    the end of each run, and the badge shows the result
    ([katoptra/lib](https://github.com/katoptra/lib#monitoring) gives more data).

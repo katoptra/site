@@ -107,7 +107,7 @@ This layout has the Public / Private switch and one panel of tiles for each grou
 `layouts/partials/mirror.html` makes each tile. The switch is two radios that show as one
 pill control. `mirrors.css` shows only the panel of the checked group. Thus, the switch has
 no JavaScript. The `head` block of this layout adds the ItemList JSON-LD and `status.js`.
-The grid has two columns when each tile can be 380px wide, or else one column
+The grid has two columns when each tile can be 408px wide, or else one column
 (refer to `mirrors.css`).
 
 ### `themes/katoptra/layouts/partials/head.html`
@@ -124,13 +124,15 @@ This partial has these parts:
 When the page loads, this script puts these values in each tile:
 
 - The status. The script sets the `data-state` of the tile from its healthchecks.io JSON
-  badge. That value sets the color of the tile head and of the next-sync bar.
+  badge. A late sync (`down`) makes the tile red. The value also sets the color of the
+  next-sync bar. A tile with a sync on schedule stays neutral: color shows only where it
+  tells something.
 - The age. The script gets the last `sync.yml` run with the conclusion `success` from the
   GitHub Actions API, and it sets the age from that run.
 - The two bars, from the same page of 10 runs:
   - The runs bar has one segment for each of the 10 runs, with the oldest run at the left.
     A run with a conclusion other than `success` is a failed segment. A run that is not
-    complete, for example queued or in progress, is a gray segment.
+    complete, for example queued or in progress, is a hollow segment.
   - The next-sync bar fills in the time between two syncs, from the start of the last good
     run. While a run is in progress, the bar is gray.
 - The words under the bars. Each word starts at the left edge of its bar. The words under
@@ -140,7 +142,7 @@ When the page loads, this script puts these values in each tile:
   times, the value is approximate.
 
 Thus, the status, the age, the bars and the words are up to date when a person opens the
-page. If the script cannot fetch a value, the head stays neutral, the age and the words
+page. If the script cannot fetch a value, the tile stays neutral, the age and the words
 stay a dash, and the bars stay gray. The self-check is `node assets/js/status.check.mjs`,
 and `task check` runs it.
 
@@ -274,7 +276,7 @@ First, `task check` gives an error if the brand files are different from the fil
   script makes stays CC BY-SA 2.0.
 - The tile does not embed the badge SVG. It fetches the healthchecks.io **JSON** badge.
   Then the page shows the status in the colors of the `--status-*` tokens in
-  `mirrors.css`: the tile head and the next-sync bar. The tile keeps the
+  `mirrors.css`: a late tile, a failed run and the next-sync bar. The tile keeps the
   URL of the badge SVG, without a change, in `data-badge`. The script makes the `.json`
   URL from it, and `task check` greps for it.
 - The official check is `certificate.svg` with `check.svg` on top of it. Its blue is the
