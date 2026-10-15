@@ -8,15 +8,22 @@
 #   upstream     {name, url, icon}
 #   usage        a short description of the mirror. The page uses it only as the
 #                description of the mirror in the ItemList JSON-LD.
+#   official     optional. The list of official mirrors at the upstream, when that list
+#                has this mirror. The tile shows a blue check after the name, and the
+#                check is a link to that list.
 #
 # upstream.icon is the name of an icon file in assets/icons/, without .svg. The icon is from Font Awesome Free, or it is ctan
 # (brand/render_ctan_icon.py makes it) or gnu (brand/render_gnu_icon.py makes it). If the
 # file is missing, the build stops with an error.
 #
+# cadence must be "hourly", "twice a day", "daily" or "nightly". The next-sync bar fills
+# in the time between two syncs. layouts/partials/mirror.html gives each
+# cadence its minutes, and the build stops with an error for a different value.
+#
 # healthcheck must be the URL of the two-state badge for one check (/b/2/<uuid>.svg).
-# The page shows a green check for each status that is not "down". Thus, with a
-# three-state badge or a project badge, the page can show a green check for a sync that
-# stopped.
+# The page shows a tile on schedule for each status that is not "down". Thus, with a
+# three-state badge or a project badge, the page can show a tile on schedule for a sync
+# that stopped.
 
 [[mirrors]]
 name = "CTAN"
@@ -25,6 +32,7 @@ cadence = "hourly"
 repo = "https://github.com/katoptra/ctan"
 healthcheck = "https://healthchecks.io/b/2/f4ad55cc-4b2d-4cce-b133-aba5381d9e71.svg"
 upstream = { name = "ctan.org", url = "https://ctan.org", icon = "ctan" }
+official = "https://ctan.org/mirrors/"
 usage = "The mirror serves all the paths of CTAN at its root. Thus, its URL can replace a CTAN mirror URL. TeX Live and TinyTeX use it with tlmgr."
 
 [[mirrors]]

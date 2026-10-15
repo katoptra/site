@@ -71,6 +71,13 @@ Each mirror has these fields:
 - The upstream name and URL
 - `usage`, a short description of the mirror. The page uses it only as the description of
   that mirror in the ItemList JSON-LD.
+- `official`, optional: the list of official mirrors at the upstream, when that list has
+  this mirror. The tile shows a blue check after the name, and the check is a link to
+  that list. Add it only after the upstream shows the mirror on its list.
+
+The cadence must be `hourly`, `twice a day`, `daily` or `nightly`.
+`layouts/partials/mirror.html` gives each cadence its minutes for the next-sync bar. For a
+different value, the build stops with an error.
 
 In `usage`, write the typographic characters, for example — and not --. The markdown
 typographer does not change data fields.
@@ -100,7 +107,7 @@ This layout has the Public / Private switch and one panel of tiles for each grou
 `layouts/partials/mirror.html` makes each tile. The switch is two radios that show as one
 pill control. `mirrors.css` shows only the panel of the checked group. Thus, the switch has
 no JavaScript. The `head` block of this layout adds the ItemList JSON-LD and `status.js`.
-The grid has two columns when each tile can be 380px wide, or else one column
+The grid has two columns when each tile can be 408px wide, or else one column
 (refer to `mirrors.css`).
 
 ### `themes/katoptra/layouts/partials/head.html`
@@ -114,17 +121,32 @@ This partial has these parts:
 
 ### `assets/js/status.js`
 
-When the page loads, this script puts two values in each tile:
+When the page loads, this script puts these values in each tile:
 
 - The status. The script sets the `data-state` of the tile from its healthchecks.io JSON
-  badge. That value sets the color of the tile head, and it selects the check badge or the
-  cross badge.
+  badge. A late sync (`down`) makes the tile and the next-sync bar red. A tile with a
+  sync on schedule stays neutral: color shows only where it tells something.
 - The age. The script gets the last `sync.yml` run with the conclusion `success` from the
   GitHub Actions API, and it sets the age from that run.
+- The two bars, from the same page of 10 runs:
+  - The runs bar has one segment for each of the 10 runs, with the oldest run at the left.
+    A good run (`success`) is green. A run that did not sync (`cancelled`, `skipped`,
+    `neutral` or `stale`) is gray. A run with a different conclusion is a red, failed
+    segment. A run that is not complete, for example queued or in progress, is hollow.
+  - The next-sync bar is a timeline, not a result, because the result of the next run is
+    not known. It fills in light gray in the time between two syncs, from the start of the
+    last good run, and a dark marker shows now. It is red when the sync is late, and hollow
+    while a run is in progress.
+- The words under the bars. Each word starts at the left edge of its bar. The words under
+  the runs bar give the number of failed runs. The words under the next-sync bar give the
+  time to the next sync, or "in progress", "due now" or "late by". The next sync is the
+  start of the last good run plus the cadence. Thus, for a mirror with runs at irregular
+  times, the value is approximate.
 
-Thus, the status and the age are up to date when a person opens the page. If the script
-cannot fetch a value, the head stays neutral and the age stays a dash. The self-check is
-`node assets/js/status.check.mjs`, and `task check` runs it.
+Thus, the status, the age, the bars and the words are up to date when a person opens the
+page. If the script cannot fetch a value, the tile stays neutral, the age and the words
+stay a dash, and the bars stay gray. The self-check is `node assets/js/status.check.mjs`,
+and `task check` runs it.
 
 ### `static/_headers`
 
@@ -255,9 +277,14 @@ First, `task check` gives an error if the brand files are different from the fil
   `uv run --with svgelements --with shapely brand/render_gnu_icon.py`. The SVG that the
   script makes stays CC BY-SA 2.0.
 - The tile does not embed the badge SVG. It fetches the healthchecks.io **JSON** badge.
-  Then the page shows a different badge, in the colors of the `--status-*` tokens in
-  `mirrors.css`. The tile keeps the URL of the badge SVG, without a change, in
-  `data-badge`. The script makes the `.json` URL from it, and `task check` greps for it.
+  Then the page shows the status in the colors of the `--status-*` tokens in
+  `mirrors.css`: a good or failed run, and a late tile. The tile keeps the
+  URL of the badge SVG, without a change, in `data-badge`. The script makes the `.json`
+  URL from it, and `task check` greps for it.
+- The official check is `certificate.svg` with `check.svg` on top of it. Its blue is the
+  `--official` token in `mirrors.css`, and it is not the accent. A green check or a check
+  in a circle must not show the status, because the official check is the only check on
+  the page.
 - The age on a tile is a link to the `sync.yml` workflow runs of the repository. It has no
   underline, and it must not have one. The upstream and repository links below it have an
   underline.

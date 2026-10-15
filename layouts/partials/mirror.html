@@ -2,35 +2,55 @@
        url has no files to browse. Its name is text without a link, and the tile shows
        where the mirror copies to, not a hostname.
 
-       status.js sets data-state on the tile from the healthcheck. That value sets the
-       color of the head and selects the icon of the badge. status.js also sets the age
-       from the last run of the sync workflow with the conclusion success. Until then, the
-       head is neutral and the age shows a dash. */ -}}
+       status.js sets data-state on the tile from the healthcheck. A late sync makes the
+       tile and the next-sync bar red. status.js also
+       sets the age from the last run of the sync workflow with the conclusion success, the
+       runs bar from the last 10 runs, and the words under the two bars. Until then, the
+       tile is neutral, the age and the words show a dash, and the bars are gray.
+
+       The name is the link to the mirror. Its ::after covers the name and the host. Thus,
+       a click on the host also opens the mirror. The blue check is on top of that area,
+       and it is a different link. */ -}}
 {{- $repo := strings.TrimPrefix "https://github.com/" .repo }}
 {{- $icon := printf "icons/%s.svg" .upstream.icon }}
+{{- $minutes := index (dict "hourly" 60 "twice a day" 720 "daily" 1440 "nightly" 1440) .cadence }}
+{{- if not $minutes }}{{ errorf "mirror %q: cadence %q has no minutes in mirror.html" .name .cadence }}{{ end }}
 <article class="mirror" data-badge="{{ .healthcheck }}">
   <div class="mirror-head">
-    <span class="mirror-badge" role="img" aria-label="Status unknown">
-      <span class="badge-up">{{ (resources.Get "icons/check.svg").Content | safeHTML }}</span>
-      <span class="badge-down">{{ (resources.Get "icons/xmark.svg").Content | safeHTML }}</span>
-    </span>
-    {{- if .url }}
-    <a class="mirror-title" href="{{ .url }}">
-      <span class="mirror-name">{{ .name }}</span>
-      <span class="mirror-host">{{ strings.TrimSuffix "/" (strings.TrimPrefix "https://" .url) }}</span>
-    </a>
-    {{- else }}
     <div class="mirror-title">
-      <span class="mirror-name">{{ .name }}</span>
-      <span class="mirror-host">Into {{ .into }}</span>
+      <span class="mirror-name-line">
+        {{- if .url }}
+        <a class="mirror-name mirror-link" href="{{ .url }}">{{ .name }}</a>
+        {{- else }}
+        <span class="mirror-name">{{ .name }}</span>
+        {{- end }}
+        {{- with .official }}
+        <a class="mirror-official" rel="noopener" target="_blank" href="{{ . }}"
+           title="Official {{ $.name }} mirror" aria-label="Official {{ $.name }} mirror, on the list at {{ $.upstream.name }}">
+          {{- (resources.Get "icons/certificate.svg").Content | safeHTML -}}
+          {{- (resources.Get "icons/check.svg").Content | safeHTML -}}
+        </a>
+        {{- end }}
+      </span>
+      <span class="mirror-host">{{ with .url }}{{ strings.TrimSuffix "/" (strings.TrimPrefix "https://" .) }}{{ else }}Into {{ .into }}{{ end }}</span>
     </div>
-    {{- end }}
     <a class="mirror-age" rel="noopener" target="_blank" href="{{ .repo }}/actions/workflows/sync.yml"
        aria-label="{{ .name }} sync runs"
        data-runs-api="https://api.github.com/repos/{{ $repo }}/actions/workflows/sync.yml/runs?per_page=10">
       <span class="mirror-age-value">&mdash;</span>
       <span class="mirror-age-note">since sync · {{ .cadence }}</span>
     </a>
+    <div class="mirror-sync" data-minutes="{{ $minutes }}">
+      <span class="visually-hidden sync-state"></span>
+      <div class="sync-part">
+        <span class="sync-runs" aria-hidden="true">{{ range 10 }}<i></i>{{ end }}</span>
+        <span class="sync-label"><span class="sync-count">Last 10 runs</span> · <b class="sync-fails">&mdash;</b></span>
+      </div>
+      <div class="sync-part">
+        <span class="sync-fill" aria-hidden="true"><b></b></span>
+        <span class="sync-label">Next sync · <b class="sync-next">&mdash;</b></span>
+      </div>
+    </div>
   </div>
   <div class="mirror-links">
     <a rel="noopener" target="_blank" href="{{ .upstream.url }}">

@@ -6,15 +6,19 @@
 
 /* ===== Tokens that are not in the palette =====
    The status colors are the only semantic colors on the page. Their contrast is AA on
-   the light background and on the dark background. */
+   the light background and on the dark background. The blue of the official check has a
+   contrast of 3:1 or more on each color of a tile, in the two themes. */
 :root {
   --status-up: #1a7f37;
   --status-down: #cf222e;
+  --official: #1877d2;
+  --official-ink: #ffffff;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --status-up: #3fb950;
     --status-down: #f85149;
+    --official: #1d9bf0;
   }
 }
 
@@ -76,96 +80,101 @@
 }
 
 /* ===== Mirror tiles ===== */
-/* The grid has two columns only when each tile is 380px or wider. Below that width, the
-   name or the host of a tile wraps, and the tiles in a row get heads of different heights.
-   The column of the page (840px at most) holds no more than two columns.
-   ponytail: 380px is the widest head of the tiles in 2026-10 (Savannah (nongnu), 370px)
-   plus a margin. Ceiling: a longer name or host wraps again in two columns. Upgrade path:
-   a container query on .mirror that puts the age below the title. */
+/* The grid has two columns only when each tile is 408px or wider. If a tile is too
+   narrow, its name or the words under its sync bars wrap, and the tiles in a row get
+   different heights. The column of the page (840px at most) holds no more than two
+   columns.
+   ponytail: in 2026-10, the longest words under the next-sync bar ("late by 23 hours")
+   need a tile of 405px, and 408px holds them. Ceiling: longer words or a longer name wrap
+   again in two columns. Upgrade path: a container query on .mirror that puts the age below
+   the title. */
 .group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 408px), 1fr));
   gap: 8px;
 }
 
+/* A tile is one surface. It is neutral while the sync is on schedule, and red when the
+   sync is late. Color shows only where it tells something: the result of each run, and a
+   late tile. */
 .mirror {
   display: grid;
   align-content: start;
-  padding: 8px;
   border-radius: 16px;
-  background: var(--pill-bg);
-}
-
-/* Head: the badge, the name and host, and the age. Its background color shows the
-   status. The head stays neutral until status.js reads the healthcheck. */
-.mirror-head {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px 12px 12px;
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--text) 4%, var(--bg));
+  background: color-mix(in srgb, var(--text) 5%, var(--bg));
   transition: background 0.3s;
 }
-.mirror[data-state="up"] .mirror-head {
-  background: color-mix(in srgb, var(--status-up) 11%, var(--bg));
-}
-.mirror[data-state="down"] .mirror-head {
+.mirror[data-state="down"] {
   background: color-mix(in srgb, var(--status-down) 11%, var(--bg));
 }
 
-.mirror-badge {
+/* Head: the name and host, the age, and the two sync bars below them. */
+.mirror-head {
   display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--pill-bg);
-  color: var(--bg);
-}
-.mirror-badge svg {
-  display: block;
-  height: 16px;
-  width: auto;
-}
-.badge-up,
-.badge-down {
-  display: none;
-}
-.mirror[data-state="up"] .mirror-badge {
-  background: var(--status-up);
-}
-.mirror[data-state="down"] .mirror-badge {
-  background: var(--status-down);
-}
-.mirror[data-state="up"] .badge-up,
-.mirror[data-state="down"] .badge-down {
-  display: block;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px 12px;
+  padding: 16px 18px 12px;
 }
 
 .mirror-title {
+  position: relative;
   display: grid;
+  min-width: 0;
+}
+.mirror-name-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   min-width: 0;
 }
 .mirror-name {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1.3;
   color: var(--text);
   overflow-wrap: anywhere;
 }
 .mirror-host {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.4;
-  color: var(--text-body);
+  color: var(--text-muted);
   overflow-wrap: anywhere;
 }
-/* The name and the host are one link, and the age is also one link. Thus, when the
-   pointer is on the name or on the host, the two show the accent color. */
-.mirror a.mirror-title:hover .mirror-name,
-.mirror a.mirror-title:hover .mirror-host {
+/* The name is the link to the mirror, and its ::after covers the name and the host. Thus,
+   when the pointer is on the name or on the host, the two show the accent color. */
+.mirror-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.mirror-title:has(.mirror-link:hover) .mirror-name,
+.mirror-title:has(.mirror-link:hover) .mirror-host {
   color: var(--accent);
+}
+
+/* The official check: the Font Awesome certificate with the check icon on top of it. It
+   is above the ::after of the name link. Thus, it is a different link. */
+.mirror-official {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: none;
+  width: 19px;
+  height: 19px;
+  color: var(--official);
+}
+.mirror-official svg {
+  grid-area: 1 / 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mirror-official svg + svg {
+  place-self: center;
+  width: 9px;
+  height: 9px;
+  color: var(--official-ink);
 }
 
 /* Age: a link to the runs of the sync workflow. It has no underline, and it must not
@@ -179,17 +188,14 @@
 }
 .mirror-age-value {
   font-weight: 700;
-  font-size: 26px;
+  font-size: 28px;
   letter-spacing: -0.01em;
   color: var(--text);
 }
 .mirror-age-note {
-  font-size: 12px;
+  font-size: 11.5px;
   white-space: nowrap;
   color: var(--text-muted);
-}
-.mirror[data-state="up"] .mirror-age-note {
-  color: color-mix(in srgb, var(--status-up) 70%, var(--text));
 }
 .mirror[data-state="down"] .mirror-age-value,
 .mirror[data-state="down"] .mirror-age-note {
@@ -198,6 +204,113 @@
 .mirror a.mirror-age:hover .mirror-age-value,
 .mirror a.mirror-age:hover .mirror-age-note {
   color: var(--accent);
+}
+
+/* Sync: two bars, each with words under it. The runs bar has one segment for each of the
+   last 10 runs. A good run is green, a failed run is red, a skipped run is gray, and a
+   run in progress is hollow. The next-sync bar fills in the time between two syncs, and
+   it is red when the sync is late and hollow while a run is in progress. status.js sets
+   the class of each run segment, the --fill of the next-sync bar and the words. Each word
+   starts at the left edge of its bar. */
+.mirror-sync {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 14px;
+  padding-top: 4px;
+}
+.sync-part {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-width: 0;
+}
+.sync-runs {
+  display: flex;
+  gap: 3px;
+  height: 8px;
+}
+.sync-runs i,
+.sync-fill {
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+}
+.sync-runs i {
+  flex: 1;
+}
+.sync-runs i.ok {
+  background: color-mix(in srgb, var(--status-up) 45%, transparent);
+}
+.sync-runs i.skip {
+  background: color-mix(in srgb, var(--text) 24%, transparent);
+}
+.sync-runs i.fail {
+  background: var(--status-down);
+}
+.sync-runs i.run {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--text-muted);
+}
+/* The next-sync bar is a timeline, not a result: the result of the next run is not known.
+   The elapsed time is light gray, and a dark marker shows now. The marker shows only when
+   status.js knows the start of the last good sync (data-started). */
+.sync-fill {
+  height: 8px;
+}
+.sync-fill b {
+  position: relative;
+  display: block;
+  width: var(--fill, 0%);
+  height: 100%;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+}
+.mirror[data-started] .sync-fill b::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -1.5px;
+  bottom: -3px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--text);
+}
+.mirror[data-state="down"] .sync-fill b {
+  background: color-mix(in srgb, var(--status-down) 35%, transparent);
+}
+.mirror[data-state="down"] .sync-fill b::after {
+  background: var(--status-down);
+}
+.mirror[data-running="yes"] .sync-fill {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--text-muted);
+}
+.mirror[data-running="yes"] .sync-fill b {
+  background: transparent;
+}
+.mirror[data-running="yes"] .sync-fill b::after {
+  display: none;
+}
+.sync-label {
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+.sync-label b {
+  font-size: 12.5px;
+  color: var(--text);
+}
+.sync-label b.bad,
+.mirror[data-state="down"] .sync-next {
+  color: var(--status-down);
+}
+
+/* On a phone, the two bars split the width in half. Thus, "late by 2 hours" fits on one
+   line under the next-sync bar. */
+@media (max-width: 480px) {
+  .mirror-sync {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 400px) {
@@ -209,15 +322,18 @@
   }
 }
 
-/* Links: the upstream on the left side, and the pipeline repository on the right side. */
+/* Links: the upstream on the left side, and the pipeline repository on the right side. A
+   hairline separates them from the head. */
 .mirror-links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 8px 16px;
-  padding: 12px 12px 6px;
-  font-size: 14px;
+  margin: 0 18px;
+  padding: 10px 0 12px;
+  border-top: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  font-size: 13px;
   line-height: 1.4;
 }
 .mirror-links a {
