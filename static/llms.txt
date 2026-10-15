@@ -13,10 +13,10 @@
   It serves all the paths of CTAN at its root. Set the tlmgr repository to it:
   `tlmgr option repository https://ctan.katoptra.org/systems/texlive/tlnet/`
   Freshness: `https://ctan.katoptra.org/timestamp` (upstream's clock, year-month-day-hour-minute UTC).
-- TeX Live (tlnet): https://tlnet.katoptra.org/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet, sync: daily)
-  It serves only the tlnet subtree, with all platforms. Set the tlmgr repository to it:
-  `tlmgr option repository https://tlnet.katoptra.org/systems/texlive/tlnet/`
-  Freshness: `https://tlnet.katoptra.org/timestamp` (upstream's clock, year-month-day-hour-minute UTC).
+- TeX Live (tlnet): https://ctan.katoptra.org/systems/texlive/tlnet/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet, sync: hourly)
+  It is the tlnet subtree of the CTAN mirror, with all platforms. Set the tlmgr repository to it:
+  `tlmgr option repository https://ctan.katoptra.org/systems/texlive/tlnet/`
+  Freshness: `https://ctan.katoptra.org/timestamp` (upstream's clock, year-month-day-hour-minute UTC).
 - GNU: https://gnu.katoptra.org/ (upstream: https://ftp.gnu.org/gnu/, sync: twice a day)
   It serves all the paths of ftp.gnu.org/gnu at its root. These are the release tarballs
   and .sig signatures of more than 300 GNU packages (for example gcc, glibc, binutils,
