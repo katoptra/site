@@ -3,34 +3,58 @@
        where the mirror copies to, not a hostname.
 
        status.js sets data-state on the tile from the healthcheck. That value sets the
-       color of the head and selects the icon of the badge. status.js also sets the age
-       from the last run of the sync workflow with the conclusion success. Until then, the
-       head is neutral and the age shows a dash. */ -}}
+       color of the head and of the last segment of the sync bar. status.js also sets the
+       age from the last run of the sync workflow with the conclusion success, and the
+       segments of the sync bar from the last 10 runs. Until then, the head is neutral, the
+       age shows a dash, and the segments are gray.
+
+       The name is the link to the mirror. Its ::after covers the name and the host. Thus,
+       a click on the host also opens the mirror. The blue check is on top of that area,
+       and it is a different link.
+
+       The sync bar is a button, and its tooltip is in the button. Thus, the pointer can
+       move onto the tooltip, and the tooltip stays open. */ -}}
 {{- $repo := strings.TrimPrefix "https://github.com/" .repo }}
 {{- $icon := printf "icons/%s.svg" .upstream.icon }}
+{{- $minutes := index (dict "hourly" 60 "twice a day" 720 "daily" 1440 "nightly" 1440) .cadence }}
+{{- if not $minutes }}{{ errorf "mirror %q: cadence %q has no minutes in mirror.html" .name .cadence }}{{ end }}
+{{- $tip := printf "sync-%s" (path.Base .repo) }}
 <article class="mirror" data-badge="{{ .healthcheck }}">
   <div class="mirror-head">
-    <span class="mirror-badge" role="img" aria-label="Status unknown">
-      <span class="badge-up">{{ (resources.Get "icons/check.svg").Content | safeHTML }}</span>
-      <span class="badge-down">{{ (resources.Get "icons/xmark.svg").Content | safeHTML }}</span>
-    </span>
-    {{- if .url }}
-    <a class="mirror-title" href="{{ .url }}">
-      <span class="mirror-name">{{ .name }}</span>
-      <span class="mirror-host">{{ strings.TrimSuffix "/" (strings.TrimPrefix "https://" .url) }}</span>
-    </a>
-    {{- else }}
     <div class="mirror-title">
-      <span class="mirror-name">{{ .name }}</span>
-      <span class="mirror-host">Into {{ .into }}</span>
+      <span class="mirror-name-line">
+        {{- if .url }}
+        <a class="mirror-name mirror-link" href="{{ .url }}">{{ .name }}</a>
+        {{- else }}
+        <span class="mirror-name">{{ .name }}</span>
+        {{- end }}
+        {{- with .official }}
+        <a class="mirror-official" rel="noopener" target="_blank" href="{{ . }}"
+           title="Official {{ $.name }} mirror" aria-label="Official {{ $.name }} mirror, on the list at {{ $.upstream.name }}">
+          {{- (resources.Get "icons/certificate.svg").Content | safeHTML -}}
+          {{- (resources.Get "icons/check.svg").Content | safeHTML -}}
+        </a>
+        {{- end }}
+      </span>
+      <span class="mirror-host">{{ with .url }}{{ strings.TrimSuffix "/" (strings.TrimPrefix "https://" .) }}{{ else }}Into {{ .into }}{{ end }}</span>
     </div>
-    {{- end }}
     <a class="mirror-age" rel="noopener" target="_blank" href="{{ .repo }}/actions/workflows/sync.yml"
        aria-label="{{ .name }} sync runs"
        data-runs-api="https://api.github.com/repos/{{ $repo }}/actions/workflows/sync.yml/runs?per_page=10">
       <span class="mirror-age-value">&mdash;</span>
       <span class="mirror-age-note">since sync · {{ .cadence }}</span>
     </a>
+    <button class="mirror-sync" type="button" aria-label="{{ .name }} sync bar" aria-describedby="{{ $tip }}">
+      <span class="mirror-sync-bar" data-minutes="{{ $minutes }}">
+        {{- range 10 }}<i></i>{{ end }}<i class="sync-now"><b></b></i>
+      </span>
+      <span class="mirror-sync-tip" role="tooltip" id="{{ $tip }}">
+        <span class="sync-state"></span>
+        <span class="sync-last"></span>
+        <span class="sync-fails"></span>
+        <span class="sync-how">Each segment is one sync. The oldest sync is at the left. The last segment fills until the next sync.</span>
+      </span>
+    </button>
   </div>
   <div class="mirror-links">
     <a rel="noopener" target="_blank" href="{{ .upstream.url }}">

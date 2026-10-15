@@ -41,8 +41,9 @@ deploys the site at each push to `main`, and it also publishes the files in
 3. **Status.** When the page loads, [`assets/js/status.js`](assets/js/status.js) reads
    the healthchecks.io JSON badge of each mirror and the runs of its sync workflow on GitHub
    Actions. The script makes the head of each tile green or red, and it shows the age of
-   the last sync. If the script cannot fetch a source, the head stays neutral and the
-   age stays a dash. The pipeline of each mirror pings a healthcheck at the end of each
+   the last sync. It also fills the sync bar: one segment for each of the last 10 runs,
+   and a last segment that fills until the next sync. If the script cannot fetch a
+   source, the head stays neutral, the age stays a dash, and the segments stay gray. The pipeline of each mirror pings a healthcheck at the end of each
    run, and the badge shows the result
    ([katoptra/lib](https://github.com/katoptra/lib#monitoring) gives more data).
 4. **Deploy.** At each push to `main`, Cloudflare Pages runs `hugo --minify --gc`.
