@@ -215,7 +215,8 @@
 /* Sync: two bars, each with words under it. The runs bar has one segment for each of the
    last 10 runs. The next-sync bar fills in the time between two syncs. status.js sets
    the class of each run segment, the --fill of the next-sync bar and the words. The color
-   of the next-sync bar shows the status. Each word starts at the left edge of its bar. */
+   of the next-sync bar shows the status. While a run is in progress, its segment and the
+   next-sync bar are gray. Each word starts at the left edge of its bar. */
 .mirror-sync {
   grid-column: 1 / -1;
   display: grid;
@@ -264,6 +265,9 @@
 }
 .mirror[data-state="down"] .sync-fill b {
   background: var(--status-down);
+}
+.mirror[data-running="yes"] .sync-fill b {
+  background: var(--text-muted);
 }
 .sync-label {
   font-size: 12px;

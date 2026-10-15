@@ -128,10 +128,11 @@ When the page loads, this script puts these values in each tile:
 - The age. The script gets the last `sync.yml` run with the conclusion `success` from the
   GitHub Actions API, and it sets the age from that run.
 - The two bars, from the same page of 10 runs:
-  - The runs bar has one segment for each completed run, with the oldest run at the left.
-    A run with a conclusion other than `success` is a failed segment.
+  - The runs bar has one segment for each of the 10 runs, with the oldest run at the left.
+    A run with a conclusion other than `success` is a failed segment. A run that is not
+    complete, for example queued or in progress, is a gray segment.
   - The next-sync bar fills in the time between two syncs, from the start of the last good
-    run.
+    run. While a run is in progress, the bar is gray.
 - The words under the bars. Each word starts at the left edge of its bar. The words under
   the runs bar give the number of failed runs. The words under the next-sync bar give the
   time to the next sync, or "in progress", "due now" or "late by". The next sync is the

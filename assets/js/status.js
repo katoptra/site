@@ -46,15 +46,15 @@ export function lastSuccess(d) {
   return d.workflow_runs?.find((run) => run.conclusion === "success");
 }
 
-// The segments of the runs bar: the completed runs in the page, oldest first. A run with
-// a conclusion other than success (for example failure, cancelled or timed_out) is a
+// The segments of the runs bar: the newest 10 runs in the page, oldest first. A run that
+// is not complete (for example queued or in_progress) is "run", and it shows gray. A run
+// with a conclusion other than success (for example failure, cancelled or timed_out) is a
 // failed run.
 export function segments(d) {
   return (d.workflow_runs ?? [])
-    .filter((run) => run.status === "completed")
     .slice(0, 10)
     .reverse()
-    .map((run) => (run.conclusion === "success" ? "ok" : "fail"));
+    .map((run) => (run.status !== "completed" ? "run" : run.conclusion === "success" ? "ok" : "fail"));
 }
 
 export function failText(segs) {

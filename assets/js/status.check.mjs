@@ -29,7 +29,7 @@ assert.equal(lastSuccess({ workflow_runs: runs }).run_started_at, "a"); // the n
 assert.equal(lastSuccess({ workflow_runs: runs.slice(0, 2) }), undefined); // no success in the page: the age stays a dash
 assert.equal(lastSuccess({}), undefined);
 
-assert.deepEqual(segments({ workflow_runs: runs }), ["ok", "ok", "fail"]); // oldest first, without the in-progress run
+assert.deepEqual(segments({ workflow_runs: runs }), ["ok", "ok", "fail", "run"]); // oldest first, and the in-progress run is the newest
 const cancelled = { status: "completed", conclusion: "cancelled" };
 const eleven = [cancelled, ...Array(10).fill({ status: "completed", conclusion: "success" })];
 assert.deepEqual(segments({ workflow_runs: eleven }), [...Array(9).fill("ok"), "fail"]); // the newest 10 only, and a cancelled run fails
