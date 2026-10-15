@@ -3,22 +3,18 @@
        where the mirror copies to, not a hostname.
 
        status.js sets data-state on the tile from the healthcheck. That value sets the
-       color of the head and of the last segment of the sync bar. status.js also sets the
-       age from the last run of the sync workflow with the conclusion success, and the
-       segments of the sync bar from the last 10 runs. Until then, the head is neutral, the
-       age shows a dash, and the segments are gray.
+       color of the head and of the next-sync bar. status.js also sets the age from the
+       last run of the sync workflow with the conclusion success, the runs bar from the
+       last 10 runs, and the words under the two bars. Until then, the head is neutral, the
+       age and the words show a dash, and the bars are gray.
 
        The name is the link to the mirror. Its ::after covers the name and the host. Thus,
        a click on the host also opens the mirror. The blue check is on top of that area,
-       and it is a different link.
-
-       The sync bar is a button, and its tooltip is in the button. Thus, the pointer can
-       move onto the tooltip, and the tooltip stays open. */ -}}
+       and it is a different link. */ -}}
 {{- $repo := strings.TrimPrefix "https://github.com/" .repo }}
 {{- $icon := printf "icons/%s.svg" .upstream.icon }}
 {{- $minutes := index (dict "hourly" 60 "twice a day" 720 "daily" 1440 "nightly" 1440) .cadence }}
 {{- if not $minutes }}{{ errorf "mirror %q: cadence %q has no minutes in mirror.html" .name .cadence }}{{ end }}
-{{- $tip := printf "sync-%s" (path.Base .repo) }}
 <article class="mirror" data-badge="{{ .healthcheck }}">
   <div class="mirror-head">
     <div class="mirror-title">
@@ -44,17 +40,17 @@
       <span class="mirror-age-value">&mdash;</span>
       <span class="mirror-age-note">since sync · {{ .cadence }}</span>
     </a>
-    <button class="mirror-sync" type="button" aria-label="{{ .name }} sync bar" aria-describedby="{{ $tip }}">
-      <span class="mirror-sync-bar" data-minutes="{{ $minutes }}">
-        {{- range 10 }}<i></i>{{ end }}<i class="sync-now"><b></b></i>
-      </span>
-      <span class="mirror-sync-tip" role="tooltip" id="{{ $tip }}">
-        <span class="sync-state"></span>
-        <span class="sync-last"></span>
-        <span class="sync-fails"></span>
-        <span class="sync-how">Each segment is one sync. The oldest sync is at the left. The last segment fills until the next sync.</span>
-      </span>
-    </button>
+    <div class="mirror-sync" data-minutes="{{ $minutes }}">
+      <span class="visually-hidden sync-state"></span>
+      <div class="sync-part">
+        <span class="sync-runs" aria-hidden="true">{{ range 10 }}<i></i>{{ end }}</span>
+        <span class="sync-label"><span class="sync-count">Last 10 runs</span> · <b class="sync-fails">&mdash;</b></span>
+      </div>
+      <div class="sync-part">
+        <span class="sync-fill" aria-hidden="true"><b></b></span>
+        <span class="sync-label">Next sync · <b class="sync-next">&mdash;</b></span>
+      </div>
+    </div>
   </div>
   <div class="mirror-links">
     <a rel="noopener" target="_blank" href="{{ .upstream.url }}">

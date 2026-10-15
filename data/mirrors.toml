@@ -16,8 +16,8 @@
 # (brand/render_ctan_icon.py makes it) or gnu (brand/render_gnu_icon.py makes it). If the
 # file is missing, the build stops with an error.
 #
-# cadence must be "hourly", "twice a day", "daily" or "nightly". The last segment of the
-# sync bar fills in the time between two syncs. layouts/partials/mirror.html gives each
+# cadence must be "hourly", "twice a day", "daily" or "nightly". The next-sync bar fills
+# in the time between two syncs. layouts/partials/mirror.html gives each
 # cadence its minutes, and the build stops with an error for a different value.
 #
 # healthcheck must be the URL of the two-state badge for one check (/b/2/<uuid>.svg).

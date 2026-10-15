@@ -76,7 +76,7 @@ Each mirror has these fields:
   that list. Add it only after the upstream shows the mirror on its list.
 
 The cadence must be `hourly`, `twice a day`, `daily` or `nightly`.
-`layouts/partials/mirror.html` gives each cadence its minutes for the sync bar. For a
+`layouts/partials/mirror.html` gives each cadence its minutes for the next-sync bar. For a
 different value, the build stops with an error.
 
 In `usage`, write the typographic characters, for example — and not --. The markdown
@@ -124,23 +124,24 @@ This partial has these parts:
 When the page loads, this script puts these values in each tile:
 
 - The status. The script sets the `data-state` of the tile from its healthchecks.io JSON
-  badge. That value sets the color of the tile head and of the last segment of the sync
-  bar.
+  badge. That value sets the color of the tile head and of the next-sync bar.
 - The age. The script gets the last `sync.yml` run with the conclusion `success` from the
   GitHub Actions API, and it sets the age from that run.
-- The sync bar. The script uses the same page of 10 runs. The bar has one segment for each
-  completed run, with the oldest run at the left. A run with a conclusion other than
-  `success` is a failed segment. The last segment fills in the time between two syncs, from
-  the start of the last good run.
+- The two bars, from the same page of 10 runs:
+  - The runs bar has one segment for each completed run, with the oldest run at the left.
+    A run with a conclusion other than `success` is a failed segment.
+  - The next-sync bar fills in the time between two syncs, from the start of the last good
+    run.
+- The words under the bars. Each word starts at the left edge of its bar. The words under
+  the runs bar give the number of failed runs. The words under the next-sync bar give the
+  time to the next sync, or "in progress", "due now" or "late by". The next sync is the
+  start of the last good run plus the cadence. Thus, for a mirror with runs at irregular
+  times, the value is approximate.
 
-The sync bar is a button. Hover, keyboard focus, a click or a tap opens its tooltip. The
-tooltip gives the status, the age of the last good sync, the number of failed runs, and how
-to read the bar. Escape or a click on a different place closes it.
-
-Thus, the status, the age and the sync bar are up to date when a person opens the page. If
-the script cannot fetch a value, the head stays neutral, the age stays a dash, and the
-segments stay gray. The self-check is `node assets/js/status.check.mjs`, and `task check`
-runs it.
+Thus, the status, the age, the bars and the words are up to date when a person opens the
+page. If the script cannot fetch a value, the head stays neutral, the age and the words
+stay a dash, and the bars stay gray. The self-check is `node assets/js/status.check.mjs`,
+and `task check` runs it.
 
 ### `static/_headers`
 
@@ -272,7 +273,7 @@ First, `task check` gives an error if the brand files are different from the fil
   script makes stays CC BY-SA 2.0.
 - The tile does not embed the badge SVG. It fetches the healthchecks.io **JSON** badge.
   Then the page shows the status in the colors of the `--status-*` tokens in
-  `mirrors.css`: the tile head and the last segment of the sync bar. The tile keeps the
+  `mirrors.css`: the tile head and the next-sync bar. The tile keeps the
   URL of the badge SVG, without a change, in `data-badge`. The script makes the `.json`
   URL from it, and `task check` greps for it.
 - The official check is `certificate.svg` with `check.svg` on top of it. Its blue is the
