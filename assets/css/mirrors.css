@@ -95,8 +95,8 @@
 }
 
 /* A tile is one surface. It is neutral while the sync is on schedule, and red when the
-   sync is late. Color shows only where it tells something: the next-sync bar, a failed
-   run, and a late tile. */
+   sync is late. Color shows only where it tells something: the result of each run, and a
+   late tile. */
 .mirror {
   display: grid;
   align-content: start;
@@ -207,11 +207,11 @@
 }
 
 /* Sync: two bars, each with words under it. The runs bar has one segment for each of the
-   last 10 runs. The next-sync bar fills in the time between two syncs. status.js sets
-   the class of each run segment, the --fill of the next-sync bar and the words. The color
-   of the next-sync bar shows the status. A good run is gray, and a failed run is red. A
-   run in progress is a hollow segment, and the next-sync bar is gray while it runs. Each
-   word starts at the left edge of its bar. */
+   last 10 runs. A good run is green, a failed run is red, a skipped run is gray, and a
+   run in progress is hollow. The next-sync bar fills in the time between two syncs, and
+   it is red when the sync is late and hollow while a run is in progress. status.js sets
+   the class of each run segment, the --fill of the next-sync bar and the words. Each word
+   starts at the left edge of its bar. */
 .mirror-sync {
   grid-column: 1 / -1;
   display: grid;
@@ -239,6 +239,9 @@
   flex: 1;
 }
 .sync-runs i.ok {
+  background: color-mix(in srgb, var(--status-up) 45%, transparent);
+}
+.sync-runs i.skip {
   background: color-mix(in srgb, var(--text) 24%, transparent);
 }
 .sync-runs i.fail {
@@ -248,25 +251,45 @@
   background: transparent;
   box-shadow: inset 0 0 0 1.5px var(--text-muted);
 }
+/* The next-sync bar is a timeline, not a result: the result of the next run is not known.
+   The elapsed time is light gray, and a dark marker shows now. The marker shows only when
+   status.js knows the start of the last good sync (data-started). */
 .sync-fill {
   height: 8px;
-  overflow: hidden;
 }
 .sync-fill b {
+  position: relative;
   display: block;
   width: var(--fill, 0%);
   height: 100%;
   border-radius: 4px;
-  background: var(--text-muted);
+  background: color-mix(in srgb, var(--text) 18%, transparent);
 }
-.mirror[data-state="up"] .sync-fill b {
-  background: var(--status-up);
+.mirror[data-started] .sync-fill b::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -1.5px;
+  bottom: -3px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--text);
 }
 .mirror[data-state="down"] .sync-fill b {
+  background: color-mix(in srgb, var(--status-down) 35%, transparent);
+}
+.mirror[data-state="down"] .sync-fill b::after {
   background: var(--status-down);
 }
+.mirror[data-running="yes"] .sync-fill {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--text-muted);
+}
 .mirror[data-running="yes"] .sync-fill b {
-  background: var(--text-muted);
+  background: transparent;
+}
+.mirror[data-running="yes"] .sync-fill b::after {
+  display: none;
 }
 .sync-label {
   font-size: 11.5px;

@@ -46,15 +46,21 @@ export function lastSuccess(d) {
   return d.workflow_runs?.find((run) => run.conclusion === "success");
 }
 
-// The segments of the runs bar: the newest 10 runs in the page, oldest first. A run that
-// is not complete (for example queued or in_progress) is "run", and it shows gray. A run
-// with a conclusion other than success (for example failure, cancelled or timed_out) is a
-// failed run.
+// The segments of the runs bar: the newest 10 runs in the page, oldest first:
+// - "run": the run is not complete (for example queued or in_progress)
+// - "ok": the conclusion is success
+// - "skip": the run did not sync (cancelled, skipped, neutral or stale)
+// - "fail": a different conclusion (for example failure, timed_out or startup_failure).
+const SKIPPED = ["cancelled", "skipped", "neutral", "stale"];
 export function segments(d) {
   return (d.workflow_runs ?? [])
     .slice(0, 10)
     .reverse()
-    .map((run) => (run.status !== "completed" ? "run" : run.conclusion === "success" ? "ok" : "fail"));
+    .map((run) => {
+      if (run.status !== "completed") return "run";
+      if (run.conclusion === "success") return "ok";
+      return SKIPPED.includes(run.conclusion) ? "skip" : "fail";
+    });
 }
 
 export function failText(segs) {

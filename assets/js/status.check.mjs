@@ -32,7 +32,12 @@ assert.equal(lastSuccess({}), undefined);
 assert.deepEqual(segments({ workflow_runs: runs }), ["ok", "ok", "fail", "run"]); // oldest first, and the in-progress run is the newest
 const cancelled = { status: "completed", conclusion: "cancelled" };
 const eleven = [cancelled, ...Array(10).fill({ status: "completed", conclusion: "success" })];
-assert.deepEqual(segments({ workflow_runs: eleven }), [...Array(9).fill("ok"), "fail"]); // the newest 10 only, and a cancelled run fails
+assert.deepEqual(segments({ workflow_runs: eleven }), [...Array(9).fill("ok"), "skip"]); // the newest 10 only, and a cancelled run is skipped
+assert.deepEqual(
+  segments({ workflow_runs: ["timed_out", "skipped", "startup_failure", "stale"].map((conclusion) => ({ status: "completed", conclusion })) }),
+  ["skip", "fail", "skip", "fail"],
+); // oldest first: stale and skipped are skipped, startup_failure and timed_out fail
+assert.equal(failText(["ok", "skip", "ok"]), "none failed"); // a skipped run is not a failed run
 assert.deepEqual(segments({}), []);
 
 assert.equal(fill("2026-09-01T11:42:00Z", 60, now), 30); // 18 of 60 minutes

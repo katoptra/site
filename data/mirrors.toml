@@ -21,9 +21,9 @@
 # cadence its minutes, and the build stops with an error for a different value.
 #
 # healthcheck must be the URL of the two-state badge for one check (/b/2/<uuid>.svg).
-# The page shows a green head for each status that is not "down". Thus, with a
-# three-state badge or a project badge, the page can show a green head for a sync that
-# stopped.
+# The page shows a tile on schedule for each status that is not "down". Thus, with a
+# three-state badge or a project badge, the page can show a tile on schedule for a sync
+# that stopped.
 
 [[mirrors]]
 name = "CTAN"
