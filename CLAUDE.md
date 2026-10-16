@@ -131,11 +131,12 @@ When the page loads, this script puts these values in each tile:
   - The runs bar has one segment for each of the 10 runs, with the oldest run at the left.
     A good run (`success`) is green. A run that did not sync (`cancelled`, `skipped`,
     `neutral` or `stale`) is gray. A run with a different conclusion is a red, failed
-    segment. A run that is not complete, for example queued or in progress, is hollow.
+    segment. A run that is not complete, for example queued or in progress, is a darker
+    gray segment that pulses.
   - The next-sync bar is a timeline, not a result, because the result of the next run is
     not known. It fills in light gray in the time between two syncs, from the start of the
-    last good run, and a dark marker shows now. It is red when the sync is late, and hollow
-    while a run is in progress.
+    last good run, and a dark marker shows now. It is red when the sync is late. While a
+    run is in progress, a short bar in the same darker gray moves along it.
 - The words under the bars. Each word starts at the left edge of its bar. The words under
   the runs bar give the number of failed runs. The words under the next-sync bar give the
   time to the next sync, or "in progress", "due now" or "late by". The next sync is the

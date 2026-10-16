@@ -7,18 +7,35 @@
 /* ===== Tokens that are not in the palette =====
    The status colors are the only semantic colors on the page. Their contrast is AA on
    the light background and on the dark background. The blue of the official check has a
-   contrast of 3:1 or more on each color of a tile, in the two themes. */
+   contrast of 3:1 or more on each color of a tile, in the two themes.
+
+   The tile and the bars: in light mode, a tile is white, and the bars use stronger mixes
+   than in dark mode. A good run has a contrast of 3:1 or more on its tile in the two
+   themes (3.5:1 in light mode, 3.2:1 in dark mode). */
 :root {
   --status-up: #1a7f37;
   --status-down: #cf222e;
   --official: #1877d2;
   --official-ink: #ffffff;
+  --tile: #ffffff;
+  --tile-edge: rgba(28, 28, 40, 0.08);
+  --bar-track: color-mix(in srgb, var(--text) 14%, transparent);
+  --bar-elapsed: color-mix(in srgb, var(--text) 26%, transparent);
+  --run-ok: color-mix(in srgb, var(--status-up) 80%, transparent);
+  --run-skip: color-mix(in srgb, var(--text) 32%, transparent);
+  --run-live: color-mix(in srgb, var(--text) 45%, transparent);
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --status-up: #3fb950;
     --status-down: #f85149;
     --official: #1d9bf0;
+    --tile: color-mix(in srgb, var(--text) 5%, var(--bg));
+    --tile-edge: transparent;
+    --bar-track: color-mix(in srgb, var(--text) 10%, transparent);
+    --bar-elapsed: color-mix(in srgb, var(--text) 18%, transparent);
+    --run-ok: color-mix(in srgb, var(--status-up) 60%, transparent);
+    --run-skip: color-mix(in srgb, var(--text) 24%, transparent);
   }
 }
 
@@ -94,18 +111,21 @@
   gap: 8px;
 }
 
-/* A tile is one surface. It is neutral while the sync is on schedule, and red when the
-   sync is late. Color shows only where it tells something: the result of each run, and a
-   late tile. */
+/* A tile is one surface. It is neutral while the sync is on schedule: white with a
+   hairline edge in light mode, and a little lighter than the page in dark mode. It is red
+   when the sync is late. Color shows only where it tells something: the result of each
+   run, and a late tile. */
 .mirror {
   display: grid;
   align-content: start;
   border-radius: 16px;
-  background: color-mix(in srgb, var(--text) 5%, var(--bg));
+  background: var(--tile);
+  box-shadow: 0 0 0 1px var(--tile-edge);
   transition: background 0.3s;
 }
 .mirror[data-state="down"] {
   background: color-mix(in srgb, var(--status-down) 11%, var(--bg));
+  box-shadow: none;
 }
 
 /* Head: the name and host, the age, and the two sync bars below them. */
@@ -208,8 +228,9 @@
 
 /* Sync: two bars, each with words under it. The runs bar has one segment for each of the
    last 10 runs. A good run is green, a failed run is red, a skipped run is gray, and a
-   run in progress is hollow. The next-sync bar fills in the time between two syncs, and
-   it is red when the sync is late and hollow while a run is in progress. status.js sets
+   run in progress is a darker gray that pulses. The next-sync bar fills in the time
+   between two syncs, and it is red when the sync is late. While a run is in progress, a
+   short bar in the same darker gray moves along the next-sync bar. status.js sets
    the class of each run segment, the --fill of the next-sync bar and the words. Each word
    starts at the left edge of its bar. */
 .mirror-sync {
@@ -233,23 +254,23 @@
 .sync-runs i,
 .sync-fill {
   border-radius: 4px;
-  background: color-mix(in srgb, var(--text) 10%, transparent);
+  background: var(--bar-track);
 }
 .sync-runs i {
   flex: 1;
 }
 .sync-runs i.ok {
-  background: color-mix(in srgb, var(--status-up) 45%, transparent);
+  background: var(--run-ok);
 }
 .sync-runs i.skip {
-  background: color-mix(in srgb, var(--text) 24%, transparent);
+  background: var(--run-skip);
 }
 .sync-runs i.fail {
   background: var(--status-down);
 }
 .sync-runs i.run {
-  background: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--text-muted);
+  background: var(--run-live);
+  animation: sync-pulse 1.8s ease-in-out infinite alternate;
 }
 /* The next-sync bar is a timeline, not a result: the result of the next run is not known.
    The elapsed time is light gray, and a dark marker shows now. The marker shows only when
@@ -263,7 +284,7 @@
   width: var(--fill, 0%);
   height: 100%;
   border-radius: 4px;
-  background: color-mix(in srgb, var(--text) 18%, transparent);
+  background: var(--bar-elapsed);
 }
 .mirror[data-started] .sync-fill b::after {
   content: "";
@@ -281,15 +302,30 @@
 .mirror[data-state="down"] .sync-fill b::after {
   background: var(--status-down);
 }
+/* While a run is in progress, the elapsed time and the marker do not show. A short bar
+   moves from the left end to the right end of the next-sync bar. With reduced motion,
+   base.css stops the animations: the run segment is solid gray, and the bar is empty. */
 .mirror[data-running="yes"] .sync-fill {
-  background: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--text-muted);
+  overflow: hidden;
 }
 .mirror[data-running="yes"] .sync-fill b {
-  background: transparent;
+  left: -35%;
+  width: 35%;
+  background: var(--run-live);
+  animation: sync-travel 2s ease-in-out infinite;
 }
 .mirror[data-running="yes"] .sync-fill b::after {
   display: none;
+}
+@keyframes sync-pulse {
+  to {
+    opacity: 0.3;
+  }
+}
+@keyframes sync-travel {
+  to {
+    left: 100%;
+  }
 }
 .sync-label {
   font-size: 11.5px;
