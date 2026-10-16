@@ -96,6 +96,24 @@
   display: none;
 }
 
+/* On a wide screen, base.css centers the column of the page in the window. Thus, the two
+   panels use one grid cell, and the cell is as tall as the taller panel. Then the masthead
+   and the footer stay in their positions when you change the group. The panel of the
+   other group keeps its space, but it does not show, and the keyboard does not go to its
+   links. On a narrow screen, the column is not centered, and that panel has no space.
+   The width of 801px agrees with the breakpoint of .page in base.css. */
+@media (min-width: 801px) {
+  .group {
+    grid-area: 2 / 1;
+    align-self: start;
+  }
+  #group-public:checked ~ .group-private,
+  #group-private:checked ~ .group-public {
+    display: grid;
+    visibility: hidden;
+  }
+}
+
 /* ===== Mirror tiles ===== */
 /* The grid has two columns only when each tile is 408px or wider. If a tile is too
    narrow, its name or the words under its sync bars wrap, and the tiles in a row get
