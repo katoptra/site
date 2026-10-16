@@ -92,7 +92,8 @@ them on the page. Thus, this file and `hugo.toml` contain no mirror name.
 
 This layout uses one centered column (`.page`). The masthead is at the top of the column:
 
-- The mark, inline. Its tile and inks get their colors from the tokens.
+- The mark, inline. Its tile and inks get their colors from the tokens. The mark is a link
+  to the homepage.
 - The `Katoptra` `<h1>`
 - The tagline.
 
@@ -105,7 +106,8 @@ name is centered on the mark.
 This layout has the Public / Private switch and one panel of tiles for each group.
 `layouts/partials/mirror.html` makes each tile. The switch is two radios that show as one
 pill control. `mirrors.css` shows only the panel of the checked group. Thus, the switch has
-no JavaScript. The `head` block of this layout adds the ItemList JSON-LD and `status.js`.
+no JavaScript. On a wide screen, the two panels use one grid cell, as tall as the taller
+panel. Thus, the masthead and the footer do not move when you change the group. The `head` block of this layout adds the ItemList JSON-LD and `status.js`.
 The grid has two columns when each tile can be 408px wide, or else one column
 (refer to `mirrors.css`).
 

@@ -109,8 +109,18 @@ body {
   gap: 8px 20px;
 }
 
-.masthead-mark {
+/* The mark is the link to the homepage. The focus ring has the corners of the tile of the
+   mark (rx 22 of 100). */
+.masthead-home {
   grid-row: span 2;
+  border-radius: 22%;
+}
+.masthead-home:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.masthead-mark {
+  display: block;
   width: 64px;
   height: 64px;
 }
