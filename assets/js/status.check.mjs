@@ -1,11 +1,17 @@
 // The self-check for status.js. To run it: node assets/js/status.check.mjs
 import { strict as assert } from "node:assert";
-import { failText, fill, lastSuccess, nextText, relTime, segments, shortTime, span, stateFor } from "./status.js";
+import { chipWord, failText, fill, lastSuccess, nextText, relTime, segments, span, stateFor } from "./status.js";
 
 assert.equal(stateFor({ status: "up" }), "up");
 assert.equal(stateFor({ status: "up", grace: 1 }), "up"); // in grace (late) shows as up, and this is correct
 assert.equal(stateFor({ status: "late" }), "up"); // a status other than "down" shows as up, not as an empty state
 assert.equal(stateFor({ status: "down" }), "down");
+
+assert.equal(chipWord("up", "no"), "On schedule");
+assert.equal(chipWord("up", "yes"), "Syncing");
+assert.equal(chipWord("down", "yes"), "Late"); // a late sync wins over a run in progress
+assert.equal(chipWord(undefined, "yes"), "Syncing"); // the badge fetch failed, the runs fetch did not
+assert.equal(chipWord(undefined, undefined), ""); // no value is known: the chip does not show
 
 const now = Date.parse("2026-09-01T12:00:00Z");
 assert.equal(relTime("2026-09-01T11:59:40Z", now), "just now");
@@ -13,11 +19,6 @@ assert.equal(relTime("2026-09-01T11:26:00Z", now), "34 min ago");
 assert.equal(relTime("2026-09-01T10:58:00Z", now), "1 hour ago");
 assert.equal(relTime("2026-09-01T04:00:00Z", now), "8 hours ago");
 assert.equal(relTime("2026-08-29T12:00:00Z", now), "3 days ago");
-assert.equal(shortTime("2026-09-01T11:59:40Z", now), "now");
-assert.equal(shortTime("2026-09-01T11:26:00Z", now), "34m");
-assert.equal(shortTime("2026-09-01T10:58:00Z", now), "1h"); // the same rounding as relTime
-assert.equal(shortTime("2026-09-01T04:00:00Z", now), "8h");
-assert.equal(shortTime("2026-08-29T12:00:00Z", now), "3d");
 
 const runs = [
   { status: "in_progress", conclusion: null, run_started_at: "c" },

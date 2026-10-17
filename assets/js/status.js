@@ -1,11 +1,12 @@
 /* The parts of each mirror tile that this script sets when the page loads:
    - the health status, from the JSON badge of healthchecks.io
+   - the word in the status chip, from the health status and the newest run
    - the age of the last run of the sync workflow with the conclusion success, from the
      GitHub Actions API
-   - the runs bar (one segment for each of the last 10 runs), the next-sync bar, and the
-     words under the two bars, from the same page of runs.
-   If a fetch gives an error, the tile keeps its fallback: a neutral tile, a dash for the
-   age and the words, and gray bars. */
+   - the runs bar (one segment for each of the last 10 runs), the next-sync bar, the
+     time to the next sync, and the number of failed runs, from the same page of runs.
+   If a fetch gives an error, the tile keeps its fallback: no chip, a neutral tile, a dash
+   for the age and the words, and gray bars. */
 
 // A time span in words: "34 min", "1 hour", "8 hours", "3 days".
 export function span(m) {
@@ -21,18 +22,17 @@ export function relTime(iso, now = Date.now()) {
   return m < 1 ? "just now" : `${span(m)} ago`;
 }
 
-// The large age on the tile: the same rounding as relTime, with one letter for the unit.
-export function shortTime(iso, now = Date.now()) {
-  const m = Math.round((now - Date.parse(iso)) / 60000);
-  if (m < 1) return "now";
-  if (m < 60) return m + "m";
-  const h = Math.round(m / 60);
-  if (h < 24) return h + "h";
-  return Math.round(h / 24) + "d";
-}
-
 export function stateFor(badge) {
   return badge.status === "down" ? "down" : "up";
+}
+
+// The word in the status chip, from the data-state and the data-running of the tile. A
+// late sync wins over a run in progress. An empty word hides the chip: the page does not
+// know the status yet.
+export function chipWord(state, running) {
+  if (state === "down") return "Late";
+  if (running === "yes") return "Syncing";
+  return state === "up" ? "On schedule" : "";
 }
 
 // The newest run with the conclusion success, in one page of the unfiltered run list.
@@ -90,10 +90,15 @@ export function nextText(iso, minutes, running, late, now = Date.now()) {
 const json = (url) =>
   fetch(url).then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))));
 
-// The two fetches end in either order. Each one calls this function, and the words show
-// when the start of the last good sync is known.
-function paintNext(tile) {
+// The two fetches end in either order. Each one calls this function. The chip shows when
+// one of the two values is known, and the words show when the start of the last good
+// sync is known.
+function paint(tile) {
   const { started, running, state } = tile.dataset;
+  const word = chipWord(state, running);
+  const chip = tile.querySelector(".mirror-chip");
+  chip.querySelector(".mirror-chip-word").textContent = word;
+  chip.hidden = !word;
   if (!started) return;
   const sync = tile.querySelector(".mirror-sync");
   sync.querySelector(".sync-next").textContent = nextText(started, sync.dataset.minutes, running === "yes", state === "down");
@@ -103,10 +108,8 @@ if (typeof document !== "undefined") {
   for (const tile of document.querySelectorAll("[data-badge]")) {
     json(tile.dataset.badge.replace(/\.svg$/, ".json"))
       .then((badge) => {
-        const state = stateFor(badge);
-        tile.dataset.state = state;
-        tile.querySelector(".sync-state").textContent = `${tile.querySelector(".mirror-name").textContent} status: ${state === "up" ? "on schedule" : "late"}.`;
-        paintNext(tile);
+        tile.dataset.state = stateFor(badge);
+        paint(tile);
       })
       .catch(() => {});
   }
@@ -131,13 +134,13 @@ if (typeof document !== "undefined") {
         if (!run) return;
         const when = relTime(run.run_started_at);
         const sync = tile.querySelector(".mirror-sync");
-        link.querySelector(".mirror-age-value").textContent = shortTime(run.run_started_at);
+        link.textContent = when;
         link.title = `Synced ${when}, ${run.run_started_at}`;
         link.setAttribute("aria-label", `${link.getAttribute("aria-label")}, last synced ${when}`);
         sync.querySelector(".sync-fill").style.setProperty("--fill", `${fill(run.run_started_at, sync.dataset.minutes)}%`);
         tile.dataset.started = run.run_started_at;
         tile.dataset.running = d.workflow_runs[0].status === "completed" ? "no" : "yes";
-        paintNext(tile);
+        paint(tile);
       })
       .catch(() => {});
   }

@@ -36,7 +36,7 @@ official = "https://ctan.org/mirrors/"
 usage = "The mirror serves all the paths of CTAN at its root. Thus, its URL can replace a CTAN mirror URL. TeX Live and TinyTeX use it with tlmgr."
 
 [[mirrors]]
-name = "TeX Live (tlnet)"
+name = "TeX Live"
 url = "https://ctan.katoptra.org/systems/texlive/tlnet/"
 cadence = "hourly"
 repo = "https://github.com/katoptra/ctan"

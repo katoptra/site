@@ -122,33 +122,41 @@ This partial has these parts:
 
 ### `assets/js/status.js`
 
+Each tile has three parts: the head, two columns and the links. The head has the name, the
+host and the status chip. The left column has the last sync, and the right column has the
+next sync. Each column starts with a small key above a large value.
+
 When the page loads, this script puts these values in each tile:
 
 - The status. The script sets the `data-state` of the tile from its healthchecks.io JSON
-  badge. A late sync (`down`) makes the tile and the next-sync bar red. A tile with a
-  sync on schedule stays neutral: color shows only where it tells something.
-- The age. The script gets the last `sync.yml` run with the conclusion `success` from the
-  GitHub Actions API, and it sets the age from that run.
+  badge. A late sync (`down`) makes the tile, the chip and the next-sync bar red.
+- The status chip. It has one word: "On schedule" (green), "Syncing" (gray, while a run
+  is in progress) or "Late" (red). A late sync wins over a run in progress. The chip
+  shows only after the script knows the status or the newest run.
+- The age, in words, for example "3 min ago". The script gets the last `sync.yml` run
+  with the conclusion `success` from the GitHub Actions API, and it sets the age from
+  that run.
 - The two bars, from the same page of 10 runs:
-  - The runs bar has one segment for each of the 10 runs, with the oldest run at the left.
-    A good run (`success`) is green. A run that did not sync (`cancelled`, `skipped`,
-    `neutral` or `stale`) is gray. A run with a different conclusion is a red, failed
-    segment. A run that is not complete, for example queued or in progress, is a darker
-    gray segment that pulses.
-  - The next-sync bar is a timeline, not a result, because the result of the next run is
-    not known. It fills in light gray in the time between two syncs, from the start of the
-    last good run, and a dark marker shows now. It is red when the sync is late. While a
-    run is in progress, a short bar in the same darker gray moves along it.
-- The words under the bars. Each word starts at the left edge of its bar. The words under
-  the runs bar give the number of failed runs. The words under the next-sync bar give the
+  - The runs bar, in the left column, has one segment for each of the 10 runs, with the
+    oldest run at the left. A good run (`success`) is green. A run that did not sync
+    (`cancelled`, `skipped`, `neutral` or `stale`) is gray. A run with a different
+    conclusion is a red, failed segment. A run that is not complete, for example queued
+    or in progress, is a darker gray segment that pulses.
+  - The next-sync bar, in the right column, is a timeline, not a result, because the
+    result of the next run is not known. It fills in light gray in the time between two
+    syncs, from the start of the last good run, and a dark marker shows now. It is red
+    when the sync is late. While a run is in progress, a short bar in the same darker
+    gray moves along it.
+- The words. Under the runs bar: the number of failed runs. Above the next-sync bar: the
   time to the next sync, or "in progress", "due now" or "late by". The next sync is the
   start of the last good run plus the cadence. Thus, for a mirror with runs at irregular
-  times, the value is approximate.
+  times, the value is approximate. Under the next-sync bar, the template writes the
+  cadence.
 
 Thus, the status, the age, the bars and the words are up to date when a person opens the
-page. If the script cannot fetch a value, the tile stays neutral, the age and the words
-stay a dash, and the bars stay gray. The self-check is `node assets/js/status.check.mjs`,
-and `task check` runs it.
+page. If the script cannot fetch a value, the chip does not show, the tile stays neutral,
+the age and the words stay a dash, and the bars stay gray. The self-check is
+`node assets/js/status.check.mjs`, and `task check` runs it.
 
 ### `static/_headers`
 
@@ -280,7 +288,7 @@ First, `task check` gives an error if the brand files are different from the fil
   script makes stays CC BY-SA 2.0.
 - The tile does not embed the badge SVG. It fetches the healthchecks.io **JSON** badge.
   Then the page shows the status in the colors of the `--status-*` tokens in
-  `mirrors.css`: a good or failed run, and a late tile. The tile keeps the
+  `mirrors.css`: a good or failed run, the status chip, and a late tile. The tile keeps the
   URL of the badge SVG, without a change, in `data-badge`. The script makes the `.json`
   URL from it, and `task check` greps for it.
 - The official check is `certificate.svg` with `check.svg` on top of it. Its blue is the
@@ -288,8 +296,8 @@ First, `task check` gives an error if the brand files are different from the fil
   in a circle must not show the status, because the official check is the only check on
   the page.
 - The age on a tile is a link to the `sync.yml` workflow runs of the repository. It has no
-  underline, and it must not have one. The upstream and repository links below it have an
-  underline.
+  underline, and it must not have one. The upstream and repository links at the bottom of
+  the tile have an underline.
 - The page loads the Cloudflare beacon only if `hugo.toml` sets
   `params.cloudflareBeaconToken` (unset).
 - The Cloudflare Pages configuration is in the dashboard, not in the repository. The build

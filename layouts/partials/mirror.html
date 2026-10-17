@@ -2,11 +2,15 @@
        url has no files to browse. Its name is text without a link, and the tile shows
        where the mirror copies to, not a hostname.
 
-       status.js sets data-state on the tile from the healthcheck. A late sync makes the
-       tile and the next-sync bar red. status.js also
-       sets the age from the last run of the sync workflow with the conclusion success, the
-       runs bar from the last 10 runs, and the words under the two bars. Until then, the
-       tile is neutral, the age and the words show a dash, and the bars are gray.
+       The tile has three parts: the head (the name, the host and the status chip), two
+       columns (the last sync at the left, the next sync at the right), and the links.
+
+       status.js sets data-state on the tile from the healthcheck, and data-running from
+       the newest run. A late sync makes the tile, the chip and the next-sync bar red.
+       status.js also sets the word in the chip, the age from the last run of the sync
+       workflow with the conclusion success, the runs bar from the last 10 runs, and the
+       time to the next sync. Until then, the chip does not show, the tile is neutral, the
+       age and the words show a dash, and the bars are gray.
 
        The name is the link to the mirror. Its ::after covers the name and the host. Thus,
        a click on the host also opens the mirror. The blue check is on top of that area,
@@ -32,24 +36,25 @@
         </a>
         {{- end }}
       </span>
-      <span class="mirror-host">{{ with .url }}{{ strings.TrimSuffix "/" (strings.TrimPrefix "https://" .) }}{{ else }}Into {{ .into }}{{ end }}</span>
+      {{- /* A long host can wrap after each slash. */}}
+      <span class="mirror-host">{{ with .url }}{{ replace (strings.TrimSuffix "/" (strings.TrimPrefix "https://" .)) "/" "/<wbr>" | safeHTML }}{{ else }}Into {{ .into }}{{ end }}</span>
     </div>
-    <a class="mirror-age" rel="noopener" target="_blank" href="{{ .repo }}/actions/workflows/sync.yml"
-       aria-label="{{ .name }} sync runs"
-       data-runs-api="https://api.github.com/repos/{{ $repo }}/actions/workflows/sync.yml/runs?per_page=10">
-      <span class="mirror-age-value">&mdash;</span>
-      <span class="mirror-age-note">since sync · {{ .cadence }}</span>
-    </a>
-    <div class="mirror-sync" data-minutes="{{ $minutes }}">
-      <span class="visually-hidden sync-state"></span>
-      <div class="sync-part">
-        <span class="sync-runs" aria-hidden="true">{{ range 10 }}<i></i>{{ end }}</span>
-        <span class="sync-label"><span class="sync-count">Last 10 runs</span> · <b class="sync-fails">&mdash;</b></span>
-      </div>
-      <div class="sync-part">
-        <span class="sync-fill" aria-hidden="true"><b></b></span>
-        <span class="sync-label">Next sync · <b class="sync-next">&mdash;</b></span>
-      </div>
+    <span class="mirror-chip" hidden><i aria-hidden="true"></i><span class="mirror-chip-word"></span></span>
+  </div>
+  <div class="mirror-sync" data-minutes="{{ $minutes }}">
+    <div class="sync-part">
+      <span class="sync-key">Last sync</span>
+      <a class="mirror-age" rel="noopener" target="_blank" href="{{ .repo }}/actions/workflows/sync.yml"
+         aria-label="{{ .name }} sync runs"
+         data-runs-api="https://api.github.com/repos/{{ $repo }}/actions/workflows/sync.yml/runs?per_page=10">&mdash;</a>
+      <span class="sync-runs" aria-hidden="true">{{ range 10 }}<i></i>{{ end }}</span>
+      <span class="sync-label"><span class="sync-count">Last 10 runs</span>: <b class="sync-fails">&mdash;</b></span>
+    </div>
+    <div class="sync-part">
+      <span class="sync-key">Next sync</span>
+      <span class="sync-next">&mdash;</span>
+      <span class="sync-fill" aria-hidden="true"><b></b></span>
+      <span class="sync-label">Syncs {{ .cadence }}</span>
     </div>
   </div>
   <div class="mirror-links">
