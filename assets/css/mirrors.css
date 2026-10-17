@@ -116,43 +116,42 @@
 
 /* ===== Mirror tiles ===== */
 /* The grid has two columns only when each tile is 408px or wider. If a tile is too
-   narrow, its name or the words under its sync bars wrap, and the tiles in a row get
-   different heights. The column of the page (840px at most) holds no more than two
-   columns.
-   ponytail: in 2026-10, the longest words under the next-sync bar ("late by 23 hours")
-   need a tile of 405px, and 408px holds them. Ceiling: longer words or a longer name wrap
-   again in two columns. Upgrade path: a container query on .mirror that puts the age below
-   the title. */
+   narrow, the name wraps next to the status chip, and the tiles in a row get different
+   heights. The column of the page (840px at most) holds no more than two columns.
+   ponytail: in 2026-10, the longest name and the chip ("Savannah (nongnu)" and "On
+   schedule") need approximately 310px of the tile. Ceiling: a much longer name wraps in
+   two columns. Upgrade path: a container query on .mirror that puts the chip below the
+   host. */
 .group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 408px), 1fr));
   gap: 8px;
 }
 
-/* A tile is one surface. It is neutral while the sync is on schedule: white with a
-   hairline edge in light mode, and a little lighter than the page in dark mode. It is red
-   when the sync is late. Color shows only where it tells something: the result of each
-   run, and a late tile. */
+/* A tile is one surface: white with a hairline edge in light mode, and a little lighter
+   than the page in dark mode. It is red when the sync is late. */
 .mirror {
   display: grid;
   align-content: start;
+  gap: 12px;
+  padding-top: 14px;
   border-radius: 16px;
   background: var(--tile);
   box-shadow: 0 0 0 1px var(--tile-edge);
   transition: background 0.3s;
 }
 .mirror[data-state="down"] {
-  background: color-mix(in srgb, var(--status-down) 11%, var(--bg));
-  box-shadow: none;
+  background: color-mix(in srgb, var(--status-down) 9%, var(--tile));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--status-down) 30%, transparent);
 }
 
-/* Head: the name and host, the age, and the two sync bars below them. */
+/* Head: the name and the host at the left, the status chip at the right. */
 .mirror-head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 14px 12px;
-  padding: 16px 18px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 18px;
 }
 
 .mirror-title {
@@ -215,55 +214,106 @@
   color: var(--official-ink);
 }
 
-/* Age: a link to the runs of the sync workflow. It has no underline, and it must not
-   have one. */
-.mirror-age {
-  display: grid;
-  justify-items: end;
-  text-align: right;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-}
-.mirror-age-value {
+/* The status chip: one word with a dot. It is green when the sync is on schedule, red
+   when the sync is late, and gray with a pulsing dot while a run is in progress.
+   status.js sets the word. Until then, the chip has the hidden attribute. */
+.mirror-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  margin-top: 1px;
+  padding: 5px 11px 5px 9px;
+  border-radius: 999px;
+  font-size: 13px;
   font-weight: 700;
-  font-size: 28px;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-.mirror-age-note {
-  font-size: 11.5px;
+  line-height: 1.2;
   white-space: nowrap;
-  color: var(--text-muted);
+  color: var(--text-body);
+  background: var(--pill-bg);
 }
-.mirror[data-state="down"] .mirror-age-value,
-.mirror[data-state="down"] .mirror-age-note {
+.mirror-chip i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.mirror[data-state="up"] .mirror-chip {
+  color: var(--status-up);
+  background: color-mix(in srgb, var(--status-up) 12%, transparent);
+}
+.mirror[data-running="yes"] .mirror-chip {
+  color: var(--text-body);
+  background: var(--pill-bg);
+}
+.mirror[data-running="yes"] .mirror-chip i {
+  background: var(--run-live);
+  animation: sync-pulse 1.2s ease-in-out infinite alternate;
+}
+.mirror[data-state="down"] .mirror-chip {
   color: var(--status-down);
+  background: color-mix(in srgb, var(--status-down) 14%, transparent);
 }
-.mirror a.mirror-age:hover .mirror-age-value,
-.mirror a.mirror-age:hover .mirror-age-note {
-  color: var(--accent);
+.mirror[data-state="down"] .mirror-chip i {
+  background: currentColor;
+  animation: none;
 }
 
-/* Sync: two bars, each with words under it. The runs bar has one segment for each of the
-   last 10 runs. A good run is green, a failed run is red, a skipped run is gray, and a
-   run in progress is a darker gray that pulses. The next-sync bar fills in the time
-   between two syncs, and it is red when the sync is late. While a run is in progress, a
-   short bar in the same darker gray moves along the next-sync bar. status.js sets
-   the class of each run segment, the --fill of the next-sync bar and the words. Each word
-   starts at the left edge of its bar. */
+/* Sync: two columns. The last sync is at the left: the age, the runs bar and the number
+   of failed runs. The next sync is at the right: the time to the next sync, the next-sync
+   bar and the cadence. Each column starts with a small key above a large value. The
+   right column is never narrower than its words. Thus, "late by 23 hours" does not wrap. */
 .mirror-sync {
-  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 14px;
-  padding-top: 4px;
+  grid-template-columns: minmax(0, 3fr) minmax(max-content, 2fr);
+  gap: 18px;
+  padding: 0 18px;
 }
 .sync-part {
   display: grid;
   align-content: start;
-  gap: 7px;
+  gap: 4px;
   min-width: 0;
 }
+.sync-key {
+  font-size: 12.5px;
+  line-height: 1.2;
+  color: var(--text-muted);
+}
+/* The age is a link to the runs of the sync workflow. It has no underline, and it must
+   not have one. */
+.mirror-age,
+.sync-next {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.mirror a.mirror-age:hover {
+  color: var(--accent);
+}
+.mirror[data-state="down"] .sync-next {
+  color: var(--status-down);
+}
+.sync-label {
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--text-body);
+}
+.sync-label b {
+  color: var(--text);
+}
+.sync-label b.bad {
+  color: var(--status-down);
+}
+
+/* The runs bar has one segment for each of the last 10 runs. A good run is green, a
+   failed run is red, a skipped run is gray, and a run in progress is a darker gray that
+   pulses. The next-sync bar fills in the time between two syncs, and it is red when the
+   sync is late. While a run is in progress, a short bar in the same darker gray moves
+   along the next-sync bar. status.js sets the class of each run segment and the --fill of
+   the next-sync bar. */
 .sync-runs {
   display: flex;
   gap: 3px;
@@ -345,39 +395,21 @@
     left: 100%;
   }
 }
-.sync-label {
-  font-size: 11.5px;
-  line-height: 1.3;
-  color: var(--text-muted);
-}
-.sync-label b {
-  font-size: 12.5px;
-  color: var(--text);
-}
-.sync-label b.bad,
-.mirror[data-state="down"] .sync-next {
-  color: var(--status-down);
-}
 
-/* On a phone, the two bars split the width in half. Thus, "late by 2 hours" fits on one
-   line under the next-sync bar. */
+/* On a phone, the two columns split the width in half, and the values are smaller. */
 @media (max-width: 480px) {
   .mirror-sync {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(max-content, 1fr);
+    gap: 14px;
   }
-}
-
-@media (max-width: 400px) {
-  .mirror-head {
-    gap: 10px;
-  }
-  .mirror-age-value {
-    font-size: 22px;
+  .mirror-age,
+  .sync-next {
+    font-size: 16px;
   }
 }
 
 /* Links: the upstream on the left side, and the pipeline repository on the right side. A
-   hairline separates them from the head. */
+   hairline separates them from the columns. */
 .mirror-links {
   display: flex;
   flex-wrap: wrap;
@@ -385,7 +417,7 @@
   justify-content: space-between;
   gap: 8px 16px;
   margin: 0 18px;
-  padding: 10px 0 12px;
+  padding: 8px 0 10px;
   border-top: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
   font-size: 13px;
   line-height: 1.4;

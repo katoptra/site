@@ -13,7 +13,7 @@
   It serves all the paths of CTAN at its root. Set the tlmgr repository to it:
   `tlmgr option repository https://ctan.katoptra.org/systems/texlive/tlnet/`
   Freshness: `https://ctan.katoptra.org/timestamp` (upstream's clock, year-month-day-hour-minute UTC).
-- TeX Live (tlnet): https://ctan.katoptra.org/systems/texlive/tlnet/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet, sync: hourly)
+- TeX Live: https://ctan.katoptra.org/systems/texlive/tlnet/ (upstream: https://ctan.org/tex-archive/systems/texlive/tlnet, sync: hourly)
   It is the tlnet subtree of the CTAN mirror, with all platforms. Set the tlmgr repository to it:
   `tlmgr option repository https://ctan.katoptra.org/systems/texlive/tlnet/`
   Freshness: `https://ctan.katoptra.org/timestamp` (upstream's clock, year-month-day-hour-minute UTC).
