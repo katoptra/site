@@ -30,9 +30,9 @@ export function stateFor(badge) {
 // late sync wins over a run in progress. An empty word hides the chip: the page does not
 // know the status yet.
 export function chipWord(state, running) {
-  if (state === "down") return "Late";
+  if (state === "down") return "Overdue";
   if (running === "yes") return "Syncing";
-  return state === "up" ? "On schedule" : "";
+  return state === "up" ? "On time" : "";
 }
 
 // The newest run with the conclusion success, in one page of the unfiltered run list.
