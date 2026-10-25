@@ -7,10 +7,11 @@
 
        status.js sets data-state on the tile from the healthcheck, and data-running from
        the newest run. A late sync makes the tile, the chip and the next-sync bar red.
-       status.js also sets the word in the chip, the age from the last run of the sync
-       workflow with the conclusion success, the runs bar from the last 10 runs, and the
-       time to the next sync. Until then, the chip does not show, the tile is neutral, the
-       age and the words show a dash, and the bars are gray.
+       The chip has three marks (a dot, the arrows of a sync and a clock), and mirrors.css
+       shows the mark of the state. status.js also sets the word in the chip, the age from
+       the last run of the sync workflow with the conclusion success, the runs bar from the
+       last 10 runs, and the time to the next sync. Until then, the chip does not show, the
+       tile is neutral, the age and the words show a dash, and the bars are gray.
 
        The name is the link to the mirror. Its ::after covers the name and the host. Thus,
        a click on the host also opens the mirror. The blue check is on top of that area,
@@ -39,7 +40,12 @@
       {{- /* A long host can wrap after each slash. */}}
       <span class="mirror-host">{{ with .url }}{{ replace (strings.TrimSuffix "/" (strings.TrimPrefix "https://" .)) "/" "/<wbr>" | safeHTML }}{{ else }}Into {{ .into }}{{ end }}</span>
     </div>
-    <span class="mirror-chip" hidden><i aria-hidden="true"></i><span class="mirror-chip-word"></span></span>
+    <span class="mirror-chip" hidden>
+      <i class="chip-mark chip-dot" aria-hidden="true"></i>
+      <i class="chip-mark chip-sync" aria-hidden="true">{{ (resources.Get "icons/arrows-rotate.svg").Content | safeHTML }}</i>
+      <i class="chip-mark chip-late" aria-hidden="true">{{ (resources.Get "icons/clock.svg").Content | safeHTML }}</i>
+      <span class="mirror-chip-word"></span>
+    </span>
   </div>
   <div class="mirror-sync" data-minutes="{{ $minutes }}">
     <div class="sync-part">

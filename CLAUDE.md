@@ -123,16 +123,19 @@ This partial has these parts:
 ### `assets/js/status.js`
 
 Each tile has three parts: the head, two columns and the links. The head has the name, the
-host and the status chip. The left column has the last sync, and the right column has the
-next sync. Each column starts with a small key above a large value.
+host and the status chip. The name is the largest text on the tile. The left column has
+the last sync, and the right column has the next sync. Each column starts with a small key
+in capitals above the value.
 
 When the page loads, this script puts these values in each tile:
 
 - The status. The script sets the `data-state` of the tile from its healthchecks.io JSON
   badge. A late sync (`down`) makes the tile, the chip and the next-sync bar red.
-- The status chip. It has one word: "On schedule" (green), "Syncing" (gray, while a run
-  is in progress) or "Late" (red). A late sync wins over a run in progress. The chip
-  shows only after the script knows the status or the newest run.
+- The status chip. It has one word and one mark: "On time" (green, with a dot),
+  "Syncing" (gray, with turning arrows, while a run is in progress) or "Overdue" (red,
+  with a clock). A late sync wins over a run in progress. The chip shows only after the
+  script knows the status or the newest run. The template puts the three marks in the
+  chip, and `mirrors.css` shows the mark of the state.
 - The age, in words, for example "3 min ago". The script gets the last `sync.yml` run
   with the conclusion `success` from the GitHub Actions API, and it sets the age from
   that run.
@@ -256,7 +259,8 @@ Do these steps for each layout or CSS change, and each time that you add a mirro
 1. Run `task serve`.
 2. Look at the page in the light and the dark color scheme, at desktop width and at
    approximately 390px (mobile).
-3. Make sure that the full page shows in a 1440x900 viewport without an internal scroll.
+3. Look at the page in a 1440x900 viewport. The page can be taller than the viewport,
+   but no element in the page can have its own scroll bar.
 4. Make sure that no element overflows horizontally at 390px.
 5. Click the Private tab.
 6. Do steps 3 and 4 again.

@@ -10,15 +10,16 @@
    contrast of 3:1 or more on each color of a tile, in the two themes.
 
    The tile and the bars: in light mode, a tile is white, and the bars use stronger mixes
-   than in dark mode. A good run has a contrast of 3:1 or more on its tile in the two
-   themes (3.5:1 in light mode, 3.2:1 in dark mode). */
+   than in dark mode. The outline of a tile is a mix of the text color. Thus, it shows in
+   the two themes. A good run has a contrast of 3:1 or more on its tile in the two themes
+   (3.5:1 in light mode, 3.2:1 in dark mode). */
 :root {
   --status-up: #1a7f37;
   --status-down: #cf222e;
   --official: #1877d2;
   --official-ink: #ffffff;
   --tile: #ffffff;
-  --tile-edge: rgba(28, 28, 40, 0.08);
+  --tile-line: color-mix(in srgb, var(--text) 14%, transparent);
   --bar-track: color-mix(in srgb, var(--text) 14%, transparent);
   --bar-elapsed: color-mix(in srgb, var(--text) 26%, transparent);
   --run-ok: color-mix(in srgb, var(--status-up) 80%, transparent);
@@ -31,7 +32,6 @@
     --status-down: #f85149;
     --official: #1d9bf0;
     --tile: color-mix(in srgb, var(--text) 5%, var(--bg));
-    --tile-edge: transparent;
     --bar-track: color-mix(in srgb, var(--text) 10%, transparent);
     --bar-elapsed: color-mix(in srgb, var(--text) 18%, transparent);
     --run-ok: color-mix(in srgb, var(--status-up) 60%, transparent);
@@ -118,31 +118,32 @@
 /* The grid has two columns only when each tile is 408px or wider. If a tile is too
    narrow, the name wraps next to the status chip, and the tiles in a row get different
    heights. The column of the page (840px at most) holds no more than two columns.
-   ponytail: in 2026-10, the longest name and the chip ("Savannah (nongnu)" and "On
-   schedule") need approximately 310px of the tile. Ceiling: a much longer name wraps in
+   ponytail: in 2026-10, the longest name and the chip ("Savannah (nongnu)" and
+   "Overdue") need approximately 340px of the tile. Ceiling: a much longer name wraps in
    two columns. Upgrade path: a container query on .mirror that puts the chip below the
    host. */
 .group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 408px), 1fr));
-  gap: 8px;
+  gap: 10px;
 }
 
-/* A tile is one surface: white with a hairline edge in light mode, and a little lighter
-   than the page in dark mode. It is red when the sync is late. */
+/* A tile is one surface with an outline: white in light mode, and a little lighter than
+   the page in dark mode. It is red when the sync is late. The name is the largest text on
+   the tile. Thus, the eye finds the mirror before its values. */
 .mirror {
   display: grid;
   align-content: start;
-  gap: 12px;
-  padding-top: 14px;
-  border-radius: 16px;
+  gap: 15px;
+  padding: 16px 20px 14px;
+  border-radius: 18px;
   background: var(--tile);
-  box-shadow: 0 0 0 1px var(--tile-edge);
+  box-shadow: inset 0 0 0 1.5px var(--tile-line);
   transition: background 0.3s;
 }
 .mirror[data-state="down"] {
   background: color-mix(in srgb, var(--status-down) 9%, var(--tile));
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--status-down) 30%, transparent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--status-down) 55%, transparent);
 }
 
 /* Head: the name and the host at the left, the status chip at the right. */
@@ -151,31 +152,32 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  padding: 0 18px;
 }
 
 .mirror-title {
   position: relative;
   display: grid;
+  gap: 3px;
   min-width: 0;
 }
 .mirror-name-line {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   min-width: 0;
 }
 .mirror-name {
   font-weight: 700;
-  font-size: 19px;
-  line-height: 1.3;
+  font-size: 23px;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
   color: var(--text);
   overflow-wrap: anywhere;
 }
 .mirror-host {
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: var(--text-body);
   overflow-wrap: anywhere;
 }
 /* The name is the link to the mirror, and its ::after covers the name and the host. Thus,
@@ -214,15 +216,17 @@
   color: var(--official-ink);
 }
 
-/* The status chip: one word with a dot. It is green when the sync is on schedule, red
-   when the sync is late, and gray with a pulsing dot while a run is in progress.
-   status.js sets the word. Until then, the chip has the hidden attribute. */
+/* The status chip: one word with a mark. It is green with a dot when the sync is on time,
+   gray with turning arrows while a run is in progress, and red with a clock when the sync
+   is late. A late sync wins over a run in progress. The chip has the three marks, and
+   these rules show one of them. status.js sets the word. Until then, the chip has the
+   hidden attribute. */
 .mirror-chip {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   flex: none;
-  margin-top: 1px;
+  margin-top: 2px;
   padding: 5px 11px 5px 9px;
   border-radius: 999px;
   font-size: 13px;
@@ -232,11 +236,30 @@
   color: var(--text-body);
   background: var(--pill-bg);
 }
-.mirror-chip i {
+.chip-mark {
+  display: none;
+  flex: none;
+  width: 11px;
+  height: 11px;
+}
+.chip-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.chip-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: currentColor;
+}
+.chip-sync {
+  animation: sync-spin 1.6s linear infinite;
+}
+.mirror[data-state="up"]:not([data-running="yes"]) .chip-dot,
+.mirror[data-running="yes"]:not([data-state="down"]) .chip-sync,
+.mirror[data-state="down"] .chip-late {
+  display: block;
 }
 .mirror[data-state="up"] .mirror-chip {
   color: var(--status-up);
@@ -246,47 +269,41 @@
   color: var(--text-body);
   background: var(--pill-bg);
 }
-.mirror[data-running="yes"] .mirror-chip i {
-  background: var(--run-live);
-  animation: sync-pulse 1.2s ease-in-out infinite alternate;
-}
 .mirror[data-state="down"] .mirror-chip {
   color: var(--status-down);
   background: color-mix(in srgb, var(--status-down) 14%, transparent);
 }
-.mirror[data-state="down"] .mirror-chip i {
-  background: currentColor;
-  animation: none;
-}
 
 /* Sync: two columns. The last sync is at the left: the age, the runs bar and the number
    of failed runs. The next sync is at the right: the time to the next sync, the next-sync
-   bar and the cadence. Each column starts with a small key above a large value. The
-   right column is never narrower than its words. Thus, "late by 23 hours" does not wrap. */
+   bar and the cadence. Each column starts with a small key in capitals above the value.
+   The right column is never narrower than its words. Thus, "late by 23 hours" does not
+   wrap. */
 .mirror-sync {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(max-content, 2fr);
-  gap: 18px;
-  padding: 0 18px;
+  gap: 20px;
 }
 .sync-part {
   display: grid;
   align-content: start;
-  gap: 4px;
+  gap: 5px;
   min-width: 0;
 }
 .sync-key {
-  font-size: 12.5px;
+  font-size: 10.5px;
+  font-weight: 700;
   line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text-muted);
 }
 /* The age is a link to the runs of the sync workflow. It has no underline, and it must
    not have one. */
 .mirror-age,
 .sync-next {
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 1.25;
+  font-size: 15.5px;
+  line-height: 1.3;
   color: var(--text);
   font-variant-numeric: tabular-nums;
 }
@@ -372,7 +389,8 @@
 }
 /* While a run is in progress, the elapsed time and the marker do not show. A short bar
    moves from the left end to the right end of the next-sync bar. With reduced motion,
-   base.css stops the animations: the run segment is solid gray, and the bar is empty. */
+   base.css stops the animations: the run segment is solid gray, the bar is empty, and the
+   arrows in the chip do not turn. */
 .mirror[data-running="yes"] .sync-fill {
   overflow: hidden;
 }
@@ -395,32 +413,40 @@
     left: 100%;
   }
 }
+@keyframes sync-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-/* On a phone, the two columns split the width in half, and the values are smaller. */
+/* On a phone, the tile has less padding, the name is smaller, and the two columns split
+   the width in half. */
 @media (max-width: 480px) {
+  .mirror {
+    padding: 16px 16px 14px;
+  }
+  .mirror-name {
+    font-size: 21px;
+  }
   .mirror-sync {
     grid-template-columns: minmax(0, 1fr) minmax(max-content, 1fr);
     gap: 14px;
   }
-  .mirror-age,
-  .sync-next {
-    font-size: 16px;
-  }
 }
 
-/* Links: the upstream on the left side, and the pipeline repository on the right side. A
-   hairline separates them from the columns. */
+/* Links: the upstream on the left side, and the pipeline repository on the right side.
+   They are in the body color, below the columns, with no line between. */
 .mirror-links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px 16px;
-  margin: 0 18px;
-  padding: 8px 0 10px;
-  border-top: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  gap: 6px 16px;
   font-size: 13px;
   line-height: 1.4;
+}
+.mirror-links .link {
+  color: var(--text-body);
 }
 .mirror-links a {
   display: inline-flex;

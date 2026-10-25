@@ -7,9 +7,9 @@ assert.equal(stateFor({ status: "up", grace: 1 }), "up"); // in grace (late) sho
 assert.equal(stateFor({ status: "late" }), "up"); // a status other than "down" shows as up, not as an empty state
 assert.equal(stateFor({ status: "down" }), "down");
 
-assert.equal(chipWord("up", "no"), "On schedule");
+assert.equal(chipWord("up", "no"), "On time");
 assert.equal(chipWord("up", "yes"), "Syncing");
-assert.equal(chipWord("down", "yes"), "Late"); // a late sync wins over a run in progress
+assert.equal(chipWord("down", "yes"), "Overdue"); // a late sync wins over a run in progress
 assert.equal(chipWord(undefined, "yes"), "Syncing"); // the badge fetch failed, the runs fetch did not
 assert.equal(chipWord(undefined, undefined), ""); // no value is known: the chip does not show
 
