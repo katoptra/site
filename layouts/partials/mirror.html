@@ -31,7 +31,7 @@
         {{- end }}
         {{- with .official }}
         <a class="mirror-official" rel="noopener" target="_blank" href="{{ . }}"
-           title="Official {{ $.name }} mirror" aria-label="Official {{ $.name }} mirror, on the list at {{ $.upstream.name }}">
+           title="Official {{ $.name }} mirror" aria-label="Official {{ $.name }} mirror, on the list at {{ (urls.Parse .).Host }}">
           {{- (resources.Get "icons/certificate.svg").Content | safeHTML -}}
           {{- (resources.Get "icons/check.svg").Content | safeHTML -}}
         </a>
