@@ -16,7 +16,7 @@
 # (brand/render_ctan_icon.py makes it) or gnu (brand/render_gnu_icon.py makes it). If the
 # file is missing, the build stops with an error.
 #
-# cadence must be "hourly", "twice a day", "daily" or "nightly". The next-sync bar fills
+# cadence must be "hourly", "twice a day" or "daily". The next-sync bar fills
 # in the time between two syncs. layouts/partials/mirror.html gives each
 # cadence its minutes, and the build stops with an error for a different value.
 #
@@ -74,25 +74,3 @@ healthcheck = "https://healthchecks.io/b/2/1690a027-fc78-4459-a66b-c0d3d5078980.
 upstream = { name = "savannah.nongnu.org", url = "https://download.savannah.nongnu.org/releases/", icon = "gnu" }
 official = "https://download.savannah.nongnu.org/releases/00_MIRRORS.html"
 usage = "The mirror serves all the paths of download.savannah.nongnu.org/releases at its root. These are the release files of more than 1,000 free software projects that Savannah hosts and that are not part of GNU. Examples are FreeType, acl and attr, dmidecode, lzip, nmh, quilt and TinyCC. In a Savannah download URL, nongnu.katoptra.org can replace download.savannah.nongnu.org/releases."
-
-# Private mirrors copy the owner's accounts. Thus, they have no url. The tile shows the
-# name as text without a link, and it shows "Into <into>" where a public mirror shows
-# its host. Private mirrors stay out of the JSON-LD, and out of the list of mirrors to
-# use in llms.txt. Their fields are the fields of a public mirror, without url and
-# usage, and with into (where the copy goes).
-
-[[private]]
-name = "Dropbox"
-cadence = "nightly"
-into = "Proton Drive"
-repo = "https://github.com/katoptra/dropbox"
-healthcheck = "https://healthchecks.io/b/2/7ab971f5-d3bc-4bfe-9a63-72103114ae28.svg"
-upstream = { name = "dropbox.com", url = "https://www.dropbox.com", icon = "dropbox" }
-
-[[private]]
-name = "GitHub"
-cadence = "daily"
-into = "Proton Drive"
-repo = "https://github.com/katoptra/github"
-healthcheck = "https://healthchecks.io/b/2/875451ff-376b-4fb7-b7c1-40278e873faf.svg"
-upstream = { name = "github.com", url = "https://github.com", icon = "github" }

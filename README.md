@@ -15,9 +15,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/github/license/katoptra/site" alt="license"></a>
 </p>
 
-This repository is a Hugo site. It shows each mirror as a tile, below a Public / Private
-switch. The Public group has the public mirrors. The Private group has the private mirrors,
-which copy the owner's accounts. Each tile shows these items:
+This repository is a Hugo site. It shows each mirror as a tile. Each tile shows these items:
 
 - The upstream
 - The cadence
@@ -33,8 +31,8 @@ deploys the site at each push to `main`, and it also publishes the files in
 
 1. **Shell.** [`themes/katoptra/`](themes/katoptra) is the shell of a katoptra page: the
    masthead, the footer, the head, the 404 page, the base CSS and the files in
-   [The brand](#the-brand). The site root has the mirror index: the tiles, the switch,
-   the status script and the data.
+   [The brand](#the-brand). The site root has the mirror index: the tiles, the status
+   script and the data.
 2. **Data.** [`data/mirrors.toml`](data/mirrors.toml) has one entry for each mirror. It
    supplies the data for the homepage tiles and the ItemList JSON-LD. Thus, to add or
    remove a mirror, you edit that file and no other file.

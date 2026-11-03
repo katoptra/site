@@ -33,28 +33,8 @@
 {{ end }}
 
 {{ define "main" }}
-  {{- $public := hugo.Data.mirrors.mirrors }}
-  {{- $private := hugo.Data.mirrors.private }}
-  <!-- Public / Private switch: two radios that show as one pill control. The checked
-       radio hides the panel of the other group. The switch is only CSS. Thus, it
-       operates without JavaScript, and the page does not paint the two panels together
-       while it loads. -->
-  <div class="groups">
-    <input class="group-radio" type="radio" name="group" id="group-public" checked>
-    <input class="group-radio" type="radio" name="group" id="group-private">
-    <div class="group-switch">
-      <label for="group-public">Public <span class="group-count">{{ len $public }}</span></label>
-      <label for="group-private">Private <span class="group-count">{{ len $private }}</span></label>
-    </div>
-
-    <section class="group group-public" aria-labelledby="group-public-title">
-      <h2 class="visually-hidden" id="group-public-title">Public mirrors</h2>
-      {{- range $public }}{{ partial "mirror.html" . }}{{ end }}
-    </section>
-
-    <section class="group group-private" aria-labelledby="group-private-title">
-      <h2 class="visually-hidden" id="group-private-title">Private mirrors</h2>
-      {{- range $private }}{{ partial "mirror.html" . }}{{ end }}
-    </section>
-  </div>
+  <section class="group" aria-labelledby="group-title">
+    <h2 class="visually-hidden" id="group-title">Mirrors</h2>
+    {{- range hugo.Data.mirrors.mirrors }}{{ partial "mirror.html" . }}{{ end }}
+  </section>
 {{ end }}

@@ -1,6 +1,4 @@
-{{- /* The tile of one mirror, from one entry in data/mirrors.toml. A mirror with no
-       url has no files to browse. Its name is text without a link, and the tile shows
-       where the mirror copies to, not a hostname.
+{{- /* The tile of one mirror, from one entry in data/mirrors.toml.
 
        The tile has three parts: the head (the name, the host and the status chip), two
        columns (the last sync at the left, the next sync at the right), and the links.
@@ -18,17 +16,13 @@
        and it is a different link. */ -}}
 {{- $repo := strings.TrimPrefix "https://github.com/" .repo }}
 {{- $icon := printf "icons/%s.svg" .upstream.icon }}
-{{- $minutes := index (dict "hourly" 60 "twice a day" 720 "daily" 1440 "nightly" 1440) .cadence }}
+{{- $minutes := index (dict "hourly" 60 "twice a day" 720 "daily" 1440) .cadence }}
 {{- if not $minutes }}{{ errorf "mirror %q: cadence %q has no minutes in mirror.html" .name .cadence }}{{ end }}
 <article class="mirror" data-badge="{{ .healthcheck }}">
   <div class="mirror-head">
     <div class="mirror-title">
       <span class="mirror-name-line">
-        {{- if .url }}
         <a class="mirror-name mirror-link" href="{{ .url }}">{{ .name }}</a>
-        {{- else }}
-        <span class="mirror-name">{{ .name }}</span>
-        {{- end }}
         {{- with .official }}
         <a class="mirror-official" rel="noopener" target="_blank" href="{{ . }}"
            title="Official {{ $.name }} mirror" aria-label="Official {{ $.name }} mirror, on the list at {{ (urls.Parse .).Host }}">
@@ -38,7 +32,7 @@
         {{- end }}
       </span>
       {{- /* A long host can wrap after each slash. */}}
-      <span class="mirror-host">{{ with .url }}{{ replace (strings.TrimSuffix "/" (strings.TrimPrefix "https://" .)) "/" "/<wbr>" | safeHTML }}{{ else }}Into {{ .into }}{{ end }}</span>
+      <span class="mirror-host">{{ replace (strings.TrimSuffix "/" (strings.TrimPrefix "https://" .url)) "/" "/<wbr>" | safeHTML }}</span>
     </div>
     <span class="mirror-chip" hidden>
       <i class="chip-mark chip-dot" aria-hidden="true"></i>
