@@ -53,14 +53,7 @@ This file is the mirror index. **To add or remove a mirror, edit this file and
 - The names of the public mirrors in the meta description (the `%s` in `hugo.toml`).
   `layouts/partials/description.html` puts them there.
 
-The file has two types of entry:
-
-- `[[mirrors]]` entries are the public mirrors.
-- `[[private]]` entries copy the owner's accounts. A private entry has no `url` and no
-  `usage`, but it has an `into` (where the copy goes). It shows on the Private tab, and it
-  stays out of the JSON-LD.
-
-Each mirror has these fields:
+Each `[[mirrors]]` entry is one public mirror. Each mirror has these fields:
 
 - The display name
 - The mirror URL
@@ -74,7 +67,7 @@ Each mirror has these fields:
   this mirror. The tile shows a blue check after the name, and the check is a link to
   that list. Add it only after the upstream shows the mirror on its list.
 
-The cadence must be `hourly`, `twice a day`, `daily` or `nightly`.
+The cadence must be `hourly`, `twice a day` or `daily`.
 `layouts/partials/mirror.html` gives each cadence its minutes for the next-sync bar. For a
 different value, the build stops with an error.
 
@@ -103,11 +96,8 @@ name is centered on the mark.
 
 ### `layouts/index.html`
 
-This layout has the Public / Private switch and one panel of tiles for each group.
-`layouts/partials/mirror.html` makes each tile. The switch is two radios that show as one
-pill control. `mirrors.css` shows only the panel of the checked group. Thus, the switch has
-no JavaScript. On a wide screen, the two panels use one grid cell, as tall as the taller
-panel. Thus, the masthead and the footer do not move when you change the group. The `head` block of this layout adds the ItemList JSON-LD and `status.js`.
+This layout has one panel of tiles. `layouts/partials/mirror.html` makes each tile. The
+`head` block of this layout adds the ItemList JSON-LD and `status.js`.
 The grid has two columns when each tile can be 408px wide, or else one column
 (refer to `mirrors.css`).
 
@@ -262,9 +252,7 @@ Do these steps for each layout or CSS change, and each time that you add a mirro
 3. Look at the page in a 1440x900 viewport. The page can be taller than the viewport,
    but no element in the page can have its own scroll bar.
 4. Make sure that no element overflows horizontally at 390px.
-5. Click the Private tab.
-6. Do steps 3 and 4 again.
-7. For a change in `themes/katoptra/`, open `/404.html`, and do steps 2 to 4 again.
+5. For a change in `themes/katoptra/`, open `/404.html`, and do steps 2 to 4 again.
 
 `task check` is the functional test. Run it before you open a pull request.
 

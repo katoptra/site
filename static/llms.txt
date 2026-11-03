@@ -42,16 +42,6 @@
 
 To go back to the CTAN mirror rotation from a TeX mirror here: `tlmgr option repository ctan`.
 
-## Private mirrors
-
-Two private mirrors copy the owner's accounts into Proton Drive. They have nothing public to
-fetch.
-
-- Dropbox, nightly: https://github.com/katoptra/dropbox
-- GitHub, daily: https://github.com/katoptra/github
-
-Their pipelines are open source. You can fork them to make mirrors of your accounts.
-
 ## Source
 
 - The sync pipelines and this site: https://github.com/katoptra

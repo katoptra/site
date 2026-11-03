@@ -1,5 +1,5 @@
 /* ===== The mirror index =====
-   The Public / Private switch and the tiles. This file is after the base of the theme in
+   The tiles. This file is after the base of the theme in
    the bundle (params.css of hugo.toml names it). Thus, when two rules have the same
    specificity, the browser uses the rule here. The palette is the tokens.css of the
    theme. */
@@ -36,81 +36,6 @@
     --bar-elapsed: color-mix(in srgb, var(--text) 18%, transparent);
     --run-ok: color-mix(in srgb, var(--status-up) 60%, transparent);
     --run-skip: color-mix(in srgb, var(--text) 24%, transparent);
-  }
-}
-
-/* ===== Public / Private switch =====
-   The radios stay focusable, and you can operate them with the keyboard (the arrow
-   keys move between them). Only the labels show on the page. */
-.groups {
-  display: grid;
-  gap: 16px;
-}
-
-.group-radio {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.group-switch {
-  justify-self: start;
-  display: inline-flex;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 999px;
-  background: var(--pill-bg);
-}
-
-.group-switch label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 1;
-  color: var(--text-body);
-  cursor: pointer;
-}
-.group-count {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-#group-public:checked ~ .group-switch label[for="group-public"],
-#group-private:checked ~ .group-switch label[for="group-private"] {
-  background: var(--bg);
-  color: var(--text);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-}
-#group-public:focus-visible ~ .group-switch label[for="group-public"],
-#group-private:focus-visible ~ .group-switch label[for="group-private"] {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-#group-public:checked ~ .group-private,
-#group-private:checked ~ .group-public {
-  display: none;
-}
-
-/* On a wide screen, base.css centers the column of the page in the window. Thus, the two
-   panels use one grid cell, and the cell is as tall as the taller panel. Then the masthead
-   and the footer stay in their positions when you change the group. The panel of the
-   other group keeps its space, but it does not show, and the keyboard does not go to its
-   links. On a narrow screen, the column is not centered, and that panel has no space.
-   The width of 801px agrees with the breakpoint of .page in base.css. */
-@media (min-width: 801px) {
-  .group {
-    grid-area: 2 / 1;
-    align-self: start;
-  }
-  #group-public:checked ~ .group-private,
-  #group-private:checked ~ .group-public {
-    display: grid;
-    visibility: hidden;
   }
 }
 
