@@ -144,4 +144,7 @@ horizontally at 390px.
 
 Pull requests are welcome.
 
-MIT licensed. Built by [Josh Vaughen](https://ijosh.com).
+Copyright (C) 2026 Josh Vaughen. This repository is free software under the
+[GNU General Public License](LICENSE), version 3 or (at your option) any later version.
+The font and the icons from third parties keep their licenses.
+Built by [Josh Vaughen](https://ijosh.com).
